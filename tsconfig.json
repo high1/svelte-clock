@@ -4,6 +4,7 @@
     "types": ["svelte", "vite/client"],
     "noEmit": true,
     "baseUrl": "src",
+    "checkJs": true
   },
   "include": ["src/**/*.ts", "src/**/*.svelte"]
 }

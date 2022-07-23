@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import Hand from './Hand.svelte';
+  import Hand from 'Hand.svelte';
 
   const getSecondsSinceMidnight = (): number =>
     (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
