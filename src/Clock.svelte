@@ -4,12 +4,11 @@
 
   const getSecondsSinceMidnight = (): number =>
     (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
-  
+
   const rotate = (rotate: number, fixed: number = 1) =>
     `rotate(${(rotate * 360).toFixed(fixed)})`;
-  
+
   let time = getSecondsSinceMidnight();
-  const length = 60;
 
   $: subsecond = rotate(time % 1, 0);
   $: second = rotate((time % 60) / 60);
@@ -17,19 +16,17 @@
   $: hour = rotate(((time / 60 / 60) % 12) / 12);
 
   onMount(() => {
-	  let frame: number;
+    let frame: number;
 
     const loop = () => {
       time = getSecondsSinceMidnight();
-	    frame = requestAnimationFrame(loop);
-	  };
+      frame = requestAnimationFrame(loop);
+    };
 
-	  loop();
+    loop();
 
-	  return () => {
-	    cancelAnimationFrame(frame);
-	  };
-  });  
+    return () => cancelAnimationFrame(frame);
+  });
 </script>
 
 <div class="flex items-center justify-center h-full @dark:bg-neutral-700">
@@ -39,19 +36,17 @@
         class="stroke-neutral-900 @dark:stroke-neutral-100 fill-none"
         r="99"
       />
-      {#each Array(length) as  _, index }
+      {#each { length: 60 } as _, index}
         {@const isHour = index % 5 === 0}
-          <Hand
-            transform={`rotate(${(360 * index) / length})`}
-            class={
-              isHour
-                ? 'stroke-neutral-800 @dark:stroke-neutral-200 stroke-width-2'
-                : 'stroke-neutral-400 @dark:stroke-neutral-600'
-            }
-            length={isHour ? 7 : 3}
-            stationary
-          />
-        {/each}
+        <Hand
+          transform={`rotate(${(360 * index) / 60})`}
+          class={isHour
+            ? 'stroke-neutral-800 @dark:stroke-neutral-200 stroke-width-2'
+            : 'stroke-neutral-400 @dark:stroke-neutral-600'}
+          length={isHour ? 7 : 3}
+          stationary
+        />
+      {/each}
     </g>
     <g class="translate-100px">
       <Hand

@@ -1,23 +1,26 @@
 {
   "private": true,
   "type": "module",
-  "name": "voby-clock",
+  "name": "svelte-clock",
   "version": "1.0.0",
   "keywords": [],
-  "description": "voby clock, inspired by sauron clock",
+  "description": "svelte clock, inspired by sauron clock",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "@tsconfig/svelte": "^3.0.0",
+    "prettier": "^2.7.1",
+    "prettier-plugin-svelte": "^2.7.0",
     "svelte": "^3.49.0",
     "svelte-preprocess": "^4.10.7",
     "typescript": "^4.7.4",
-    "unocss": "^0.44.5",
-    "vite": "3.0.2",
+    "unocss": "^0.44.7",
+    "vite": "3.0.3",
     "vite-tsconfig-paths": "^3.5.0"
   },
   "scripts": {
     "build": "vite build",
     "dev": "vite",
+    "preview": "vite preview",
     "start": "vite"
   },
   "packageManager": "pnpm@7.6.0"
