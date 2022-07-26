@@ -1,7 +1,7 @@
 import 'uno.css';
-import Clock from 'Clock.svelte';
+import ClockFace from 'ClockFace.svelte';
 
-const App = new Clock({
+const App = new ClockFace({
   target: document.querySelector('#root'),
 });
 
