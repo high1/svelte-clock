@@ -1,11 +1,11 @@
 <script lang="ts">
-  interface $$Props extends svelte.JSX.SVGProps<SVGLineElement> {
+  type $$Props = {
     length: number;
     limit?: number;
     stationary?: boolean;
-  }
+  } & svelte.JSX.SVGProps<SVGLineElement>;
   
-  export let length = 0;
+  export let length: number;
   export let limit = 94;
   export let stationary = false;
 </script>
