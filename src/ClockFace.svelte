@@ -16,14 +16,10 @@
   $: hour = rotate(((time / 60 / 60) % 12) / 12);
 
   onMount(() => {
-    let frame: number;
-
-    const loop = () => {
+    let frame = requestAnimationFrame(function loop() {
       time = getSecondsSinceMidnight();
       frame = requestAnimationFrame(loop);
-    };
-
-    loop();
+    });
 
     return () => cancelAnimationFrame(frame);
   });

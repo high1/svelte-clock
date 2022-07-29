@@ -4,7 +4,7 @@
     limit?: number;
     stationary?: boolean;
   } & svelte.JSX.SVGProps<SVGLineElement>;
-  
+
   export let length: number;
   export let limit = 94;
   export let stationary = false;

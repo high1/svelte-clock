@@ -13,8 +13,8 @@
     "svelte": "^3.49.0",
     "svelte-preprocess": "^4.10.7",
     "typescript": "^4.7.4",
-    "unocss": "^0.44.7",
-    "vite": "3.0.3",
+    "unocss": "^0.45.1",
+    "vite": "3.0.4",
     "vite-tsconfig-paths": "^3.5.0"
   },
   "scripts": {
