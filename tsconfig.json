@@ -9,7 +9,15 @@
     "noEmit": true,
     "baseUrl": "src",
     "checkJs": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "strict": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "importsNotUsedAsValues": "error"
   },
-  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte", "*.config.ts"],
+  "include": ["src/**/*.d.ts", "src/**/*.ts", "src/**/*.svelte", "*.config.ts"]
 }
