@@ -14,8 +14,8 @@
 </script>
 
 <line
-  {...stationary && { y1: length - limit }}
+  class={`stroke-cap-round ${clazz}`}
+  y1={stationary ? length - limit : undefined}
   y2={-(stationary ? limit : length)}
   {...$$restProps}
-  class={`stroke-cap-round ${clazz}`}
 />
