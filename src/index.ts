@@ -1,8 +1,10 @@
 import 'uno.css';
 import ClockFace from 'ClockFace.svelte';
 
-const App = new ClockFace({
-  target: document.querySelector('#root'),
-});
+const target = document.querySelector('#root');
+
+if (!target) throw new Error('#root element not found');
+
+const App = new ClockFace({ target });
 
 export default App;
