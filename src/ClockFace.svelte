@@ -34,7 +34,7 @@
       {#each { length: 60 } as _, index}
         {@const isHour = index % 5 === 0}
         <Hand
-          transform={`rotate(${(360 * index) / 60})`}
+          transform={rotate(index / 60, 0)}
           class={isHour
             ? 'stroke-neutral-800 @dark:stroke-neutral-200 stroke-width-2'
             : 'stroke-neutral-400 @dark:stroke-neutral-600'}
