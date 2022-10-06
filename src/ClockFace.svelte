@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import Hand from 'Hand.svelte';
+  import ClockHand from 'ClockHand.svelte';
+
+  const length = 60;
 
   const getSecondsSinceMidnight = (): number =>
     (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
@@ -31,10 +33,10 @@
         class="stroke-neutral-900 @dark:stroke-neutral-100 fill-none"
         r="99"
       />
-      {#each { length: 60 } as _, index}
+      {#each { length } as _, index}
         {@const isHour = index % 5 === 0}
-        <Hand
-          transform={rotate(index / 60, 0)}
+        <ClockHand
+          transform={rotate(index / length, 0)}
           class={isHour
             ? 'stroke-neutral-800 @dark:stroke-neutral-200 stroke-width-2'
             : 'stroke-neutral-400 @dark:stroke-neutral-600'}
@@ -44,22 +46,22 @@
       {/each}
     </g>
     <g class="translate-100px">
-      <Hand
+      <ClockHand
         transform={subsecond}
         class="stroke-neutral-200 @dark:stroke-neutral-600 stroke-width-5 will-change-transform"
         length={83}
       />
-      <Hand
+      <ClockHand
         transform={hour}
         class="stroke-neutral-800 @dark:stroke-neutral-200 stroke-width-4"
         length={50}
       />
-      <Hand
+      <ClockHand
         transform={minute}
         class="stroke-neutral-800 @dark:stroke-neutral-200 stroke-width-3"
         length={70}
       />
-      <Hand
+      <ClockHand
         transform={second}
         class="stroke-red-500 stroke-width-2"
         length={77}
