@@ -6,12 +6,10 @@
 
   const getSecondsSinceMidnight = (): number =>
     (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
+  let time = getSecondsSinceMidnight();
 
   const rotate = (rotate: number, fractionDigits = 1) =>
     `rotate(${(rotate * 360).toFixed(fractionDigits)})`;
-
-  let time = getSecondsSinceMidnight();
-
   $: subsecond = rotate(time % 1, 0);
   $: second = rotate((time % 60) / 60);
   $: minute = rotate(((time / 60) % 60) / 60);
@@ -48,7 +46,7 @@
     <g class="translate-100px">
       <ClockHand
         transform={subsecond}
-        class="stroke-neutral-200 @dark:stroke-neutral-600 stroke-width-5 will-change-transform"
+        class="stroke-neutral-200 @dark:stroke-neutral-600 stroke-width-5"
         length={83}
       />
       <ClockHand
