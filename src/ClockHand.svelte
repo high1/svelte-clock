@@ -11,8 +11,8 @@
 </script>
 
 <line
+  class:stroke-cap-round={true}
   y1={stationary ? length - limit : undefined}
   y2={-(stationary ? limit : length)}
-  stroke-linecap="round"
   {...$$restProps}
 />
