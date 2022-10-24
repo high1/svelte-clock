@@ -8,11 +8,11 @@
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "1.0.9",
     "@tsconfig/svelte": "3.0.0",
-    "@typescript-eslint/eslint-plugin": "5.40.0",
-    "@typescript-eslint/parser": "5.40.0",
-    "eslint": "8.25.0",
+    "@typescript-eslint/eslint-plugin": "5.40.1",
+    "@typescript-eslint/parser": "5.40.1",
+    "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",
-    "eslint-import-resolver-typescript": "3.5.1",
+    "eslint-import-resolver-typescript": "3.5.2",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-svelte": "2.10.0",
@@ -21,9 +21,9 @@
     "svelte": "3.52.0",
     "svelte-preprocess": "4.10.7",
     "typescript": "4.8.4",
-    "unocss": "0.45.29",
+    "unocss": "0.45.30",
     "vite": "3.1.8",
-    "vite-tsconfig-paths": "3.5.1"
+    "vite-tsconfig-paths": "3.5.2"
   },
   "scripts": {
     "build": "vite build",
@@ -31,5 +31,5 @@
     "preview": "vite preview",
     "start": "vite"
   },
-  "packageManager": "pnpm@7.13.5"
+  "packageManager": "pnpm@7.14.0"
 }
