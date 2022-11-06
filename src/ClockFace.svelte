@@ -24,7 +24,7 @@
   });
 </script>
 
-<div class="flex items-center justify-center h-full @dark:bg-neutral-700">
+<div class="flex items-center justify-center h-screen @dark:bg-neutral-700">
   <svg viewBox="0 0 200 200" class="h-95vmin">
     <g class="translate-100px">
       <circle
