@@ -10,6 +10,9 @@ export default ({ mode }: ConfigEnv) =>
     plugins: [
       svelte({ preprocess: sveltePreprocess() }),
       uno(),
-      tsconfigPaths({ projects: ['tsconfig.json', 'tsconfig.svelte.json'] }),
+      tsconfigPaths({
+        projects: ['tsconfig.json', 'tsconfig.svelte.json'],
+        loose: true,
+      }),
     ],
   });
