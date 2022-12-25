@@ -1,9 +1,10 @@
 <script lang="ts">
-  type $$Props = {
+  import type { SVGAttributes } from 'svelte/elements';
+  interface $$Props extends SVGAttributes<SVGLineElement> {
     length: number;
     limit?: number;
     stationary?: boolean;
-  } & svelte.JSX.SVGProps<SVGLineElement>;
+  }
 
   export let length: number;
   export let limit = 94;

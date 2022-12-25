@@ -6,10 +6,10 @@ import sveltePreprocess from 'svelte-preprocess';
 
 export default ({ mode }: ConfigEnv) =>
   defineConfig({
-    base: loadEnv(mode, process.cwd(), '')['BASE'],
+    base: loadEnv(mode, process.cwd(), '')['BASE'] ?? '',
     plugins: [
       svelte({ preprocess: sveltePreprocess() }),
       uno(),
-      tsconfigPaths(),
+      tsconfigPaths({ projects: ['tsconfig.json', 'tsconfig.svelte.json'] }),
     ],
   });
