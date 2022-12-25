@@ -27,7 +27,7 @@
     "vite-tsconfig-paths": "4.0.3"
   },
   "scripts": {
-    "prebuild": "eslint . --max-warnings=0 && svelte-check . && tsc",
+    "prebuild": "eslint . --max-warnings=0 && svelte-check && tsc",
     "build": "vite build",
     "dev": "vite",
     "preview": "vite preview",
