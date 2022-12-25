@@ -1,8 +1,5 @@
 {
   // jsonc
   "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "checkJs": true
-  },
   "include": ["src/**/*.svelte"]
 }

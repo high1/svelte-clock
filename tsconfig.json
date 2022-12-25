@@ -22,8 +22,7 @@
     "exactOptionalPropertyTypes": true,
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
-    "noPropertyAccessFromIndexSignature": true,
-    "allowJs": true
+    "noPropertyAccessFromIndexSignature": true
   },
   "include": ["src/**/*.ts", "*.config.ts"]
 }
