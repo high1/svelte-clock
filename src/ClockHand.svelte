@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { SVGAttributes } from 'svelte/elements';
+
   interface $$Props extends SVGAttributes<SVGLineElement> {
     length: number;
     limit?: number;
@@ -12,7 +13,7 @@
 </script>
 
 <line
-  class:stroke-cap-round={true}
+  stroke-linecap="round"
   y1={stationary ? length - limit : undefined}
   y2={-(stationary ? limit : length)}
   {...$$restProps}

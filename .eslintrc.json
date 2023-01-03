@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["dist", "node_modules", "!**/.*"],
+  "ignorePatterns": ["dist", "node_modules", "!**/.*", "pnpm-lock.yaml"],
   "overrides": [
     {
       "files": ["*.svelte"],
@@ -13,8 +13,8 @@
         "plugin:svelte/recommended",
         "plugin:import/recommended",
         "plugin:import/typescript",
-        "plugin:prettier/recommended",
-        "plugin:svelte/prettier"
+        "plugin:svelte/prettier",
+        "plugin:prettier/recommended"
       ],
       "parserOptions": {
         "parser": "@typescript-eslint/parser",
@@ -30,7 +30,7 @@
         "@typescript-eslint/no-unused-vars": [
           "error",
           {
-            "argsIgnorePattern": "_.*",
+            "argsIgnorePattern": "^_",
             "varsIgnorePattern": "^\\${2}(Props|Events|Slots)$"
           }
         ]
@@ -79,6 +79,14 @@
       "extends": [
         "plugin:jsonc/recommended-with-jsonc",
         "plugin:jsonc/prettier",
+        "plugin:prettier/recommended"
+      ]
+    },
+    {
+      "files": ["*.yml"],
+      "extends": [
+        "plugin:yml/standard",
+        "plugin:yml/prettier",
         "plugin:prettier/recommended"
       ]
     }

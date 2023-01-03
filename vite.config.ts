@@ -8,11 +8,11 @@ export default ({ mode }: ConfigEnv) =>
   defineConfig({
     base: loadEnv(mode, process.cwd(), '')['BASE'] ?? '',
     plugins: [
-      svelte({ preprocess: sveltePreprocess() }),
-      uno(),
       tsconfigPaths({
         projects: ['tsconfig.json', 'tsconfig.svelte.json'],
         loose: true,
       }),
+      svelte({ preprocess: sveltePreprocess() }),
+      uno(),
     ],
   });
