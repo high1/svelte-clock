@@ -6,27 +6,27 @@
   "keywords": [],
   "description": "svelte clock, inspired by sauron clock",
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "2.0.3",
-    "@types/node": "18.15.10",
-    "@typescript-eslint/eslint-plugin": "5.56.0",
-    "@typescript-eslint/parser": "5.56.0",
-    "eslint": "8.36.0",
+    "@sveltejs/vite-plugin-svelte": "2.0.4",
+    "@types/node": "18.15.11",
+    "@typescript-eslint/eslint-plugin": "5.57.1",
+    "@typescript-eslint/parser": "5.57.1",
+    "eslint": "8.38.0",
     "eslint-config-prettier": "8.8.0",
-    "eslint-import-resolver-typescript": "3.5.3",
+    "eslint-import-resolver-typescript": "3.5.5",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-jsonc": "2.7.0",
     "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-svelte": "2.23.1",
+    "eslint-plugin-svelte": "2.26.0",
     "eslint-plugin-yml": "1.5.0",
     "prettier": "2.8.7",
     "prettier-plugin-svelte": "2.10.0",
-    "svelte": "3.57.0",
-    "svelte-check": "3.1.4",
+    "svelte": "3.58.0",
+    "svelte-check": "3.2.0",
     "svelte-preprocess": "5.0.3",
-    "typescript": "5.0.2",
-    "unocss": "0.50.6",
+    "typescript": "5.0.4",
+    "unocss": "0.51.2",
     "vite": "4.2.1",
-    "vite-tsconfig-paths": "4.0.7"
+    "vite-tsconfig-paths": "4.0.8"
   },
   "scripts": {
     "build": "vite build",
@@ -35,5 +35,5 @@
     "preview": "vite preview",
     "start": "vite"
   },
-  "packageManager": "pnpm@7.30.3"
+  "packageManager": "pnpm@7.32.0"
 }
