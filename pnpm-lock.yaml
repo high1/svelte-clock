@@ -2,7 +2,7 @@ lockfileVersion: 5.4
 
 specifiers:
   '@sveltejs/vite-plugin-svelte': 2.4.6
-  '@types/node': 18.18.4
+  '@types/node': 18.18.5
   '@typescript-eslint/eslint-plugin': 5.62.0
   '@typescript-eslint/parser': 5.62.0
   eslint: 8.51.0
@@ -25,7 +25,7 @@ specifiers:
 
 devDependencies:
   '@sveltejs/vite-plugin-svelte': 2.4.6_svelte@3.59.2+vite@4.4.11
-  '@types/node': 18.18.4
+  '@types/node': 18.18.5
   '@typescript-eslint/eslint-plugin': 5.62.0_y7fkf225hchdbz2g5gijiclu6y
   '@typescript-eslint/parser': 5.62.0_srhnpoqmhm6ulnern6fnsuapfi
   eslint: 8.51.0
@@ -43,7 +43,7 @@ devDependencies:
   svelte-preprocess: 5.0.4_kwkmqn34t4fxeksfhanwpp3rm4
   typescript: 5.2.2
   unocss: 0.56.5_vite@4.4.11
-  vite: 4.4.11_@types+node@18.18.4
+  vite: 4.4.11_@types+node@18.18.5
   vite-tsconfig-paths: 4.2.1_vrjn4omj5eanksabme5dpzqgqq
 
 packages:
@@ -433,7 +433,7 @@ packages:
       '@sveltejs/vite-plugin-svelte': 2.4.6_svelte@3.59.2+vite@4.4.11
       debug: 4.3.4
       svelte: 3.59.2
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -452,7 +452,7 @@ packages:
       magic-string: 0.30.3
       svelte: 3.59.2
       svelte-hmr: 0.15.3_svelte@3.59.2
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
       vitefu: 0.2.4_vite@4.4.11
     transitivePeerDependencies:
       - supports-color
@@ -470,8 +470,8 @@ packages:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
 
-  /@types/node/18.18.4:
-    resolution: {integrity: sha512-t3rNFBgJRugIhackit2mVcLfF6IRc0JE4oeizPQL8Zrm8n2WY/0wOdpOPhdtG0V9Q2TlW/axbF1MJ6z+Yj/kKQ==}
+  /@types/node/18.18.5:
+    resolution: {integrity: sha512-4slmbtwV59ZxitY4ixUZdy1uRLf9eSIvBWPQxNjhHYWEtn0FryfKpyS2cvADYXTayWdKEIsJengncrVvkI4I6A==}
     dev: true
 
   /@types/pug/2.0.6:
@@ -623,7 +623,7 @@ packages:
       '@unocss/core': 0.56.5
       '@unocss/reset': 0.56.5
       '@unocss/vite': 0.56.5_vite@4.4.11
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -812,7 +812,7 @@ packages:
       chokidar: 3.5.3
       fast-glob: 3.3.1
       magic-string: 0.30.3
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
     transitivePeerDependencies:
       - rollup
     dev: true
@@ -2903,7 +2903,7 @@ packages:
       '@unocss/transformer-directives': 0.56.5
       '@unocss/transformer-variant-group': 0.56.5
       '@unocss/vite': 0.56.5_vite@4.4.11
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
     transitivePeerDependencies:
       - rollup
       - supports-color
@@ -2930,13 +2930,13 @@ packages:
       debug: 4.3.4
       globrex: 0.1.2
       tsconfck: 2.1.1_typescript@5.2.2
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
     transitivePeerDependencies:
       - supports-color
       - typescript
     dev: true
 
-  /vite/4.4.11_@types+node@18.18.4:
+  /vite/4.4.11_@types+node@18.18.5:
     resolution: {integrity: sha512-ksNZJlkcU9b0lBwAGZGGaZHCMqHsc8OpgtoYhsQ4/I2v5cnpmmmqe5pM4nv/4Hn6G/2GhTdj0DhZh2e+Er1q5A==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -2964,7 +2964,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 18.18.4
+      '@types/node': 18.18.5
       esbuild: 0.18.11
       postcss: 8.4.30
       rollup: 3.28.0
@@ -2980,7 +2980,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 4.4.11_@types+node@18.18.4
+      vite: 4.4.11_@types+node@18.18.5
     dev: true
 
   /which-boxed-primitive/1.0.2:
