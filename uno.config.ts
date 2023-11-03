@@ -3,7 +3,7 @@ import { colors } from 'unocss/preset-mini';
 
 const getRgbColors = (colors: string[]) =>
   Object.fromEntries(
-    colors.map((color) => [color, `rgb(var(--${color}) / %alpha)`])
+    colors.map((color) => [color, `rgb(var(--${color}) / %alpha)`]),
   );
 
 export default defineConfig({
