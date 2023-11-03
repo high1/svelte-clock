@@ -7,9 +7,8 @@
       "parser": "svelte-eslint-parser",
       "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:@typescript-eslint/strict",
+        "plugin:@typescript-eslint/strict-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked",
         "plugin:svelte/recommended",
         "plugin:import/recommended",
         "plugin:import/typescript",
@@ -20,7 +19,7 @@
         "parser": "@typescript-eslint/parser",
         "extraFileExtensions": [".svelte"],
         "sourceType": "module",
-        "project": "tsconfig.svelte.json",
+        "project": true,
         "ecmaVersion": "latest"
       },
       "env": {
@@ -45,16 +44,15 @@
       "files": ["*.ts"],
       "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking",
-        "plugin:@typescript-eslint/strict",
+        "plugin:@typescript-eslint/strict-type-checked",
+        "plugin:@typescript-eslint/stylistic-type-checked",
         "plugin:import/recommended",
         "plugin:import/typescript",
         "plugin:prettier/recommended"
       ],
       "parserOptions": {
         "sourceType": "module",
-        "project": "tsconfig.json",
+        "project": true,
         "ecmaVersion": "latest"
       },
       "settings": {
