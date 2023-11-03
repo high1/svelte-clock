@@ -7,7 +7,7 @@
   "description": "svelte clock, inspired by sauron clock",
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "2.4.6",
-    "@types/node": "18.18.7",
+    "@types/node": "20.8.10",
     "@typescript-eslint/eslint-plugin": "6.9.1",
     "@typescript-eslint/parser": "6.9.1",
     "eslint": "8.52.0",
@@ -16,7 +16,7 @@
     "eslint-plugin-import": "2.29.0",
     "eslint-plugin-jsonc": "2.10.0",
     "eslint-plugin-prettier": "5.0.1",
-    "eslint-plugin-svelte": "2.34.0",
+    "eslint-plugin-svelte": "2.34.1",
     "eslint-plugin-yml": "1.10.0",
     "prettier": "3.0.3",
     "prettier-plugin-svelte": "3.0.3",
