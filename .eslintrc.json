@@ -1,6 +1,12 @@
 {
   "root": true,
-  "ignorePatterns": ["dist", "node_modules", "!**/.*", "pnpm-lock.yaml"],
+  "ignorePatterns": [
+    "coverage",
+    "dist",
+    "node_modules",
+    "!**/.*",
+    "pnpm-lock.yaml"
+  ],
   "overrides": [
     {
       "files": ["*.svelte"],
@@ -12,7 +18,9 @@
         "plugin:svelte/recommended",
         "plugin:import/recommended",
         "plugin:import/typescript",
+        "plugin:svelte/recommended",
         "plugin:svelte/prettier",
+        "@unocss",
         "plugin:prettier/recommended"
       ],
       "parserOptions": {

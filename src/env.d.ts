@@ -1,5 +1,6 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
+/// <reference types="vitest" />
 
 interface ImportMetaEnv {
   readonly BASE?: string;
