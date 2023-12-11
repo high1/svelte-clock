@@ -1,10 +1,24 @@
 import { defineConfig } from 'unocss';
 import { colors } from 'unocss/preset-mini';
 
-const rgbColors: Record<'svelte', [red: number, green: number, blue: number]> =
-  {
-    svelte: [255, 62, 0],
-  };
+const slice = (hex: `#${string}`, start: number) =>
+  parseInt(hex.slice(start, start + 2), 16);
+
+const hexToRgb = (
+  hex: `#${string}`,
+): [red: number, blue: number, green: number] => [
+  slice(hex, 1),
+  slice(hex, 3),
+  slice(hex, 5),
+];
+
+const hexColors: Record<'svelte', `#${string}`> = {
+  svelte: '#ff3e00',
+};
+
+const rgbColors = Object.fromEntries(
+  Object.entries(hexColors).map(([color, hex]) => [color, hexToRgb(hex)]),
+);
 
 export default defineConfig({
   preflights: [
