@@ -21,6 +21,5 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noPropertyAccessFromIndexSignature": true
-  },
-  "include": ["*.config.ts", "src/**/*.ts", "src/**/*.svelte"]
+  }
 }
