@@ -1,4 +1,4 @@
-import 'uno.css';
+import 'virtual:uno.css';
 import ClockFace from 'ClockFace.svelte';
 
 const target = document.querySelector('#root');

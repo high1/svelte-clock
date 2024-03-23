@@ -63,11 +63,17 @@
         "project": true,
         "ecmaVersion": "latest"
       },
+      "rules": {
+        "@typescript-eslint/restrict-template-expressions": [
+          "error",
+          { "allowNumber": true }
+        ]
+      },
       "settings": {
         "import/resolver": {
           "typescript": {}
         },
-        "import/core-modules": ["uno.css"]
+        "import/core-modules": ["virtual:uno.css"]
       }
     },
     {
