@@ -54,8 +54,8 @@ devDependencies:
     specifier: 1.14.0
     version: 1.14.0(eslint@8.57.0)
   happy-dom:
-    specifier: 14.12.3
-    version: 14.12.3
+    specifier: 15.7.4
+    version: 15.7.4
   lightningcss:
     specifier: 1.26.0
     version: 1.26.0
@@ -70,16 +70,16 @@ devDependencies:
     version: 4.2.19
   svelte-check:
     specifier: 3.8.6
-    version: 3.8.6(@babel/core@7.25.2)(postcss@8.4.41)(svelte@4.2.19)
+    version: 3.8.6(@babel/core@7.25.2)(postcss@8.4.45)(svelte@4.2.19)
   svelte-preprocess:
     specifier: 5.1.4
-    version: 5.1.4(@babel/core@7.25.2)(postcss@8.4.41)(svelte@4.2.19)(typescript@5.5.4)
+    version: 5.1.4(@babel/core@7.25.2)(postcss@8.4.45)(svelte@4.2.19)(typescript@5.5.4)
   typescript:
     specifier: 5.5.4
     version: 5.5.4
   unocss:
     specifier: 0.62.3
-    version: 0.62.3(postcss@8.4.41)(vite@5.4.3)
+    version: 0.62.3(postcss@8.4.45)(vite@5.4.3)
   vite:
     specifier: 5.4.3
     version: 5.4.3(@types/node@20.16.5)(lightningcss@1.26.0)
@@ -91,7 +91,7 @@ devDependencies:
     version: 4.3.2(typescript@5.5.4)(vite@5.4.3)
   vitest:
     specifier: 1.6.0
-    version: 1.6.0(@types/node@20.16.5)(happy-dom@14.12.3)(lightningcss@1.26.0)
+    version: 1.6.0(@types/node@20.16.5)(happy-dom@15.7.4)(lightningcss@1.26.0)
 
 packages:
 
@@ -1361,7 +1361,7 @@ packages:
       sirv: 2.0.4
     dev: true
 
-  /@unocss/postcss@0.62.3(postcss@8.4.41):
+  /@unocss/postcss@0.62.3(postcss@8.4.45):
     resolution: {integrity: sha512-CwL378ef0QazduXqlaGcWgKJAzemBUxdhapWWiRqI8sXC/eXht5xK6nS1JxqADDuxosgqsGdvcCGmP8ZFrEyiA==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -1372,7 +1372,7 @@ packages:
       '@unocss/rule-utils': 0.62.3
       css-tree: 2.3.1
       magic-string: 0.30.11
-      postcss: 8.4.41
+      postcss: 8.4.45
       tinyglobby: 0.2.5
     transitivePeerDependencies:
       - supports-color
@@ -1531,7 +1531,7 @@ packages:
       std-env: 3.7.0
       strip-literal: 2.0.0
       test-exclude: 6.0.0
-      vitest: 1.6.0(@types/node@20.16.5)(happy-dom@14.12.3)(lightningcss@1.26.0)
+      vitest: 1.6.0(@types/node@20.16.5)(happy-dom@15.7.4)(lightningcss@1.26.0)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3051,9 +3051,9 @@ packages:
       duplexer: 0.1.2
     dev: true
 
-  /happy-dom@14.12.3:
-    resolution: {integrity: sha512-vsYlEs3E9gLwA1Hp+w3qzu+RUDFf4VTT8cyKqVICoZ2k7WM++Qyd2LwzyTi5bqMJFiIC/vNpTDYuxdreENRK/g==}
-    engines: {node: '>=16.0.0'}
+  /happy-dom@15.7.4:
+    resolution: {integrity: sha512-r1vadDYGMtsHAAsqhDuk4IpPvr6N8MGKy5ntBo7tSdim+pWDxus2PNqOcOt8LuDZ4t3KJHE+gCuzupcx/GKnyQ==}
+    engines: {node: '>=18.0.0'}
     dependencies:
       entities: 4.5.0
       webidl-conversions: 7.0.0
@@ -4589,7 +4589,7 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /svelte-check@3.8.6(@babel/core@7.25.2)(postcss@8.4.41)(svelte@4.2.19):
+  /svelte-check@3.8.6(@babel/core@7.25.2)(postcss@8.4.45)(svelte@4.2.19):
     resolution: {integrity: sha512-ij0u4Lw/sOTREP13BdWZjiXD/BlHE6/e2e34XzmVmsp5IN4kVa3PWP65NM32JAgwjZlwBg/+JtiNV1MM8khu0Q==}
     hasBin: true
     peerDependencies:
@@ -4600,7 +4600,7 @@ packages:
       picocolors: 1.0.1
       sade: 1.8.1
       svelte: 4.2.19
-      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss@8.4.41)(svelte@4.2.19)(typescript@5.5.4)
+      svelte-preprocess: 5.1.4(@babel/core@7.25.2)(postcss@8.4.45)(svelte@4.2.19)(typescript@5.5.4)
       typescript: 5.5.4
     transitivePeerDependencies:
       - '@babel/core'
@@ -4640,7 +4640,7 @@ packages:
       svelte: 4.2.19
     dev: true
 
-  /svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss@8.4.41)(svelte@4.2.19)(typescript@5.5.4):
+  /svelte-preprocess@5.1.4(@babel/core@7.25.2)(postcss@8.4.45)(svelte@4.2.19)(typescript@5.5.4):
     resolution: {integrity: sha512-IvnbQ6D6Ao3Gg6ftiM5tdbR6aAETwjhHV+UKGf5bHGYR69RQvF1ho0JKPcbUON4vy4R7zom13jPjgdOWCQ5hDA==}
     engines: {node: '>= 16.0.0'}
     requiresBuild: true
@@ -4682,7 +4682,7 @@ packages:
       '@types/pug': 2.0.6
       detect-indent: 6.1.0
       magic-string: 0.30.8
-      postcss: 8.4.41
+      postcss: 8.4.45
       sorcery: 0.11.0
       strip-indent: 3.0.0
       svelte: 4.2.19
@@ -4977,7 +4977,7 @@ packages:
     engines: {node: '>= 10.0.0'}
     dev: true
 
-  /unocss@0.62.3(postcss@8.4.41)(vite@5.4.3):
+  /unocss@0.62.3(postcss@8.4.45)(vite@5.4.3):
     resolution: {integrity: sha512-CLS6+JIlBobe/iPTz07pehyGDP8VqGJsiE+ZZ3Xkgib3hw76nCqAQF/4mJ8jVoV4C8KvGyVxmHaSSCFOkWmmZg==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -4993,7 +4993,7 @@ packages:
       '@unocss/cli': 0.62.3
       '@unocss/core': 0.62.3
       '@unocss/extractor-arbitrary-variants': 0.62.3
-      '@unocss/postcss': 0.62.3(postcss@8.4.41)
+      '@unocss/postcss': 0.62.3(postcss@8.4.45)
       '@unocss/preset-attributify': 0.62.3
       '@unocss/preset-icons': 0.62.3
       '@unocss/preset-mini': 0.62.3
@@ -5180,7 +5180,7 @@ packages:
       vite: 5.4.3(@types/node@20.16.5)(lightningcss@1.26.0)
     dev: true
 
-  /vitest@1.6.0(@types/node@20.16.5)(happy-dom@14.12.3)(lightningcss@1.26.0):
+  /vitest@1.6.0(@types/node@20.16.5)(happy-dom@15.7.4)(lightningcss@1.26.0):
     resolution: {integrity: sha512-H5r/dN06swuFnzNFhq/dnz37bPXnq8xB2xB5JOVk8K09rUtoeNN+LHWkoQ0A/i3hvbUKKcCei9KpbxqHMLhLLA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -5215,7 +5215,7 @@ packages:
       chai: 4.4.1
       debug: 4.3.4
       execa: 8.0.1
-      happy-dom: 14.12.3
+      happy-dom: 15.7.4
       local-pkg: 0.5.0
       magic-string: 0.30.8
       pathe: 1.1.2
