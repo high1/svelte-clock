@@ -42,8 +42,7 @@
     "build": "vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
-    "prebuildx": "concurrently -c #3178c6,#4a31c3 --kill-others-on-fail \"tsc\" \"eslint . --max-warnings 0\"",
-    "prebuild": "tsc && eslint . --max-warnings 0",
+    "prebuild": "concurrently -c #3178c6,#4a31c3 --kill-others-on-fail \"tsc\" \"eslint . --max-warnings 0\"",
     "preview": "vite preview",
     "start": "vite",
     "test": "vitest run"
