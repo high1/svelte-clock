@@ -4,8 +4,8 @@ import ClockFace from 'ClockFace.svelte';
 
 describe('<ClockFace />', () => {
   test('renders', () => {
-    const { unmount } = render(ClockFace);
+    render(ClockFace);
     expect(screen.getByTestId('clock-face')).toBeInTheDocument();
-    unmount();
+    expect(screen.getAllByTestId('clock-graduation')).toHaveLength(60);
   });
 });

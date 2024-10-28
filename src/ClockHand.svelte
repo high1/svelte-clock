@@ -1,20 +1,18 @@
 <script lang="ts">
   import type { SVGAttributes } from 'svelte/elements';
 
-  interface $$Props extends SVGAttributes<SVGLineElement> {
+  interface Props extends SVGAttributes<SVGLineElement> {
     length: number;
     limit?: number;
-    stationary?: boolean;
+    graduation?: boolean;
   }
 
-  export let length: number;
-  export let limit = 94;
-  export let stationary = false;
+  let { length, limit = 94, graduation = false, ...rest }: Props = $props();
 </script>
 
 <line
   stroke-linecap="round"
-  y1={stationary ? length - limit : undefined}
-  y2={-(stationary ? limit : length)}
-  {...$$restProps}
+  y1={graduation ? length - limit : undefined}
+  y2={-(graduation ? limit : length)}
+  {...rest}
 />
