@@ -21,5 +21,6 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noPropertyAccessFromIndexSignature": true
-  }
+  },
+  "exclude": ["node_modules"]
 }
