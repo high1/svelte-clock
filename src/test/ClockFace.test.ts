@@ -3,9 +3,14 @@ import { render, screen } from '@testing-library/svelte';
 import ClockFace from 'ClockFace.svelte';
 
 describe('<ClockFace />', () => {
-  test('renders', () => {
+  test('renders clock facer', () => {
     render(ClockFace);
     expect(screen.getByTestId('clock-face')).toBeInTheDocument();
-    expect(screen.getAllByTestId('clock-graduation')).toHaveLength(60);
+  });
+  test('renders all graduations', () => {
+    render(ClockFace);
+    expect(
+      screen.getAllByTestId(/^clock-graduation-(?:\d|[1-5]\d)$/),
+    ).toHaveLength(60);
   });
 });

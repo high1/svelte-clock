@@ -41,6 +41,12 @@ export default tseslint.config(
           argsIgnorePattern: '^_',
         },
       ],
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
+        },
+      ],
     },
   },
   {
@@ -52,14 +58,10 @@ export default tseslint.config(
       },
     },
   },
-  {
-    files: ['**/*.{js}'],
-    ...tseslint.configs.disableTypeChecked,
-  },
   ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
   ...eslintPluginYml.configs['flat/recommended'],
   {
-    files: ['**/*.{json,yml}'],
+    files: ['**/*.{js,json,yml}'],
     ...tseslint.configs.disableTypeChecked,
   },
 );

@@ -41,7 +41,7 @@
             : 'stroke-zinc-200 dark:stroke-zinc-600'}
           length={isHour ? 6 : 2.5}
           graduation
-          data-testid={getTestId('clock-graduation')}
+          data-testid={getTestId(`clock-graduation-${index}`)}
         />
       {/each}
     </g>
