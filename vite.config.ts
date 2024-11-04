@@ -3,6 +3,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { svelteTesting } from '@testing-library/svelte/vite';
 import tailwindcss from '@tailwindcss/vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { checker } from 'vite-plugin-checker';
 
 export default ({ mode }: ConfigEnv) =>
   defineConfig({
@@ -16,6 +17,13 @@ export default ({ mode }: ConfigEnv) =>
         },
       }),
       svelteTesting(),
+      checker({
+        typescript: true,
+        eslint: {
+          lintCommand: 'eslint . --max-warnings 0',
+          useFlatConfig: true,
+        },
+      }),
     ],
     test: {
       coverage: {
