@@ -24,7 +24,7 @@
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-svelte": "2.46.0",
     "eslint-plugin-yml": "1.15.0",
-    "globals": "15.11.0",
+    "globals": "15.12.0",
     "happy-dom": "15.8.3",
     "prettier": "3.3.3",
     "prettier-plugin-svelte": "3.2.7",
