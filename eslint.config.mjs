@@ -19,7 +19,7 @@ export default tseslint.config(
   eslintPluginPrettierRecommended,
   ...eslintPluginSvelte.configs['flat/prettier'],
   {
-    ignores: ['coverage', 'dist', 'node_modules', '!**/.*', 'pnpm-lock.yaml'],
+    ignores: ['coverage', 'dist', 'node_modules', 'pnpm-lock.yaml'],
   },
   {
     languageOptions: {
@@ -50,7 +50,7 @@ export default tseslint.config(
     },
   },
   {
-    files: ['*.svelte', '**/*.svelte'],
+    files: ['**/*.svelte'],
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
