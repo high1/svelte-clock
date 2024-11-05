@@ -17,13 +17,14 @@ export default ({ mode }: ConfigEnv) =>
         },
       }),
       svelteTesting(),
-      checker({
-        typescript: true,
-        eslint: {
-          lintCommand: 'eslint . --max-warnings 0',
-          useFlatConfig: true,
-        },
-      }),
+      mode === 'development' &&
+        checker({
+          typescript: true,
+          eslint: {
+            lintCommand: 'eslint . --max-warnings 0',
+            useFlatConfig: true,
+          },
+        }),
     ],
     test: {
       coverage: {
