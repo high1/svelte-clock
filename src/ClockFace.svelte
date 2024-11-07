@@ -3,6 +3,7 @@
   import ClockHand from 'ClockHand.svelte';
 
   const base = 60;
+  const long = base / 5;
   const getSecondsSinceMidnight = (): number =>
     (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
   const rotate = (rotate: number, fractionDigits = 1) =>
@@ -12,7 +13,7 @@
   let subsecond = $derived(rotate(time % 1, 0));
   let second = $derived(rotate((time % base) / base));
   let minute = $derived(rotate(((time / base) % base) / base));
-  let hour = $derived(rotate(((time / base / base) % (base / 5)) / (base / 5)));
+  let hour = $derived(rotate(((time / base / base) % long) / long));
 
   $effect(() => {
     let frame = requestAnimationFrame(function loop() {
