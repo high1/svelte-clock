@@ -25,11 +25,4 @@ export default ({ mode }: ConfigEnv) =>
         },
       }),
     ],
-    test: {
-      coverage: {
-        include: ['src'],
-      },
-      environment: 'happy-dom',
-      setupFiles: 'test.config.ts',
-    },
   });
