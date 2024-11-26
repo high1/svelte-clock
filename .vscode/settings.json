@@ -2,7 +2,14 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
-  "eslint.validate": ["svelte", "json", "jsonc", "yaml"],
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "svelte",
+    "json",
+    "jsonc",
+    "yaml"
+  ],
   "files.associations": {
     "*.css": "tailwindcss"
   }
