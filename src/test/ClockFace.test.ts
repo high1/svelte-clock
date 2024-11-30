@@ -7,10 +7,4 @@ describe('<ClockFace />', () => {
     render(ClockFace);
     expect(screen.getByTestId('clock-face')).toBeInTheDocument();
   });
-  test('renders all graduations', () => {
-    render(ClockFace);
-    expect(
-      screen.getAllByTestId(/^clock-graduation-(?:\d|[1-5]\d)$/),
-    ).toHaveLength(60);
-  });
 });

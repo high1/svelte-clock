@@ -4,7 +4,7 @@ import { time } from 'time.svelte';
 import ClockHands from 'ClockHands.svelte';
 import { beforeEach } from 'node:test';
 
-describe('<ClockFace />', () => {
+describe('<ClockHands />', () => {
   beforeAll(() => {
     vi.hoisted(() => {
       vi.setSystemTime(new Date().setHours(0, 0, 0, 0));
