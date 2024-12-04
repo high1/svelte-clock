@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => ({
         hmr: mode === 'development',
       },
     }),
-    svelteTesting(),
+    mode === 'test' && svelteTesting(),
     checker({
       typescript: true,
       eslint: {
