@@ -8,6 +8,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import eslintPluginJsonc from 'eslint-plugin-jsonc';
 import eslintPluginYml from 'eslint-plugin-yml';
 import eslintPluginImportX from 'eslint-plugin-import-x';
+import stylistic from '@stylistic/eslint-plugin';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -16,6 +17,10 @@ export default tseslint.config(
   ...eslintPluginSvelte.configs['flat/recommended'],
   eslintPluginImportX.flatConfigs.recommended,
   eslintPluginImportX.flatConfigs.typescript,
+  stylistic.configs.customize({
+    semi: true,
+    jsx: false,
+  }),
   eslintPluginPrettierRecommended,
   ...eslintPluginSvelte.configs['flat/prettier'],
   {
