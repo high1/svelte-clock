@@ -7,7 +7,7 @@
   "description": "svelte clock, inspired by sauron clock",
   "devDependencies": {
     "@eslint/js": "9.21.0",
-    "@stylistic/eslint-plugin": "3.1.0",
+    "@stylistic/eslint-plugin": "4.1.0",
     "@sveltejs/vite-plugin-svelte": "5.0.3",
     "@tailwindcss/vite": "4.0.8",
     "@testing-library/jest-dom": "6.6.3",
