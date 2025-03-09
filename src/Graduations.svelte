@@ -4,7 +4,7 @@
   import Graduation from 'ClockLine.svelte';
 </script>
 
-{#each { length: base } as _, index}
+{#each { length: base } as _, index (index)}
   {@const isHour = index % 5 === 0}
   <Graduation
     transform={rotate(index / base, 0)}
