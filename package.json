@@ -21,7 +21,7 @@
     "eslint-plugin-import-x": "4.6.1",
     "eslint-plugin-jsonc": "2.19.1",
     "eslint-plugin-prettier": "5.2.3",
-    "eslint-plugin-svelte": "3.0.3",
+    "eslint-plugin-svelte": "3.1.0",
     "eslint-plugin-yml": "1.17.0",
     "globals": "16.0.0",
     "happy-dom": "17.4.3",
@@ -46,5 +46,5 @@
     "start": "vite",
     "test": "vitest run"
   },
-  "packageManager": "pnpm@10.6.1+sha512.40ee09af407fa9fbb5fbfb8e1cb40fbb74c0af0c3e10e9224d7b53c7658528615b2c92450e74cfad91e3a2dcafe3ce4050d80bda71d757756d2ce2b66213e9a3"
+  "packageManager": "pnpm@10.6.2+sha512.47870716bea1572b53df34ad8647b42962bc790ce2bf4562ba0f643237d7302a3d6a8ecef9e4bdfc01d23af1969aa90485d4cebb0b9638fa5ef1daef656f6c1b"
 }
