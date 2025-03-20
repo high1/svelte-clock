@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => ({
     checker({
       typescript: true,
       eslint: {
-        lintCommand: 'eslint **/* --max-warnings 0',
+        lintCommand: 'eslint . --max-warnings 0',
         useFlatConfig: true,
       },
     }),
