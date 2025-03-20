@@ -63,10 +63,13 @@ export default tseslint.config(
       },
     },
   },
+  // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
   ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
+  ...eslintPluginJsonc.configs['flat/prettier'],
   ...eslintPluginYml.configs['flat/recommended'],
+  ...eslintPluginYml.configs['flat/prettier'],
   {
-    files: ['**/*.{js,json,yml}'],
+    files: ['**/*.{json,yml}'],
     ...tseslint.configs.disableTypeChecked,
   },
 );
