@@ -69,7 +69,7 @@ export default tseslint.config(
   ...eslintPluginYml.configs['flat/recommended'],
   ...eslintPluginYml.configs['flat/prettier'],
   {
-    files: ['**/*.{json,yml}'],
+    files: ['**/*.{json,yml,yaml}'],
     ...tseslint.configs.disableTypeChecked,
   },
 );
