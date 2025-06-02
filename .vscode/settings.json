@@ -3,6 +3,7 @@
     "source.fixAll.eslint": "always"
   },
   "eslint.validate": [
+    "html",
     "javascript",
     "typescript",
     "svelte",
