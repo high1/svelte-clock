@@ -1,6 +1,8 @@
 /* eslint-disable import-x/no-named-as-default-member */
 import globals from 'globals';
 import eslint from '@eslint/js';
+import { includeIgnoreFile } from '@eslint/compat';
+import { globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import eslintPluginSvelte from 'eslint-plugin-svelte';
 import svelteParser from 'svelte-eslint-parser';
@@ -9,6 +11,8 @@ import eslintPluginJsonc from 'eslint-plugin-jsonc';
 import eslintPluginYml from 'eslint-plugin-yml';
 import eslintPluginImportX from 'eslint-plugin-import-x';
 import stylistic from '@stylistic/eslint-plugin';
+import html from '@html-eslint/eslint-plugin';
+import { fileURLToPath } from 'node:url';
 
 export default tseslint.config(
   eslint.configs.recommended,
@@ -23,9 +27,8 @@ export default tseslint.config(
   }),
   eslintPluginPrettierRecommended,
   ...eslintPluginSvelte.configs['flat/prettier'],
-  {
-    ignores: ['coverage', 'dist', 'node_modules', 'pnpm-lock.yaml'],
-  },
+  includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
+  globalIgnores(['pnpm-lock.yaml']),
   {
     languageOptions: {
       parser: tseslint.parser,
@@ -63,13 +66,27 @@ export default tseslint.config(
       },
     },
   },
+  {
+    files: ['**/*.html'],
+    ...html.configs['flat/recommended'],
+    rules: {
+      ...html.configs['flat/recommended'].rules,
+      '@html-eslint/indent': ['error', 2],
+      '@html-eslint/require-closing-tags': ['error', { selfClosing: 'always' }],
+      '@html-eslint/no-extra-spacing-attrs': [
+        'error',
+        { enforceBeforeSelfClose: true },
+      ],
+      '@html-eslint/attrs-newline': 'off',
+    },
+  },
   // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
   ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
   ...eslintPluginJsonc.configs['flat/prettier'],
   ...eslintPluginYml.configs['flat/recommended'],
   ...eslintPluginYml.configs['flat/prettier'],
   {
-    files: ['**/*.{json,yml,yaml}'],
+    files: ['**/*.{html,json,yml,yaml}'],
     ...tseslint.configs.disableTypeChecked,
   },
 );
