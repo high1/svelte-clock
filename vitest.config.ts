@@ -6,11 +6,8 @@ export default defineConfig((env) =>
     viteConfig(env),
     defineConfig({
       test: {
-        coverage: {
-          include: ['src'],
-        },
         environment: 'happy-dom',
-        setupFiles: 'test.config.ts',
+        setupFiles: 'test/vitest-setup.ts',
       },
     }),
   ),
