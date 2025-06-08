@@ -4,29 +4,29 @@ import eslint from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/compat';
 import { globalIgnores } from 'eslint/config';
 import tseslint from 'typescript-eslint';
-import eslintPluginSvelte from 'eslint-plugin-svelte';
+import svelte from 'eslint-plugin-svelte';
 import svelteParser from 'svelte-eslint-parser';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import eslintPluginJsonc from 'eslint-plugin-jsonc';
-import eslintPluginYml from 'eslint-plugin-yml';
-import eslintPluginImportX from 'eslint-plugin-import-x';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import jsonc from 'eslint-plugin-jsonc';
+import yml from 'eslint-plugin-yml';
+import { importX } from 'eslint-plugin-import-x';
 import stylistic from '@stylistic/eslint-plugin';
 import html from '@html-eslint/eslint-plugin';
 import { fileURLToPath } from 'node:url';
 
 export default tseslint.config(
   eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
-  ...eslintPluginSvelte.configs['flat/recommended'],
-  eslintPluginImportX.flatConfigs.recommended,
-  eslintPluginImportX.flatConfigs.typescript,
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+  svelte.configs['flat/recommended'],
+  importX.flatConfigs.recommended,
+  importX.flatConfigs.typescript,
   stylistic.configs.customize({
     semi: true,
     jsx: false,
   }),
-  eslintPluginPrettierRecommended,
-  ...eslintPluginSvelte.configs['flat/prettier'],
+  prettierRecommended,
+  svelte.configs['flat/prettier'],
   includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
   globalIgnores(['pnpm-lock.yaml']),
   {
@@ -40,7 +40,7 @@ export default tseslint.config(
         },
         tsconfigRootDir: import.meta.dirname,
       },
-      globals: { ...globals.browser },
+      globals: globals.browser,
     },
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -81,10 +81,10 @@ export default tseslint.config(
     },
   },
   // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
-  ...eslintPluginJsonc.configs['flat/recommended-with-jsonc'],
-  ...eslintPluginJsonc.configs['flat/prettier'],
-  ...eslintPluginYml.configs['flat/recommended'],
-  ...eslintPluginYml.configs['flat/prettier'],
+  jsonc.configs['flat/recommended-with-jsonc'],
+  jsonc.configs['flat/prettier'],
+  yml.configs['flat/recommended'],
+  yml.configs['flat/prettier'],
   {
     files: ['**/*.{html,json,yml,yaml}'],
     ...tseslint.configs.disableTypeChecked,
