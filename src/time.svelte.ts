@@ -1,14 +1,14 @@
-import { base, rotate } from 'common';
+import { rotate, seconds } from 'common';
 
-const long = base / 5;
+const hours = seconds / 5;
 const getSecondsSinceMidnight = (): number =>
   (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
 
 let clock = $state(getSecondsSinceMidnight());
 const subsecond = $derived(rotate(clock % 1, 0));
-const second = $derived(rotate((clock % base) / base));
-const minute = $derived(rotate(((clock / base) % base) / base));
-const hour = $derived(rotate(((clock / base / base) % long) / long));
+const second = $derived(rotate((clock % seconds) / seconds));
+const minute = $derived(rotate(((clock / seconds) % seconds) / seconds));
+const hour = $derived(rotate(((clock / seconds / seconds) % hours) / hours));
 
 export const time = {
   update: () => {
