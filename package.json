@@ -35,7 +35,7 @@
     "tailwindcss": "4.1.11",
     "typescript": "5.8.3",
     "typescript-eslint": "8.36.0",
-    "vite": "npm:rolldown-vite@7.0.8",
+    "vite": "npm:rolldown-vite@7.0.9",
     "vite-plugin-checker": "0.10.0",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.4"
