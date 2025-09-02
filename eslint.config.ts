@@ -1,9 +1,11 @@
-/* eslint-disable import-x/no-named-as-default-member */
 import globals from 'globals';
 import eslint from '@eslint/js';
 import { includeIgnoreFile } from '@eslint/compat';
-import { globalIgnores } from 'eslint/config';
-import tseslint from 'typescript-eslint';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import {
+  configs as tseslintConfigs,
+  parser as tseslintParser,
+} from 'typescript-eslint';
 import svelte from 'eslint-plugin-svelte';
 import svelteParser from 'svelte-eslint-parser';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
@@ -14,11 +16,12 @@ import stylistic from '@stylistic/eslint-plugin';
 import html from '@html-eslint/eslint-plugin';
 import { fileURLToPath } from 'node:url';
 
-export default tseslint.config(
+export default defineConfig(
   eslint.configs.recommended,
-  tseslint.configs.strictTypeChecked,
-  tseslint.configs.stylisticTypeChecked,
+  tseslintConfigs.strictTypeChecked,
+  tseslintConfigs.stylisticTypeChecked,
   svelte.configs['flat/recommended'],
+  // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
   stylistic.configs.customize({
@@ -31,7 +34,7 @@ export default tseslint.config(
   globalIgnores(['pnpm-lock.yaml']),
   {
     languageOptions: {
-      parser: tseslint.parser,
+      parser: tseslintParser,
       parserOptions: {
         sourceType: 'module',
         extraFileExtensions: ['.svelte'],
@@ -62,7 +65,7 @@ export default tseslint.config(
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
-        parser: tseslint.parser,
+        parser: tseslintParser,
       },
     },
   },
@@ -80,13 +83,12 @@ export default tseslint.config(
       '@html-eslint/attrs-newline': 'off',
     },
   },
-  // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
   jsonc.configs['flat/recommended-with-jsonc'],
   jsonc.configs['flat/prettier'],
   yml.configs['flat/recommended'],
   yml.configs['flat/prettier'],
   {
     files: ['**/*.{html,json,yml,yaml}'],
-    ...tseslint.configs.disableTypeChecked,
+    ...tseslintConfigs.disableTypeChecked,
   },
 );
