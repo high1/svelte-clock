@@ -15,6 +15,7 @@ import { importX } from 'eslint-plugin-import-x';
 import stylistic from '@stylistic/eslint-plugin';
 import html from '@html-eslint/eslint-plugin';
 import { fileURLToPath } from 'node:url';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 
 export default defineConfig(
   eslint.configs.recommended,
@@ -58,6 +59,9 @@ export default defineConfig(
           allowNumber: true,
         },
       ],
+    },
+    settings: {
+      'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
   },
   {
