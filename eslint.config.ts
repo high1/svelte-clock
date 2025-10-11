@@ -21,7 +21,7 @@ export default defineConfig(
   eslint.configs.recommended,
   tseslintConfigs.strictTypeChecked,
   tseslintConfigs.stylisticTypeChecked,
-  svelte.configs['flat/recommended'],
+  svelte.configs.recommended,
   // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
@@ -30,7 +30,7 @@ export default defineConfig(
     jsx: false,
   }),
   prettierRecommended,
-  svelte.configs['flat/prettier'],
+  svelte.configs.prettier,
   includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
   globalIgnores(['pnpm-lock.yaml']),
   {
