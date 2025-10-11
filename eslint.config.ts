@@ -15,12 +15,13 @@ import { importX } from 'eslint-plugin-import-x';
 import stylistic from '@stylistic/eslint-plugin';
 import html from '@html-eslint/eslint-plugin';
 import { fileURLToPath } from 'node:url';
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 
 export default defineConfig(
   eslint.configs.recommended,
   tseslintConfigs.strictTypeChecked,
   tseslintConfigs.stylisticTypeChecked,
-  svelte.configs['flat/recommended'],
+  svelte.configs.recommended,
   // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
   importX.flatConfigs.recommended,
   importX.flatConfigs.typescript,
@@ -29,7 +30,7 @@ export default defineConfig(
     jsx: false,
   }),
   prettierRecommended,
-  svelte.configs['flat/prettier'],
+  svelte.configs.prettier,
   includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
   globalIgnores(['pnpm-lock.yaml']),
   {
@@ -58,6 +59,9 @@ export default defineConfig(
           allowNumber: true,
         },
       ],
+    },
+    settings: {
+      'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
   },
   {
