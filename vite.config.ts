@@ -13,6 +13,7 @@ export default defineConfig(({ mode }) => ({
     tsconfigPaths({ loose: true }),
     tailwindcss(),
     svelte({
+      configFile: false,
       compilerOptions: {
         hmr: mode === 'development',
       },
