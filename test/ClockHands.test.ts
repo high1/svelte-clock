@@ -6,15 +6,9 @@ import ClockHands from 'ClockHands.svelte';
 describe('<ClockHands />', () => {
   beforeAll(() => {
     vi.hoisted(() => {
-      vi.setSystemTime(new Date(2020, 0).setHours(0, 0, 0, 0));
+      vi.setSystemTime(new Date(2020, 0));
     });
   });
-  // beforeEach(() => {
-  //   vi.setSystemTime(new Date().setHours(0, 0, 0, 0));
-  // });
-  // afterEach(() => {
-  //   vi.unstubAllEnvs();
-  // });
   test('renders starting hours correctly', () => {
     const screen = render(ClockHands);
     expect(
@@ -23,7 +17,7 @@ describe('<ClockHands />', () => {
   });
   test('renders elapsed hours correctly', () => {
     const elapsedHours = Math.floor(Math.random() * 12);
-    vi.setSystemTime(new Date(2020, 0).setHours(elapsedHours, 0, 0, 0));
+    vi.setSystemTime(new Date(2020, 0).setHours(elapsedHours));
     time.update();
     const screen = render(ClockHands);
     expect(
@@ -38,7 +32,7 @@ describe('<ClockHands />', () => {
   });
   test('renders elapsed minutes correctly', () => {
     const elapsedMinutes = Math.floor(Math.random() * 59);
-    vi.setSystemTime(new Date(2020, 0).setHours(0, elapsedMinutes, 0, 0));
+    vi.setSystemTime(new Date(2020, 0).setMinutes(elapsedMinutes));
     time.update();
     const screen = render(ClockHands);
     expect(
@@ -53,7 +47,7 @@ describe('<ClockHands />', () => {
   });
   test('renders elapsed seconds correctly', () => {
     const elapsedSeconds = Math.floor(Math.random() * 59);
-    vi.setSystemTime(new Date(2020, 0).setHours(0, 0, elapsedSeconds, 0));
+    vi.setSystemTime(new Date(2020, 0).setSeconds(elapsedSeconds));
     time.update();
     const screen = render(ClockHands);
     expect(

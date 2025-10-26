@@ -28,11 +28,10 @@ export default defineConfig(({ mode }) => ({
   ],
   test: {
     browser: {
-      provider: playwright(),
       enabled: true,
       headless: true,
-      // at least one instance is required
       instances: [{ browser: 'chromium' }],
+      provider: playwright(),
       screenshotFailures: false,
     },
     environment: 'happy-dom',
