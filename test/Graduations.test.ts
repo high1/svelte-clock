@@ -1,12 +1,13 @@
 import { describe, expect, test } from 'vitest';
-import { render, screen } from '@testing-library/svelte';
+import { render } from 'vitest-browser-svelte';
+import { page } from 'vitest/browser';
 import Graduations from 'Graduations.svelte';
 
 describe('<Graduations />', () => {
   test('renders all graduations', () => {
     render(Graduations);
-    expect(
-      screen.getAllByTestId(/^clock-graduation-(?:\d|[1-5]\d)$/),
-    ).toHaveLength(60);
+    expect(page.getByTestId(/^clock-graduation-(?:\d|[1-5]\d)$/)).toHaveLength(
+      60,
+    );
   });
 });
