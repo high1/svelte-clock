@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, test, vi } from 'vitest';
+import { afterAll, beforeAll, describe, expect, test, vi } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
 import { time } from 'time.svelte';
 import ClockHands from 'ClockHands.svelte';
@@ -6,12 +6,16 @@ import { beforeEach } from 'node:test';
 
 describe('<ClockHands />', () => {
   beforeAll(() => {
+    vi.stubEnv('TZ', 'UTC');
     vi.hoisted(() => {
       vi.setSystemTime(new Date().setHours(0, 0, 0, 0));
     });
   });
   beforeEach(() => {
     vi.setSystemTime(new Date().setHours(0, 0, 0, 0));
+  });
+  afterAll(() => {
+    vi.unstubAllEnvs();
   });
   test('renders starting hours correctly', () => {
     render(ClockHands);
