@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => ({
         hmr: mode === 'development',
       },
     }),
-    mode === 'test' && svelteTesting(),
+    svelteTesting(),
     checker({
       typescript: true,
       eslint: {
@@ -27,4 +27,8 @@ export default defineConfig(({ mode }) => ({
       },
     }),
   ],
+  test: {
+    environment: 'happy-dom',
+    setupFiles: 'test/vitest-setup.ts',
+  },
 }));
