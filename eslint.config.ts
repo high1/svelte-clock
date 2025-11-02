@@ -39,9 +39,7 @@ export default defineConfig(
       parserOptions: {
         sourceType: 'module',
         extraFileExtensions: ['.svelte'],
-        projectService: {
-          allowDefaultProject: ['eslint.config.mjs'],
-        },
+        projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
       globals: globals.browser,
