@@ -6,7 +6,7 @@
   "keywords": [],
   "description": "svelte clock, inspired by sauron clock",
   "devDependencies": {
-    "@eslint/compat": "1.4.1",
+    "@eslint/compat": "2.0.0",
     "@eslint/js": "9.39.1",
     "@html-eslint/eslint-plugin": "0.48.0",
     "@stylistic/eslint-plugin": "5.5.0",
