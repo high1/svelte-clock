@@ -45,6 +45,7 @@
     "build": "vite build",
     "coverage": "vitest run --coverage",
     "dev": "vite",
+    "playwright": "playwright install --only-shell chromium",
     "preview": "vite preview",
     "start": "vite",
     "test": "vitest run"

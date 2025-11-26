@@ -30,7 +30,7 @@ jobs:
       - name: Install 🔧
         run: |
           pnpm i
-          pnpm exec playwright install --only-shell chromium
+          pnpm playwright
 
       - name: Test 🧪
         run: |
