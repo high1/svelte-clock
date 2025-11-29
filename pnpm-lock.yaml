@@ -27,7 +27,7 @@ importers:
         specifier: 24.10.1
         version: 24.10.1
       '@vitest/browser':
-        specifier: ^4.0.14
+        specifier: 4.0.14
         version: 4.0.14(rolldown-vite@7.2.8(@types/node@24.10.1)(esbuild@0.25.12)(jiti@2.6.1)(yaml@2.8.1))(vitest@4.0.14)
       '@vitest/browser-playwright':
         specifier: 4.0.14
@@ -69,7 +69,7 @@ importers:
         specifier: 20.0.11
         version: 20.0.11
       playwright:
-        specifier: ^1.57.0
+        specifier: 1.57.0
         version: 1.57.0
       prettier:
         specifier: 3.7.2
