@@ -10,7 +10,7 @@ import { playwright } from '@vitest/browser-playwright';
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), '')['BASE'] ?? '',
   plugins: [
-    tsconfigPaths({ loose: true }),
+    tsconfigPaths({ loose: true, projectDiscovery: 'lazy' }),
     tailwindcss(),
     svelte({
       configFile: false,
