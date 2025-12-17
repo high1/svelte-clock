@@ -1,4 +1,4 @@
-import { rotate, seconds } from 'common';
+import { rotate, seconds } from '@/common';
 import { SvelteDate } from 'svelte/reactivity';
 
 const hours = seconds / 5;

@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { time } from 'time.svelte';
-import ClockHands from 'ClockHands.svelte';
+import { time } from '@/time.svelte';
+import ClockHands from '@/ClockHands.svelte';
 
 describe('<ClockHands />', () => {
   beforeAll(() => {

@@ -9,6 +9,11 @@ import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), '')['BASE'] ?? '',
+  build: {
+    rolldownOptions: {
+      tsconfig: true,
+    },
+  },
   plugins: [
     tsconfigPaths({ loose: true, projectDiscovery: 'lazy' }),
     tailwindcss(),

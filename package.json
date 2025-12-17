@@ -1,10 +1,19 @@
 {
-  "private": true,
-  "type": "module",
   "name": "svelte-clock",
   "version": "1.0.0",
-  "keywords": [],
+  "private": true,
   "description": "svelte clock, inspired by sauron clock",
+  "keywords": [],
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "coverage": "vitest run --coverage",
+    "dev": "vite",
+    "playwright": "playwright install --only-shell chromium",
+    "preview": "vite preview",
+    "start": "vite",
+    "test": "vitest run"
+  },
   "devDependencies": {
     "@eslint/compat": "2.0.0",
     "@eslint/js": "9.39.2",
@@ -40,15 +49,6 @@
     "vite-tsconfig-paths": "6.0.1",
     "vitest": "4.0.15",
     "vitest-browser-svelte": "2.0.1"
-  },
-  "scripts": {
-    "build": "vite build",
-    "coverage": "vitest run --coverage",
-    "dev": "vite",
-    "playwright": "playwright install --only-shell chromium",
-    "preview": "vite preview",
-    "start": "vite",
-    "test": "vitest run"
   },
   "packageManager": "pnpm@10.26.0+sha512.3b3f6c725ebe712506c0ab1ad4133cf86b1f4b687effce62a9b38b4d72e3954242e643190fc51fa1642949c735f403debd44f5cb0edd657abe63a8b6a7e1e402",
   "engines": {
