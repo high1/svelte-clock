@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { page } from 'vitest/browser';
-import Graduations from 'Graduations.svelte';
+import Graduations from '@/Graduations.svelte';
 
 describe('<Graduations />', () => {
   test('renders all graduations', () => {

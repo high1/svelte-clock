@@ -1,7 +1,7 @@
 <script lang="ts">
-  import ClockHand from 'ClockLine.svelte';
-  import { time } from 'time.svelte';
-  import { getTestId } from 'utilities';
+  import ClockHand from '@/ClockLine.svelte';
+  import { time } from '@/time.svelte';
+  import { getTestId } from '@/utilities';
 
   $effect(() => {
     let frame = requestAnimationFrame(function loop() {
