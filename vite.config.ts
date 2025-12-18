@@ -40,6 +40,5 @@ export default defineConfig(({ mode }) => ({
       screenshotFailures: false,
     },
     environment: 'happy-dom',
-    setupFiles: 'vitest-browser-svelte',
   },
 }));

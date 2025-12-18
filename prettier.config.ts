@@ -1,6 +1,7 @@
 import { type Config } from 'prettier';
 
 export default {
-  plugins: ['prettier-plugin-tailwindcss', 'prettier-plugin-svelte'],
+  plugins: ['prettier-plugin-svelte', 'prettier-plugin-tailwindcss'],
   singleQuote: true,
+  tailwindStylesheet: './src/index.css',
 } satisfies Config;
