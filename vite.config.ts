@@ -9,13 +9,10 @@ import { playwright } from '@vitest/browser-playwright';
 
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), '')['BASE'] ?? '',
-  build: {
-    rolldownOptions: {
-      tsconfig: true,
-    },
-  },
   plugins: [
-    tsconfigPaths({ loose: true, projectDiscovery: 'lazy' }),
+    ...(mode === 'test'
+      ? [tsconfigPaths({ loose: true, projectDiscovery: 'lazy' })]
+      : []),
     tailwindcss(),
     svelte({
       configFile: false,
@@ -31,6 +28,9 @@ export default defineConfig(({ mode }) => ({
       },
     }),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     browser: {
       enabled: true,
