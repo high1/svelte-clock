@@ -1,10 +1,11 @@
 {
+  "disable_ai": true,
   "code_actions_on_format": {
     "source.fixAll.eslint": true
   },
   "languages": {
     "CSS": {
-      "language_servers": ["tailwindcss-language-server"]
+      "language_servers": ["eslint", "tailwindcss-language-server"]
     },
     "HTML": {
       "formatter": [{ "code_action": "source.fixAll.eslint" }],
