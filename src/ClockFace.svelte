@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { getTestId } from '@/utilities';
-  import Graduations from '@/Graduations.svelte';
   import ClockHands from '@/ClockHands.svelte';
+  import Graduations from '@/Graduations.svelte';
+  import { getTestId } from '@/utilities';
 </script>
 
 <div

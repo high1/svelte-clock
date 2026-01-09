@@ -2,17 +2,17 @@
   import type { SVGAttributes } from 'svelte/elements';
 
   interface Props extends SVGAttributes<SVGLineElement> {
+    graduation?: true;
     length: number;
     limit?: number;
-    graduation?: boolean;
   }
 
-  let { length, limit = 94, graduation = false, ...rest }: Props = $props();
+  let { graduation, length, limit = 94, ...rest }: Props = $props();
 </script>
 
 <line
   stroke-linecap="round"
-  y1={graduation ? length - limit : undefined}
+  y1={graduation && length - limit}
   y2={-(graduation ? limit : length)}
   {...rest}
 />

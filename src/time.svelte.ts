@@ -1,5 +1,6 @@
-import { rotate, seconds } from '@/common';
 import { SvelteDate } from 'svelte/reactivity';
+
+import { rotate, seconds } from '@/common';
 
 const hours = seconds / 5;
 const getSecondsSinceMidnight = (): number =>
@@ -12,19 +13,19 @@ const minute = $derived(rotate(((clock / seconds) % seconds) / seconds));
 const hour = $derived(rotate(((clock / seconds / seconds) % hours) / hours));
 
 export const time = {
-  update: () => {
-    clock = getSecondsSinceMidnight();
-  },
-  get subsecond() {
-    return subsecond;
-  },
-  get second() {
-    return second;
+  get hour() {
+    return hour;
   },
   get minute() {
     return minute;
   },
-  get hour() {
-    return hour;
+  get second() {
+    return second;
+  },
+  get subsecond() {
+    return subsecond;
+  },
+  update: () => {
+    clock = getSecondsSinceMidnight();
   },
 };

@@ -1,11 +1,11 @@
 /// <reference types="vitest/config" />
 
-import { defineConfig, loadEnv } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import tailwindcss from '@tailwindcss/vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { checker } from 'vite-plugin-checker';
 import { playwright } from '@vitest/browser-playwright';
+import { defineConfig, loadEnv } from 'vite';
+import { checker } from 'vite-plugin-checker';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), '')['BASE'] ?? '',
@@ -15,17 +15,17 @@ export default defineConfig(({ mode }) => ({
       : []),
     tailwindcss(),
     svelte({
-      configFile: false,
       compilerOptions: {
         hmr: mode === 'development',
       },
+      configFile: false,
     }),
     checker({
-      typescript: true,
       eslint: {
         lintCommand: 'eslint . --max-warnings 0',
         useFlatConfig: true,
       },
+      typescript: true,
     }),
   ],
   resolve: {
