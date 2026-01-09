@@ -1,81 +1,120 @@
-import globals from 'globals';
-import eslint from '@eslint/js';
+/* eslint-disable import-x/no-named-as-default-member */
 import { includeIgnoreFile } from '@eslint/compat';
-import { defineConfig, globalIgnores } from 'eslint/config';
-import {
-  configs as tseslintConfigs,
-  parser as tseslintParser,
-} from 'typescript-eslint';
-import svelte from 'eslint-plugin-svelte';
-import svelteParser from 'svelte-eslint-parser';
-import prettierRecommended from 'eslint-plugin-prettier/recommended';
-import jsonc from 'eslint-plugin-jsonc';
-import yml from 'eslint-plugin-yml';
-import { importX } from 'eslint-plugin-import-x';
+import eslint from '@eslint/js';
+import html from '@html-eslint/eslint-plugin';
 import stylistic from '@stylistic/eslint-plugin';
+import { importX } from 'eslint-plugin-import-x';
+import jsonc from 'eslint-plugin-jsonc';
+import perfectionist from 'eslint-plugin-perfectionist';
+import prettierRecommended from 'eslint-plugin-prettier/recommended';
+import svelte from 'eslint-plugin-svelte';
+import yml from 'eslint-plugin-yml';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
 import { fileURLToPath } from 'node:url';
-import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
+import svelteParser from 'svelte-eslint-parser';
+import tseslint from 'typescript-eslint';
+
+const commonConfig = defineConfig({
+  extends: [
+    eslint.configs.recommended,
+    tseslint.configs.strictTypeChecked,
+    tseslint.configs.stylisticTypeChecked,
+    // @ts-expect-error Types of property languageOptions are incompatible. (ts 2322)
+    importX.flatConfigs.recommended,
+    // @ts-expect-error Types of property languageOptions are incompatible. (ts 2322)
+    importX.flatConfigs.typescript,
+    stylistic.configs.customize({
+      jsx: false,
+      semi: true,
+    }),
+    perfectionist.configs['recommended-natural'],
+    prettierRecommended,
+  ],
+  rules: {
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+      },
+    ],
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNumber: true,
+      },
+    ],
+  },
+});
 
 export default defineConfig(
-  eslint.configs.recommended,
-  tseslintConfigs.strictTypeChecked,
-  tseslintConfigs.stylisticTypeChecked,
-  svelte.configs.recommended,
-  // @ts-expect-error Type 'undefined' is not assignable to type '(string | string[])[]'.ts(2345)
-  importX.flatConfigs.recommended,
-  importX.flatConfigs.typescript,
-  stylistic.configs.customize({
-    semi: true,
-    jsx: false,
-  }),
-  prettierRecommended,
-  svelte.configs.prettier,
+  {
+    languageOptions: {
+      globals: globals.browser,
+      parser: tseslint.parser,
+      parserOptions: {
+        extraFileExtensions: ['.svelte'],
+        projectService: true,
+        sourceType: 'module',
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
   globalIgnores(['pnpm-lock.yaml']),
   {
+    extends: commonConfig,
+    files: ['**/*.ts'],
     languageOptions: {
-      parser: tseslintParser,
       parserOptions: {
-        sourceType: 'module',
-        extraFileExtensions: ['.svelte'],
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        projectService: './tsconfig.exact.json',
       },
-      globals: globals.browser,
-    },
-    rules: {
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_',
-        },
-      ],
-      '@typescript-eslint/restrict-template-expressions': [
-        'error',
-        {
-          allowNumber: true,
-        },
-      ],
-    },
-    settings: {
-      'import-x/resolver-next': [createTypeScriptImportResolver()],
     },
   },
   {
+    extends: [
+      svelte.configs.recommended,
+      ...commonConfig,
+      svelte.configs.prettier,
+    ],
     files: ['**/*.svelte'],
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
-        parser: tseslintParser,
+        parser: tseslint.parser,
       },
     },
   },
-  jsonc.configs['flat/recommended-with-jsonc'],
-  jsonc.configs['flat/prettier'],
-  yml.configs['flat/recommended'],
-  yml.configs['flat/prettier'],
   {
-    files: ['**/*.{json,yml,yaml}'],
-    ...tseslintConfigs.disableTypeChecked,
+    extends: [
+      // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
+      jsonc.configs['flat/recommended-with-jsonc'],
+      // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
+      jsonc.configs['flat/prettier'],
+      prettierRecommended,
+    ],
+    files: ['**/*.json'],
+  },
+  {
+    extends: [
+      yml.configs['flat/recommended'],
+      yml.configs['flat/prettier'],
+      prettierRecommended,
+    ],
+    files: ['**/*.{yml,yaml}'],
+  },
+  {
+    extends: ['html/recommended'],
+    files: ['**/*.html'],
+    language: 'html/html',
+    plugins: { html },
+    rules: {
+      'html/attrs-newline': [
+        'error',
+        { closeStyle: 'newline', ifAttrsMoreThan: 3 },
+      ],
+      'html/indent': ['error', 2],
+      'html/no-trailing-spaces': 'error',
+    },
   },
 );

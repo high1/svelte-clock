@@ -3,10 +3,10 @@
 /// <reference types="vitest" />
 /// <reference types="vitest-browser-svelte" />
 
-interface ImportMetaEnv {
-  readonly BASE?: string;
-}
-
 interface ImportMeta {
   readonly env: ImportMetaEnv;
+}
+
+interface ImportMetaEnv {
+  readonly BASE?: string;
 }

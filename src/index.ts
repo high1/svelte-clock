@@ -1,4 +1,5 @@
 import { mount } from 'svelte';
+
 import '@/index.css';
 import ClockFace from '@/ClockFace.svelte';
 

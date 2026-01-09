@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { getTestId } from '@/utilities';
-  import { rotate, seconds } from '@/common';
   import Graduation from '@/ClockLine.svelte';
+  import { rotate, seconds } from '@/common';
+  import { getTestId } from '@/utilities';
 </script>
 
 {#each { length: seconds } as _, index (index)}
