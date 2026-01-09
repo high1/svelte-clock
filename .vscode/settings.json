@@ -3,15 +3,14 @@
     "source.fixAll.eslint": "always"
   },
   "eslint.validate": [
+    "css",
     "html",
     "javascript",
-    "typescript",
-    "svelte",
     "json",
     "jsonc",
+    "svelte",
+    "typescript",
     "yaml"
   ],
-  "files.associations": {
-    "*.css": "tailwindcss"
-  }
+  "css.customData": ["./.vscode/tailwind.json"]
 }

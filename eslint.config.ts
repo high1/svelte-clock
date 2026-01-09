@@ -1,5 +1,6 @@
 /* eslint-disable import-x/no-named-as-default-member */
 import { includeIgnoreFile } from '@eslint/compat';
+import css from '@eslint/css';
 import eslint from '@eslint/js';
 import html from '@html-eslint/eslint-plugin';
 import stylistic from '@stylistic/eslint-plugin';
@@ -48,20 +49,20 @@ const commonConfig = defineConfig({
 });
 
 export default defineConfig(
+  includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
+  globalIgnores(['pnpm-lock.yaml']),
   {
     languageOptions: {
       globals: globals.browser,
       parser: tseslint.parser,
       parserOptions: {
-        extraFileExtensions: ['.svelte'],
+        extraFileExtensions: ['.svelte', '.css'],
         projectService: true,
         sourceType: 'module',
         tsconfigRootDir: import.meta.dirname,
       },
     },
   },
-  includeIgnoreFile(fileURLToPath(new URL('.gitignore', import.meta.url))),
-  globalIgnores(['pnpm-lock.yaml']),
   {
     extends: commonConfig,
     files: ['**/*.ts'],
@@ -102,6 +103,15 @@ export default defineConfig(
       prettierRecommended,
     ],
     files: ['**/*.{yml,yaml}'],
+  },
+  {
+    extends: ['css/recommended', prettierRecommended],
+    files: ['**/*.css'],
+    language: 'css/css',
+    plugins: { css },
+    rules: {
+      'css/no-invalid-at-rules': 'off',
+    },
   },
   {
     extends: ['html/recommended'],
