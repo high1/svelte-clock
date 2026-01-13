@@ -66,11 +66,6 @@ export default defineConfig(
   {
     extends: commonConfig,
     files: ['**/*.ts'],
-    languageOptions: {
-      parserOptions: {
-        projectService: './tsconfig.exact.json',
-      },
-    },
   },
   {
     extends: [
@@ -90,17 +85,17 @@ export default defineConfig(
     extends: [
       // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
       jsonc.configs['flat/recommended-with-jsonc'],
+      prettierRecommended,
       // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
       jsonc.configs['flat/prettier'],
-      prettierRecommended,
     ],
     files: ['**/*.json'],
   },
   {
     extends: [
       yml.configs['flat/recommended'],
-      yml.configs['flat/prettier'],
       prettierRecommended,
+      yml.configs['flat/prettier'],
     ],
     files: ['**/*.{yml,yaml}'],
   },
