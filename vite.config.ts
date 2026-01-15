@@ -14,7 +14,6 @@ export default defineConfig(({ mode }) => ({
       compilerOptions: {
         hmr: mode === 'development',
       },
-      configFile: false,
     }),
     checker({
       eslint: {
