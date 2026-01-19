@@ -1,4 +1,4 @@
-# SVG clock implemented in <a href="https://svelte.dev"><img src="https://raw.githubusercontent.com/sveltejs/branding/master/svelte-logo.svg" alt="Svelte" height="60"></a>
+# SVG clock in <a href="https://svelte.dev"><img src="https://raw.githubusercontent.com/sveltejs/branding/master/svelte-logo.svg" alt="Svelte" height="60"></a>
 
 ![Build and Deploy](https://github.com/high1/svelte-clock/actions/workflows/main.yml/badge.svg?branch=main)  
 [![Netlify Status](https://api.netlify.com/api/v1/badges/8c7b2b74-0d4d-4b4c-b4ff-ef3e771aa01d/deploy-status)](https://app.netlify.com/sites/svelte-svg-clock/deploys)
