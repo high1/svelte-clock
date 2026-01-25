@@ -58,8 +58,6 @@ export default defineConfig(
       parserOptions: {
         extraFileExtensions: ['.svelte', '.css'],
         projectService: true,
-        sourceType: 'module',
-        tsconfigRootDir: import.meta.dirname,
       },
     },
   },
