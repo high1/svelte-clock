@@ -2,6 +2,7 @@ import { beforeAll, describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 
 import ClockHands from '@/ClockHands.svelte';
+import { clockHourId, clockMinutedId, clockSecondId } from '@/common';
 import { time } from '@/time.svelte';
 
 describe('<ClockHands />', () => {
@@ -13,7 +14,7 @@ describe('<ClockHands />', () => {
   test('renders starting hours correctly', () => {
     const screen = render(ClockHands);
     expect(
-      screen.getByTestId('clock-hour').element().getAttribute('transform'),
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
     ).toBe('rotate(0.0)');
   });
   test('renders elapsed hours correctly', () => {
@@ -22,13 +23,13 @@ describe('<ClockHands />', () => {
     time.update();
     const screen = render(ClockHands);
     expect(
-      screen.getByTestId('clock-hour').element().getAttribute('transform'),
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
     ).toBe(`rotate(${elapsedHours * 30}.0)`);
   });
   test('renders starting minutes correctly', () => {
     const screen = render(ClockHands);
     expect(
-      screen.getByTestId('clock-minute').element().getAttribute('transform'),
+      screen.getByTestId(clockMinutedId).element().getAttribute('transform'),
     ).toBe('rotate(0.0)');
   });
   test('renders elapsed minutes correctly', () => {
@@ -37,13 +38,13 @@ describe('<ClockHands />', () => {
     time.update();
     const screen = render(ClockHands);
     expect(
-      screen.getByTestId('clock-minute').element().getAttribute('transform'),
+      screen.getByTestId(clockMinutedId).element().getAttribute('transform'),
     ).toBe(`rotate(${elapsedMinutes * 6}.0)`);
   });
   test('renders starting seconds correctly', () => {
     const screen = render(ClockHands);
     expect(
-      screen.getByTestId('clock-second').element().getAttribute('transform'),
+      screen.getByTestId(clockSecondId).element().getAttribute('transform'),
     ).toBe('rotate(0.0)');
   });
   test('renders elapsed seconds correctly', () => {
@@ -52,7 +53,7 @@ describe('<ClockHands />', () => {
     time.update();
     const screen = render(ClockHands);
     expect(
-      screen.getByTestId('clock-second').element().getAttribute('transform'),
+      screen.getByTestId(clockSecondId).element().getAttribute('transform'),
     ).toBe(`rotate(${elapsedSeconds * 6}.0)`);
   });
 });

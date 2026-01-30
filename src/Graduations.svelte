@@ -1,6 +1,6 @@
 <script lang="ts">
   import Graduation from '@/ClockLine.svelte';
-  import { rotate, seconds } from '@/common';
+  import { clockGraduationId, rotate, seconds } from '@/common';
   import { getTestId } from '@/utilities';
 </script>
 
@@ -13,6 +13,6 @@
       : 'stroke-zinc-200 dark:stroke-zinc-600'}
     length={isHour ? 6 : 2.5}
     graduation
-    data-testid={getTestId(`clock-graduation-${index}`)}
+    data-testid={getTestId(`${clockGraduationId}-${index}`)}
   />
 {/each}
