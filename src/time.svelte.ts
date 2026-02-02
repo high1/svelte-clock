@@ -1,10 +1,8 @@
-import { SvelteDate } from 'svelte/reactivity';
-
 import { rotate, seconds } from '@/common';
 
 const hours = seconds / 5;
 const getSecondsSinceMidnight = () =>
-  (Date.now() - new SvelteDate().setHours(0, 0, 0, 0)) / 1000;
+  (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
 
 let clock = $state(getSecondsSinceMidnight());
 const subsecond = $derived(rotate(clock % 1, 0));
