@@ -4,7 +4,6 @@ import css from '@eslint/css';
 import eslint from '@eslint/js';
 import html from '@html-eslint/eslint-plugin';
 import stylistic from '@stylistic/eslint-plugin';
-import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript';
 import { importX } from 'eslint-plugin-import-x';
 import jsonc from 'eslint-plugin-jsonc';
 import perfectionist from 'eslint-plugin-perfectionist';
@@ -46,9 +45,6 @@ const commonConfig = defineConfig({
         allowNumber: true,
       },
     ],
-  },
-  settings: {
-    'import-x/resolver-next': [createTypeScriptImportResolver()],
   },
 });
 
