@@ -81,10 +81,8 @@ export default defineConfig(
   },
   {
     extends: [
-      // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
       jsonc.configs['flat/recommended-with-jsonc'],
       prettierRecommended,
-      // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
       jsonc.configs['flat/prettier'],
     ],
     files: ['**/*.json'],
@@ -101,6 +99,7 @@ export default defineConfig(
     extends: ['css/recommended', prettierRecommended],
     files: ['**/*.css'],
     language: 'css/css',
+    // @ts-expect-error Types of parameters 'context' and 'context' are incompatible. ts(2322)
     plugins: { css },
     rules: {
       'css/no-invalid-at-rules': 'off',
