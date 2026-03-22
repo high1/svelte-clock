@@ -21,9 +21,7 @@ const commonConfig = defineConfig({
     eslint.configs.recommended,
     tseslint.configs.strictTypeChecked,
     tseslint.configs.stylisticTypeChecked,
-    // @ts-expect-error Types of property languageOptions are incompatible. (ts 2322)
     importX.flatConfigs.recommended,
-    // @ts-expect-error Types of property languageOptions are incompatible. (ts 2322)
     importX.flatConfigs.typescript,
     stylistic.configs.customize({
       jsx: false,
@@ -81,10 +79,8 @@ export default defineConfig(
   },
   {
     extends: [
-      // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
       jsonc.configs['flat/recommended-with-jsonc'],
       prettierRecommended,
-      // @ts-expect-error  Type `undefined` is not assignable to type (string | string[])[]’. (ts 2322)
       jsonc.configs['flat/prettier'],
     ],
     files: ['**/*.json'],
