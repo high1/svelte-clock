@@ -28,7 +28,6 @@ const commonConfig = defineConfig({
       semi: true,
     }),
     perfectionist.configs['recommended-natural'],
-    prettierRecommended,
   ],
   rules: {
     '@typescript-eslint/no-unused-vars': [
@@ -60,13 +59,14 @@ export default defineConfig(
     },
   },
   {
-    extends: commonConfig,
+    extends: [commonConfig, prettierRecommended],
     files: ['**/*.ts'],
   },
   {
     extends: [
+      commonConfig,
       svelte.configs.recommended,
-      ...commonConfig,
+      prettierRecommended,
       svelte.configs.prettier,
     ],
     files: ['**/*.svelte'],

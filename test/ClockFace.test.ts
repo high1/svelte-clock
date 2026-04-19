@@ -11,7 +11,7 @@ describe('<ClockFace />', () => {
   });
   test('unmounts clock face', () => {
     const screen = render(ClockFace);
-    screen.unmount();
+    void screen.unmount();
     expect(screen.getByTestId(clockFaceId)).not.toBeInTheDocument();
   });
 });
