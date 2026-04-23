@@ -53,11 +53,11 @@
   },
   "devEngines": {
     "packageManager": {
-      "name": "pnpm"
+      "name": "pnpm",
+      "version": "10.33.2"
     }
   },
   "engines": {
     "node": ">=24"
-  },
-  "packageManager": "pnpm@10.33.2"
+  }
 }
