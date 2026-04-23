@@ -2,8 +2,8 @@ import { describe, expect, test } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { page } from 'vitest/browser';
 
-import { clockGraduationId } from '@/common';
-import Graduations from '@/Graduations.svelte';
+import { clockGraduationId } from '#src/common';
+import Graduations from '#src/Graduations.svelte';
 
 describe('<Graduations />', () => {
   test('renders all graduations', () => {
