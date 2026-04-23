@@ -9,9 +9,9 @@ describe('<ClockFace />', () => {
     const screen = render(ClockFace);
     expect(screen.getByTestId(clockFaceId)).toBeInTheDocument();
   });
-  test('unmounts clock face', () => {
+  test('unmounts clock face', async () => {
     const screen = render(ClockFace);
-    screen.unmount();
+    await screen.unmount();
     expect(screen.getByTestId(clockFaceId)).not.toBeInTheDocument();
   });
 });
