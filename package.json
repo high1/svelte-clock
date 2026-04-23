@@ -62,7 +62,6 @@
   "packageManager": "pnpm@10.33.2",
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild",
       "unrs-resolver"
     ]
   }
