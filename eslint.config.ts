@@ -31,6 +31,7 @@ const commonConfig = defineConfig({
     prettierRecommended,
   ],
   rules: {
+    '@typescript-eslint/no-import-type-side-effects': 'error',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
