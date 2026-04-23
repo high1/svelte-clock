@@ -1,8 +1,8 @@
 <script lang="ts">
-  import ClockHands from '@/ClockHands.svelte';
-  import { clockFaceId } from '@/common';
-  import Graduations from '@/Graduations.svelte';
-  import { getTestId } from '@/utilities';
+  import ClockHands from '#src/ClockHands.svelte';
+  import { clockFaceId } from '#src/common';
+  import Graduations from '#src/Graduations.svelte';
+  import { getTestId } from '#src/utilities';
 </script>
 
 <div

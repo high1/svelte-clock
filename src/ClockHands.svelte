@@ -1,8 +1,8 @@
 <script lang="ts">
-  import ClockHand from '@/ClockLine.svelte';
-  import { clockHourId, clockMinutedId, clockSecondId } from '@/common';
-  import { time } from '@/time.svelte';
-  import { getTestId } from '@/utilities';
+  import ClockHand from '#src/ClockLine.svelte';
+  import { clockHourId, clockMinutedId, clockSecondId } from '#src/common';
+  import { time } from '#src/time.svelte';
+  import { getTestId } from '#src/utilities';
 
   $effect(() => {
     let frame = requestAnimationFrame(function loop() {

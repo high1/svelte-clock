@@ -1,6 +1,6 @@
 import { mount } from 'svelte';
 
-import '@/index.css';
-import ClockFace from '@/ClockFace.svelte';
+import '#src/index.css';
+import ClockFace from '#src/ClockFace.svelte';
 
 export default mount(ClockFace, { target: document.body });
