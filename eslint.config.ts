@@ -2,10 +2,10 @@
 import { includeIgnoreFile } from '@eslint/compat';
 import css from '@eslint/css';
 import eslint from '@eslint/js';
+import json from '@eslint/json';
 import html from '@html-eslint/eslint-plugin';
 import stylistic from '@stylistic/eslint-plugin';
 import { importX } from 'eslint-plugin-import-x';
-import jsonc from 'eslint-plugin-jsonc';
 import perfectionist from 'eslint-plugin-perfectionist';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import svelte from 'eslint-plugin-svelte';
@@ -78,12 +78,10 @@ export default defineConfig(
     },
   },
   {
-    extends: [
-      jsonc.configs['flat/recommended-with-jsonc'],
-      prettierRecommended,
-      jsonc.configs['flat/prettier'],
-    ],
+    extends: [json.configs.recommended, prettierRecommended],
     files: ['**/*.json'],
+    language: 'json/json',
+    rules: { 'json/sort-keys': ['error', 'asc', { natural: true }] },
   },
   {
     extends: [
