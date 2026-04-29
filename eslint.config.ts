@@ -1,4 +1,5 @@
 /* eslint-disable import-x/no-named-as-default-member */
+import e18e from '@e18e/eslint-plugin';
 import { includeIgnoreFile } from '@eslint/compat';
 import css from '@eslint/css';
 import eslint from '@eslint/js';
@@ -23,6 +24,7 @@ const commonConfig = defineConfig({
     tseslint.configs.stylisticTypeChecked,
     importX.flatConfigs.recommended,
     importX.flatConfigs.typescript,
+    e18e.configs.recommended,
     stylistic.configs.customize({
       jsx: false,
       semi: true,
