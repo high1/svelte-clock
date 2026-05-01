@@ -67,7 +67,7 @@ export default defineConfig(
   {
     extends: [
       svelte.configs.recommended,
-      ...commonConfig,
+      commonConfig,
       svelte.configs.prettier,
     ],
     files: ['**/*.svelte'],
