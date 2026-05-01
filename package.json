@@ -2,7 +2,7 @@
   "description": "svelte clock, inspired by sauron clock",
   "devDependencies": {
     "@eslint/compat": "2.0.5",
-    "@eslint/css": "1.1.0",
+    "@eslint/css": "1.2.0",
     "@eslint/js": "10.0.1",
     "@eslint/json": "1.2.0",
     "@html-eslint/eslint-plugin": "0.60.0",
@@ -20,7 +20,7 @@
     "eslint-plugin-perfectionist": "5.9.0",
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-svelte": "3.17.1",
-    "eslint-plugin-yml": "3.3.1",
+    "eslint-plugin-yml": "3.3.2",
     "globals": "17.5.0",
     "happy-dom": "20.9.0",
     "playwright": "1.59.1",
