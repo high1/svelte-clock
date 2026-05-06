@@ -3,6 +3,8 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
   },
+  "eslint.execArgv": null,
+  "eslint.runtime": "node",
   "eslint.validate": [
     "css",
     "html",
