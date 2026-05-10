@@ -1,5 +1,5 @@
 /* eslint-disable import-x/no-named-as-default-member */
-import { includeIgnoreFile } from '@eslint/compat';
+import { includeIgnoreFile } from '@eslint/config-helpers';
 import css from '@eslint/css';
 import eslint from '@eslint/js';
 import json from '@eslint/json';
