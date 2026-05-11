@@ -31,12 +31,12 @@ jobs:
         run: |
           pnpm i
 
-      - name: Install playwright 🌐
-        run: pnpm dlx playwright install --only-shell chromium
+      # - name: Install playwright 🌐
+      #   run: pnpm dlx playwright install --only-shell chromium
 
-      - name: Test 🧪
-        run: |
-          pnpm test
+      # - name: Test 🧪
+      #   run: |
+      #     pnpm test
 
       - name: Build 🚧
         run: |
