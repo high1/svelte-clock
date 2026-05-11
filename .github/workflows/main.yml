@@ -24,19 +24,19 @@ jobs:
       - name: Node.js ⚓
         uses: actions/setup-node@v6.4.0
         with:
-          node-version: latest
+          node-version: 'lts/*'
           cache: pnpm
 
       - name: Install 🔧
         run: |
           pnpm i
 
-      # - name: Install playwright 🌐
-      #   run: pnpm dlx playwright install --only-shell chromium
+      - name: Install playwright 🌐
+        run: pnpm dlx playwright install --only-shell chromium
 
-      # - name: Test 🧪
-      #   run: |
-      #     pnpm test
+      - name: Test 🧪
+        run: |
+          pnpm test
 
       - name: Build 🚧
         run: |
