@@ -28,15 +28,13 @@ jobs:
           cache: pnpm
 
       - name: Install 🔧
-        run: |
-          pnpm i
+        run: pnpm i
 
       - name: Install playwright 🌐
-        run: pnpm dlx playwright install --only-shell chromium
+        run: pnpm playwright
 
       - name: Test 🧪
-        run: |
-          pnpm test
+        run: pnpm test
 
       - name: Build 🚧
         run: |
