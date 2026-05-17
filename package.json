@@ -40,7 +40,7 @@
   "devEngines": {
     "packageManager": {
       "name": "pnpm",
-      "onFail": "warn",
+      "onFail": "download",
       "version": "11.1.2"
     },
     "runtime": {
