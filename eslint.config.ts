@@ -1,5 +1,4 @@
 /* eslint-disable import-x/no-named-as-default-member */
-import { includeIgnoreFile } from '@eslint/config-helpers';
 import css from '@eslint/css';
 import eslint from '@eslint/js';
 import json from '@eslint/json';
@@ -10,7 +9,7 @@ import perfectionist from 'eslint-plugin-perfectionist';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import svelte from 'eslint-plugin-svelte';
 import yml from 'eslint-plugin-yml';
-import { defineConfig, globalIgnores } from 'eslint/config';
+import { defineConfig, globalIgnores, includeIgnoreFile } from 'eslint/config';
 import globals from 'globals';
 import { fileURLToPath } from 'node:url';
 import svelteParser from 'svelte-eslint-parser';
