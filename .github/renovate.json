@@ -1,9 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended", "schedule:weekly"],
-  "npm": {
-    "minimumReleaseAge": "24 hours"
-  },
   "packageRules": [
     {
       "automerge": true,
