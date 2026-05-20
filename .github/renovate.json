@@ -10,7 +10,7 @@
       "matchDatasources": ["npm"],
       "matchPackageNames": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
-      "minimumReleaseAge": "3 days",
+      "minimumReleaseAge": "1 days",
       "platformAutomerge": true
     }
   ],
