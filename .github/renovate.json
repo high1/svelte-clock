@@ -7,13 +7,11 @@
       "automergeType": "pr",
       "groupName": "all non-major dependencies",
       "groupSlug": "all-minor-patch",
+      "matchDatasources": ["npm"],
       "matchPackageNames": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
+      "minimumReleaseAge": "3 days",
       "platformAutomerge": true
-    },
-    {
-      "matchDatasources": ["npm"],
-      "minimumReleaseAge": "3 days"
     }
   ],
   "timezone": "Etc/UTC"
