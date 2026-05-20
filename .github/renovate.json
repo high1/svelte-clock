@@ -13,6 +13,10 @@
       "matchPackageNames": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
       "platformAutomerge": true
+    },
+    {
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "3 days"
     }
   ],
   "timezone": "Etc/UTC"
