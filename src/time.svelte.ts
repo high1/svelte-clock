@@ -1,10 +1,10 @@
 import { rotate, seconds } from '#src/common';
 
 const hours = seconds / 5;
-const getSecondsSinceMidnight = () =>
-  (Date.now() - new Date().setHours(0, 0, 0, 0)) / 1000;
+const getSecondsSinceMidnight = (date: Date) =>
+  (date.getTime() - date.setHours(0, 0, 0, 0)) / 1000;
 
-let clock = $state(getSecondsSinceMidnight());
+let clock = $state(getSecondsSinceMidnight(new Date()));
 const subsecond = $derived(rotate(clock % 1, 0));
 const second = $derived(rotate((clock % seconds) / seconds));
 const minute = $derived(rotate(((clock / seconds) % seconds) / seconds));
@@ -23,5 +23,5 @@ export const time = {
   get subsecond() {
     return subsecond;
   },
-  update: () => (clock = getSecondsSinceMidnight()),
+  update: () => (clock = getSecondsSinceMidnight(new Date())),
 };

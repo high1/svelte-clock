@@ -2,6 +2,7 @@
 import css from '@eslint/css';
 import eslint from '@eslint/js';
 import json from '@eslint/json';
+import markdown from '@eslint/markdown';
 import html from '@html-eslint/eslint-plugin';
 import stylistic from '@stylistic/eslint-plugin';
 import { importX } from 'eslint-plugin-import-x';
@@ -52,9 +53,7 @@ export default defineConfig(
   {
     languageOptions: {
       globals: globals.browser,
-      parser: tseslint.parser,
       parserOptions: {
-        extraFileExtensions: ['.svelte', '.css'],
         projectService: true,
       },
     },
@@ -62,17 +61,21 @@ export default defineConfig(
   {
     extends: commonConfig,
     files: ['**/*.ts'],
+    languageOptions: {
+      parser: tseslint.parser,
+    },
   },
   {
     extends: [
-      svelte.configs.recommended,
       commonConfig,
+      svelte.configs.recommended,
       svelte.configs.prettier,
     ],
     files: ['**/*.svelte'],
     languageOptions: {
       parser: svelteParser,
       parserOptions: {
+        extraFileExtensions: ['.svelte'],
         parser: tseslint.parser,
       },
     },
@@ -92,19 +95,17 @@ export default defineConfig(
     files: ['**/*.{yml,yaml}'],
   },
   {
-    extends: ['css/recommended', prettierRecommended],
+    extends: [css.configs.recommended, prettierRecommended],
     files: ['**/*.css'],
     language: 'css/css',
-    plugins: { css },
     rules: {
       'css/no-invalid-at-rules': 'off',
     },
   },
   {
-    extends: ['html/recommended'],
+    extends: [html.configs.recommended],
     files: ['**/*.html'],
     language: 'html/html',
-    plugins: { html },
     rules: {
       'html/attrs-newline': [
         'error',
@@ -113,5 +114,10 @@ export default defineConfig(
       'html/indent': ['error', 2],
       'html/no-trailing-spaces': 'error',
     },
+  },
+  {
+    extends: [markdown.configs.recommended, prettierRecommended],
+    files: ['**/*.md'],
+    language: 'markdown/commonmark',
   },
 );
