@@ -52,7 +52,6 @@ export default defineConfig(
   globalIgnores(['pnpm-lock.yaml']),
   {
     languageOptions: {
-      globals: globals.browser,
       parserOptions: {
         projectService: true,
       },
@@ -73,6 +72,7 @@ export default defineConfig(
     ],
     files: ['**/*.svelte'],
     languageOptions: {
+      globals: globals.browser,
       parser: svelteParser,
       parserOptions: {
         extraFileExtensions: ['.svelte'],

@@ -3,34 +3,29 @@
     "source.fixAll.eslint": true
   },
   "disable_ai": true,
+  "formatter": [{ "code_action": "source.fixAll.eslint" }],
   "languages": {
     "CSS": {
       "language_servers": ["eslint", "tailwindcss-language-server"]
     },
     "HTML": {
-      "formatter": [{ "code_action": "source.fixAll.eslint" }],
       "language_servers": ["eslint", "vscode-html-language-server"]
     },
     "JSON": {
-      "formatter": [{ "code_action": "source.fixAll.eslint" }],
       "language_servers": ["eslint", "json-language-server"]
     },
     "JSONC": {
-      "formatter": [{ "code_action": "source.fixAll.eslint" }],
       "language_servers": ["eslint", "json-language-server"]
+    },
+    "Markdown": {
+      "format_on_save": "on",
+      "language_servers": ["eslint"]
     },
     "YAML": {
       "language_servers": ["eslint", "yaml-language-server"]
     }
   },
   "lsp": {
-    "eslint": {
-      "settings": {
-        "experimental": {
-          "useFlatConfig": false
-        }
-      }
-    },
     "vscode-html-language-server": {
       "settings": {
         "css": {
