@@ -5,12 +5,12 @@ import ClockFace from '#src/ClockFace.svelte';
 import { clockFaceId } from '#src/common';
 
 describe('<ClockFace />', () => {
-  test('renders clock face', () => {
-    const screen = render(ClockFace);
+  test('renders clock face', async () => {
+    const screen = await render(ClockFace);
     expect(screen.getByTestId(clockFaceId)).toBeInTheDocument();
   });
   test('unmounts clock face', async () => {
-    const screen = render(ClockFace);
+    const screen = await render(ClockFace);
     await screen.unmount();
     expect(screen.getByTestId(clockFaceId)).not.toBeInTheDocument();
   });

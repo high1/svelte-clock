@@ -6,8 +6,8 @@ import { clockGraduationId } from '#src/common';
 import Graduations from '#src/Graduations.svelte';
 
 describe('<Graduations />', () => {
-  test('renders all graduations', () => {
-    render(Graduations);
+  test('renders all graduations', async () => {
+    await render(Graduations);
     expect(
       page.getByTestId(
         new RegExp(String.raw`^${clockGraduationId}-(?:\d|[1-5]\d)$`),
