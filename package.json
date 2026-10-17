@@ -54,14 +54,18 @@
       "./*.ts"
     ]
   },
-  "keywords": ["svelte", "clock", "svg"],
+  "keywords": [
+    "svelte",
+    "clock",
+    "svg"
+  ],
   "license": "MIT",
+  "name": "svelte-clock",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/high1/svelte-clock.git"
   },
-  "name": "svelte-clock",
-  "private": true,
   "scripts": {
     "build": "vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
