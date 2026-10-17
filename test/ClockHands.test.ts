@@ -1,60 +1,65 @@
-import { describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 
 import ClockHands from '#src/ClockHands.svelte';
-import { clockHourId, clockMinutedId, clockSecondId } from '#src/common';
+import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
 import { time } from '#src/time.svelte';
 
-vi.hoisted(() => {
-  vi.setSystemTime(new Date(2020, 0));
+// `time` is a module-level singleton, so every test starts from a known clock
+// rather than inheriting whatever the previous test left behind.
+const setTime = (hours = 0, minutes = 0, seconds = 0) => {
+  vi.setSystemTime(new Date(2020, 0, 1, hours, minutes, seconds, 0));
+  time.update();
+};
+
+beforeEach(() => {
+  setTime();
 });
 
+// Minute and second hands share the same domain: 0–59 units, 6° per unit.
+const minuteSecondCases = [
+  [0, 'rotate(0.0)'],
+  [1, 'rotate(6.0)'],
+  [15, 'rotate(90.0)'],
+  [30, 'rotate(180.0)'],
+  [59, 'rotate(354.0)'],
+] as const;
+
 describe('<ClockHands />', () => {
-  test('renders starting hours correctly', async () => {
-    vi.setSystemTime(new Date(2020, 0).setHours(0));
-    time.update();
+  test.each([
+    [0, 'rotate(0.0)'],
+    [1, 'rotate(30.0)'],
+    [3, 'rotate(90.0)'],
+    [6, 'rotate(180.0)'],
+    [11, 'rotate(330.0)'],
+    [12, 'rotate(0.0)'],
+  ])('renders hour %i as %s', async (hours, transform) => {
+    setTime(hours);
     const screen = await render(ClockHands);
     expect(
       screen.getByTestId(clockHourId).element().getAttribute('transform'),
-    ).toBe('rotate(0.0)');
+    ).toBe(transform);
   });
-  test('renders elapsed hours correctly', async () => {
-    const elapsedHours = Math.floor(Math.random() * 12);
-    vi.setSystemTime(new Date(2020, 0).setHours(elapsedHours));
-    time.update();
-    const screen = await render(ClockHands);
-    expect(
-      screen.getByTestId(clockHourId).element().getAttribute('transform'),
-    ).toBe(`rotate(${elapsedHours * 30}.0)`);
-  });
-  test('renders starting minutes correctly', async () => {
-    const screen = await render(ClockHands);
-    expect(
-      screen.getByTestId(clockMinutedId).element().getAttribute('transform'),
-    ).toBe('rotate(0.0)');
-  });
-  test('renders elapsed minutes correctly', async () => {
-    const elapsedMinutes = Math.floor(Math.random() * 59);
-    vi.setSystemTime(new Date(2020, 0).setMinutes(elapsedMinutes));
-    time.update();
-    const screen = await render(ClockHands);
-    expect(
-      screen.getByTestId(clockMinutedId).element().getAttribute('transform'),
-    ).toBe(`rotate(${elapsedMinutes * 6}.0)`);
-  });
-  test('renders starting seconds correctly', async () => {
-    const screen = await render(ClockHands);
-    expect(
-      screen.getByTestId(clockSecondId).element().getAttribute('transform'),
-    ).toBe('rotate(0.0)');
-  });
-  test('renders elapsed seconds correctly', async () => {
-    const elapsedSeconds = Math.floor(Math.random() * 59);
-    vi.setSystemTime(new Date(2020, 0).setSeconds(elapsedSeconds));
-    time.update();
-    const screen = await render(ClockHands);
-    expect(
-      screen.getByTestId(clockSecondId).element().getAttribute('transform'),
-    ).toBe(`rotate(${elapsedSeconds * 6}.0)`);
-  });
+
+  test.each(minuteSecondCases)(
+    'renders minute %i as %s',
+    async (minutes, transform) => {
+      setTime(0, minutes);
+      const screen = await render(ClockHands);
+      expect(
+        screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
+      ).toBe(transform);
+    },
+  );
+
+  test.each(minuteSecondCases)(
+    'renders second %i as %s',
+    async (seconds, transform) => {
+      setTime(0, 0, seconds);
+      const screen = await render(ClockHands);
+      expect(
+        screen.getByTestId(clockSecondId).element().getAttribute('transform'),
+      ).toBe(transform);
+    },
+  );
 });
