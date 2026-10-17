@@ -9,9 +9,7 @@ describe('<Graduations />', () => {
   test('renders all graduations', async () => {
     await render(Graduations);
     expect(
-      page.getByTestId(
-        new RegExp(String.raw`^${clockGraduationId}-(?:\d|[1-5]\d)$`),
-      ),
+      page.getByTestId(new RegExp(`^${clockGraduationId}-(?:\\d|[1-5]\\d)$`)),
     ).toHaveLength(60);
   });
 });

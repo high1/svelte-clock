@@ -22,12 +22,12 @@
     "eslint-plugin-svelte": "3.23.1",
     "eslint-plugin-yml": "3.9.0",
     "globals": "17.13.0",
-    "happy-dom": "20.14.6",
     "playwright": "1.64.0",
     "prettier": "3.9.10",
     "prettier-plugin-svelte": "4.1.1",
     "prettier-plugin-tailwindcss": "0.8.1",
     "svelte": "5.57.2",
+    "svelte-check": "4.7.7",
     "svelte-eslint-parser": "1.9.0",
     "tailwindcss": "4.3.3",
     "typescript": "6.0.3",
@@ -54,13 +54,25 @@
       "./*.ts"
     ]
   },
-  "keywords": [],
+  "keywords": [
+    "svelte",
+    "clock",
+    "svg"
+  ],
+  "license": "MIT",
   "name": "svelte-clock",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/high1/svelte-clock.git"
+  },
   "scripts": {
     "build": "vite build",
+    "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
     "coverage": "vitest run --coverage",
     "dev": "vite",
+    "format": "prettier --write .",
+    "lint": "eslint . --max-warnings 0",
     "playwright": "playwright install --only-shell chromium",
     "preview": "vite preview",
     "start": "vite",

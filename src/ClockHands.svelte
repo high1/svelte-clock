@@ -1,6 +1,6 @@
 <script lang="ts">
   import ClockHand from '#src/ClockLine.svelte';
-  import { clockHourId, clockMinutedId, clockSecondId } from '#src/common';
+  import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
   import { time } from '#src/time.svelte';
   import { getTestId } from '#src/utilities';
 
@@ -31,7 +31,7 @@
   transform={time.minute}
   class="stroke-zinc-400 stroke-3"
   length={64}
-  data-testid={getTestId(clockMinutedId)}
+  data-testid={getTestId(clockMinuteId)}
 />
 <ClockHand
   transform={time.second}

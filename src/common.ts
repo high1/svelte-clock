@@ -4,5 +4,5 @@ export const rotate = (rotate: number, fractionDigits = 1) =>
 export const clockFaceId = 'clock-face';
 export const clockGraduationId = 'clock-graduation';
 export const clockHourId = 'clock-hour';
-export const clockMinutedId = 'clock-minute';
+export const clockMinuteId = 'clock-minute';
 export const clockSecondId = 'clock-second';

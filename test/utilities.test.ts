@@ -4,15 +4,14 @@ import { getTestId } from '#src/utilities';
 
 afterAll(() => void vi.unstubAllEnvs());
 
-describe('utilities', () => {
-  test('testid undefined in developmewnt', () => {
+describe('getTestId', () => {
+  test('returns undefined outside test builds', () => {
     vi.stubEnv('MODE', 'development');
     expect(getTestId('test')).toBeUndefined();
   });
 
-  test('testid undefined in developmewnt', () => {
-    const test = 'test';
-    vi.stubEnv('MODE', test);
-    expect(getTestId(test)).toEqual(test);
+  test('returns the id in test builds', () => {
+    vi.stubEnv('MODE', 'test');
+    expect(getTestId('test')).toBe('test');
   });
 });
