@@ -15,7 +15,6 @@ export default defineConfig((env) =>
           provider: playwright(),
           screenshotFailures: false,
         },
-        environment: 'happy-dom',
       },
     }),
   ),
