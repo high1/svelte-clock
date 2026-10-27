@@ -1,6 +1,6 @@
-import { describe, expect, test } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { getSecondsSinceMidnight } from '#src/time.svelte';
+import { getSecondsSinceMidnight, now, startClock } from '#src/time.svelte';
 
 describe('getSecondsSinceMidnight', () => {
   test.each([
@@ -33,5 +33,94 @@ describe('getSecondsSinceMidnight', () => {
     ])('%s', (_name, date) => {
       expect(getSecondsSinceMidnight(date)).toBe(12 * 3600);
     });
+  });
+});
+
+describe('startClock', () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+    vi.spyOn(globalThis, 'requestAnimationFrame');
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+
+  test('schedules one rAF loop for the first subscriber', () => {
+    const stop = startClock();
+
+    expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
+      1,
+    );
+
+    const before = now.value;
+    vi.advanceTimersToNextFrame();
+    expect(now.value).not.toBe(before);
+
+    stop();
+  });
+
+  test('reuses the same loop for additional subscribers', () => {
+    const stopFirst = startClock();
+    const stopSecond = startClock();
+    const stopThird = startClock();
+
+    expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
+      1,
+    );
+
+    stopFirst();
+    stopSecond();
+    stopThird();
+  });
+
+  test('stops updating the instant after unmount', () => {
+    const stop = startClock();
+
+    vi.advanceTimersToNextFrame();
+    const afterRun = now.value;
+    expect(afterRun).toBeGreaterThan(0);
+
+    stop();
+    vi.advanceTimersToNextFrame();
+
+    expect(now.value).toBe(afterRun);
+  });
+
+  test('keeps the loop running while any subscriber remains', () => {
+    const stopFirst = startClock();
+    const stopSecond = startClock();
+    const stopThird = startClock();
+
+    vi.advanceTimersToNextFrame();
+    const before = now.value;
+    expect(before).toBeGreaterThan(0);
+
+    stopFirst();
+    stopSecond();
+
+    vi.advanceTimersToNextFrame();
+    expect(now.value).not.toBe(before);
+
+    stopThird();
+  });
+
+  test('restarts the loop when a new subscriber mounts after unmount', () => {
+    const stop = startClock();
+    stop();
+
+    startClock()();
+    expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
+      2,
+    );
+  });
+
+  test('calling stop more than once does not throw', () => {
+    const stop = startClock();
+    stop();
+    expect(() => {
+      stop();
+    }).not.toThrow();
   });
 });

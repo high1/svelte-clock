@@ -2,7 +2,10 @@
   import ClockHands from '#src/ClockHands.svelte';
   import { clockFaceId } from '#src/common';
   import Graduations from '#src/Graduations.svelte';
+  import { startClock } from '#src/time.svelte';
   import { getTestId } from '#src/utilities';
+
+  $effect(() => startClock());
 </script>
 
 <div
