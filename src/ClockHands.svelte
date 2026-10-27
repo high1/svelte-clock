@@ -3,16 +3,6 @@
   import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
   import { time } from '#src/time.svelte';
   import { getTestId } from '#src/utilities';
-
-  $effect(() => {
-    let frame = requestAnimationFrame(function loop() {
-      time.update();
-      frame = requestAnimationFrame(loop);
-    });
-    return () => {
-      cancelAnimationFrame(frame);
-    };
-  });
 </script>
 
 <ClockHand

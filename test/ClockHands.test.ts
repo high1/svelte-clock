@@ -3,13 +3,13 @@ import { render } from 'vitest-browser-svelte';
 
 import ClockHands from '#src/ClockHands.svelte';
 import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
-import { time } from '#src/time.svelte';
+import { now } from '#src/time.svelte';
 
-// `time` is a module-level singleton, so every test starts from a known clock
+// `now` is a module-level singleton, so every test starts from a known clock
 // rather than inheriting whatever the previous test left behind.
 const setTime = (hours = 0, minutes = 0, seconds = 0) => {
   vi.setSystemTime(new Date(2020, 0, 1, hours, minutes, seconds, 0));
-  time.update();
+  now.value = Date.now();
 };
 
 beforeEach(() => {
