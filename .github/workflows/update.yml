@@ -35,7 +35,7 @@ jobs:
           token: ${{ secrets.UPDATE_TOKEN }}
           # The browser has to match the playwright the update brought in, so
           # it is installed after the update and before the verification.
-          post-update: pnpm playwright
+          post-update: pnpm playwright && pnpm lint --fix
           # TypeScript 7 is the native rewrite, and the eslint plugins need
           # the JavaScript API it does not have.
           exclude: typescript
