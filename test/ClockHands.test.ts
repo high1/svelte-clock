@@ -25,6 +25,29 @@ const minuteSecondCases = [
   [59, 'rotate(354.0)'],
 ] as const;
 
+describe('<ClockHands /> in a fixed zone', () => {
+  test.each([
+    [0, 'rotate(0.0)'],
+    [3, 'rotate(90.0)'],
+    [6, 'rotate(180.0)'],
+    [11, 'rotate(330.0)'],
+  ])('renders hour %i in UTC as %s', async (hours, transform) => {
+    now.value = Date.UTC(2020, 0, 1, hours, 0, 0, 0);
+    const screen = await render(ClockHands, { props: { zone: 'UTC' } });
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe(transform);
+  });
+
+  test('renders second 15 in UTC', async () => {
+    now.value = Date.UTC(2020, 0, 1, 0, 0, 15, 0);
+    const screen = await render(ClockHands, { props: { zone: 'UTC' } });
+    expect(
+      screen.getByTestId(clockSecondId).element().getAttribute('transform'),
+    ).toBe('rotate(90.0)');
+  });
+});
+
 describe('<ClockHands />', () => {
   test.each([
     [0, 'rotate(0.0)'],
