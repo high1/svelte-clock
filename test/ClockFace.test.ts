@@ -1,4 +1,4 @@
-import { describe, expect, test } from 'vitest';
+import { describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 
 import ClockFace from '#src/ClockFace.svelte';
@@ -13,5 +13,12 @@ describe('<ClockFace />', () => {
     const screen = await render(ClockFace);
     await screen.unmount();
     expect(screen.getByTestId(clockFaceId)).not.toBeInTheDocument();
+  });
+  test('cancels the animation frame on unmount', async () => {
+    const cancelSpy = vi.spyOn(window, 'cancelAnimationFrame');
+    const screen = await render(ClockFace);
+    await screen.unmount();
+    expect(cancelSpy).toHaveBeenCalled();
+    cancelSpy.mockRestore();
   });
 });
