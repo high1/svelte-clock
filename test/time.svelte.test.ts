@@ -57,8 +57,8 @@ describe('getSecondsSinceMidnight', () => {
     });
 
     test.skipIf(!transition)('fall back repeats an hour', () => {
-      const before = zone === 'Europe/Berlin' ? 10799 : 7199;
-      const after = zone === 'Europe/Berlin' ? 7200 : 3600;
+      const before = zone === 'America/New_York' ? 7199 : 10799;
+      const after = zone === 'America/New_York' ? 3600 : 7200;
 
       expect(getSecondsSinceMidnight(new Date(transition.autumn - 1000))).toBe(
         before,
