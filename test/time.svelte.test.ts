@@ -1,6 +1,12 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { getSecondsSinceMidnight, now, startClock } from '#src/time.svelte';
+import { handRotations } from '#src/common';
+import {
+  getSecondsSinceMidnight,
+  getSecondsSinceMidnightIn,
+  now,
+  startClock,
+} from '#src/time.svelte';
 
 describe('getSecondsSinceMidnight', () => {
   test.each([
@@ -33,6 +39,74 @@ describe('getSecondsSinceMidnight', () => {
     ])('%s', (_name, date) => {
       expect(getSecondsSinceMidnight(date)).toBe(12 * 3600);
     });
+  });
+});
+
+describe('handRotations', () => {
+  test.each([
+    ['midnight', 0, 'rotate(0)', 'rotate(0)', 'rotate(0)', 'rotate(0)'],
+    ['one hour', 3_600, 'rotate(0)', 'rotate(0)', 'rotate(0)', 'rotate(30)'],
+    [
+      'half past noon',
+      43_200 + 1_800,
+      'rotate(0)',
+      'rotate(0)',
+      'rotate(180)',
+      'rotate(15)',
+    ],
+    [
+      '59.5 seconds',
+      59.5,
+      'rotate(180)',
+      'rotate(357)',
+      'rotate(5.9)',
+      'rotate(0.5)',
+    ],
+    [
+      'next midnight',
+      86_400,
+      'rotate(0)',
+      'rotate(0)',
+      'rotate(0)',
+      'rotate(0)',
+    ],
+  ])('%s', (_name, clock, subsecond, second, minute, hour) => {
+    expect(handRotations(clock)).toEqual({ hour, minute, second, subsecond });
+  });
+});
+
+describe('getSecondsSinceMidnightIn', () => {
+  test.each([
+    ['midnight', Date.UTC(2020, 0, 1, 0, 0, 0, 0), 0],
+    ['one second past midnight', Date.UTC(2020, 0, 1, 0, 0, 1, 0), 1],
+    ['one minute past midnight', Date.UTC(2020, 0, 1, 0, 1, 0, 0), 60],
+    ['noon', Date.UTC(2020, 0, 1, 12, 0, 0, 0), 43_200],
+    ['last second of the day', Date.UTC(2020, 0, 1, 23, 59, 59, 0), 86_399],
+  ])('%s in UTC', (_name, timestamp, expected) => {
+    expect(getSecondsSinceMidnightIn(timestamp, 'UTC')).toBe(expected);
+  });
+
+  test('renders the same instant in different zones', () => {
+    const timestamp = Date.UTC(2020, 2, 8, 16, 30, 0, 0);
+
+    expect(getSecondsSinceMidnightIn(timestamp, 'UTC')).toBe(16 * 3600 + 1800);
+    expect(getSecondsSinceMidnightIn(timestamp, 'Europe/Berlin')).toBe(
+      17 * 3600 + 1800,
+    );
+    expect(getSecondsSinceMidnightIn(timestamp, 'America/New_York')).toBe(
+      12 * 3600 + 1800,
+    );
+    expect(getSecondsSinceMidnightIn(timestamp, 'Australia/Sydney')).toBe(
+      3 * 3600 + 1800,
+    );
+  });
+
+  test('noon stays at 12:00 wall-clock on DST transition days', () => {
+    const spring = Date.UTC(2020, 2, 8, 11, 0, 0, 0);
+    const autumn = Date.UTC(2020, 10, 1, 11, 0, 0, 0);
+
+    expect(getSecondsSinceMidnightIn(spring, 'Europe/Berlin')).toBe(12 * 3600);
+    expect(getSecondsSinceMidnightIn(autumn, 'Europe/Berlin')).toBe(12 * 3600);
   });
 });
 

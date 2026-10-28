@@ -1,6 +1,4 @@
-import { rotate, seconds } from '#src/common';
-
-const hours = seconds / 5;
+import { handRotations } from '#src/common';
 
 export const getSecondsSinceMidnight = (date: Date = new Date()) =>
   date.getHours() * 3600 +
@@ -31,23 +29,63 @@ export const startClock = () => {
   };
 };
 
-const clock = $derived(getSecondsSinceMidnight(new Date(now.value)));
-const subsecond = $derived(rotate(clock % 1, 0));
-const second = $derived(rotate((clock % seconds) / seconds));
-const minute = $derived(rotate(((clock / seconds) % seconds) / seconds));
-const hour = $derived(rotate(((clock / seconds / seconds) % hours) / hours));
+export const getTimeZone = () =>
+  Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export const time = {
-  get hour() {
-    return hour;
-  },
-  get minute() {
-    return minute;
-  },
-  get second() {
-    return second;
-  },
-  get subsecond() {
-    return subsecond;
-  },
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
+const formatterFor = (zone: string) => {
+  const existing = formatters.get(zone);
+  if (existing) return existing;
+
+  const formatter = new Intl.DateTimeFormat(undefined, {
+    hour: '2-digit',
+    hourCycle: 'h23',
+    minute: '2-digit',
+    numberingSystem: 'latn',
+    second: '2-digit',
+    timeZone: zone,
+  });
+  formatters.set(zone, formatter);
+  return formatter;
+};
+
+const partsIn = (timestamp: number, zone: string) =>
+  new Map(
+    formatterFor(zone)
+      .formatToParts(new Date(timestamp))
+      .map((part) => [part.type, part.value] as const),
+  );
+
+// Wall-clock seconds since local midnight in `zone`.
+export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
+  const parts = partsIn(timestamp, zone);
+
+  return (
+    Number(parts.get('hour')) * 3600 +
+    Number(parts.get('minute')) * 60 +
+    Number(parts.get('second')) +
+    (timestamp % 1000) / 1000
+  );
+};
+
+// One clock in `zone`: the shared instant as hand rotations.
+export const createTime = (zone: () => string) => {
+  const clock = $derived(getSecondsSinceMidnightIn(now.value, zone()));
+  const rotations = $derived.by(() => handRotations(clock));
+
+  return {
+    get hour() {
+      return rotations.hour;
+    },
+    get minute() {
+      return rotations.minute;
+    },
+    get second() {
+      return rotations.second;
+    },
+    get subsecond() {
+      return rotations.subsecond;
+    },
+  };
 };
