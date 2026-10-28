@@ -58,7 +58,6 @@ jobs:
       - name: Build 🚧
         run: |
           pnpm build
-          touch dist/.nojekyll
 
       - name: Upload artifact 📦
         uses: actions/upload-pages-artifact@v5.0.0
