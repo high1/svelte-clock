@@ -69,7 +69,7 @@
   },
   "scripts": {
     "build": "vite build",
-    "check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+    "check": "$npm_execpath run svelte:check && $npm_execpath run tsc:check",
     "coverage": "vitest run --coverage",
     "dev": "vite",
     "format": "prettier --write .",
@@ -77,7 +77,9 @@
     "playwright": "playwright install --only-shell chromium",
     "preview": "vite preview",
     "start": "vite",
-    "test": "vitest run"
+    "svelte:check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+    "test": "vitest run",
+    "tsc:check": "tsc --noEmit"
   },
   "type": "module",
   "version": "1.0.0"
