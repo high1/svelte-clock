@@ -101,12 +101,28 @@ describe('getSecondsSinceMidnightIn', () => {
     );
   });
 
-  test('noon stays at 12:00 wall-clock on DST transition days', () => {
+  test('converts timestamps to Berlin wall-clock time', () => {
     const spring = Date.UTC(2020, 2, 8, 11, 0, 0, 0);
     const autumn = Date.UTC(2020, 10, 1, 11, 0, 0, 0);
 
     expect(getSecondsSinceMidnightIn(spring, 'Europe/Berlin')).toBe(12 * 3600);
     expect(getSecondsSinceMidnightIn(autumn, 'Europe/Berlin')).toBe(12 * 3600);
+  });
+
+  test('spring forward skips from 01:59:59 to 03:00:00', () => {
+    const before = Date.UTC(2020, 2, 29, 0, 59, 59);
+    const after = Date.UTC(2020, 2, 29, 1, 0, 0);
+
+    expect(getSecondsSinceMidnightIn(before, 'Europe/Berlin')).toBe(7199);
+    expect(getSecondsSinceMidnightIn(after, 'Europe/Berlin')).toBe(10800);
+  });
+
+  test('fall back repeats the 02:00 hour', () => {
+    const before = Date.UTC(2020, 9, 25, 0, 59, 59);
+    const after = Date.UTC(2020, 9, 25, 1, 0, 0);
+
+    expect(getSecondsSinceMidnightIn(before, 'Europe/Berlin')).toBe(10799);
+    expect(getSecondsSinceMidnightIn(after, 'Europe/Berlin')).toBe(7200);
   });
 });
 

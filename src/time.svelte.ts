@@ -22,7 +22,11 @@ export const startClock = () => {
     frame = requestAnimationFrame(loop);
   }
 
+  let active = true;
+
   return () => {
+    if (!active) return;
+    active = false;
     if (--subscribers === 0) {
       cancelAnimationFrame(frame);
     }
