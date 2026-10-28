@@ -22,7 +22,11 @@ export const startClock = () => {
     frame = requestAnimationFrame(loop);
   }
 
+  let active = true;
+
   return () => {
+    if (!active) return;
+    active = false;
     if (--subscribers === 0) {
       cancelAnimationFrame(frame);
     }
@@ -65,7 +69,7 @@ export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
     Number(parts.get('hour')) * 3600 +
     Number(parts.get('minute')) * 60 +
     Number(parts.get('second')) +
-    (timestamp % 1000) / 1000
+    (((timestamp % 1000) + 1000) % 1000) / 1000
   );
 };
 
