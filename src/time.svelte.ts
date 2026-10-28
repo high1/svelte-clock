@@ -10,11 +10,14 @@ export const getSecondsSinceMidnight = (date: Date = new Date()) =>
 // drives them all instead of one loop per clock.
 export const now = $state({ value: Date.now() });
 
-let subscribers = 0;
+const subscribers = new Set<symbol>();
 let frame = 0;
 
 export const startClock = () => {
-  if (++subscribers === 1) {
+  const subscriber = Symbol();
+  subscribers.add(subscriber);
+
+  if (subscribers.size === 1) {
     const loop = () => {
       now.value = Date.now();
       frame = requestAnimationFrame(loop);
@@ -22,12 +25,10 @@ export const startClock = () => {
     frame = requestAnimationFrame(loop);
   }
 
-  let active = true;
-
   return () => {
-    if (!active) return;
-    active = false;
-    if (--subscribers === 0) {
+    if (!subscribers.delete(subscriber)) return;
+
+    if (subscribers.size === 0) {
       cancelAnimationFrame(frame);
     }
   };
