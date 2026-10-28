@@ -25,7 +25,7 @@ jobs:
           persist-credentials: false
 
       - name: Pnpm 🧱
-        uses: pnpm/setup@v3.1.1
+        uses: pnpm/setup@v3.1.2
 
       - name: Update dependencies 🔄
         # The only tag is older than the action's own fixes, so a commit is
