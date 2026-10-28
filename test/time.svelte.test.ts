@@ -50,6 +50,8 @@ describe('getSecondsSinceMidnight', () => {
     const transition = transitions[zone];
 
     test.skipIf(!transition)('spring forward skips an hour', () => {
+      if (!transition) return;
+
       expect(getSecondsSinceMidnight(new Date(transition.spring - 1000))).toBe(
         7199,
       );
@@ -57,6 +59,8 @@ describe('getSecondsSinceMidnight', () => {
     });
 
     test.skipIf(!transition)('fall back repeats an hour', () => {
+      if (!transition) return;
+
       const before = zone === 'America/New_York' ? 7199 : 10799;
       const after = zone === 'America/New_York' ? 3600 : 7200;
 
