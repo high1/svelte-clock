@@ -32,18 +32,18 @@ describe('getSecondsSinceMidnight', () => {
   describe('across daylight saving transitions', () => {
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-    const transitions: Record<string, { spring: number; autumn: number }> = {
+    const transitions: Record<string, { autumn: number; spring: number }> = {
       'America/New_York': {
-        spring: Date.UTC(2020, 2, 8, 7),
         autumn: Date.UTC(2020, 10, 1, 6),
-      },
-      'Europe/Berlin': {
-        spring: Date.UTC(2020, 2, 29, 1),
-        autumn: Date.UTC(2020, 9, 25, 1),
+        spring: Date.UTC(2020, 2, 8, 7),
       },
       'Australia/Sydney': {
-        spring: Date.UTC(2020, 9, 3, 16),
         autumn: Date.UTC(2020, 3, 4, 16),
+        spring: Date.UTC(2020, 9, 3, 16),
+      },
+      'Europe/Berlin': {
+        autumn: Date.UTC(2020, 9, 25, 1),
+        spring: Date.UTC(2020, 2, 29, 1),
       },
     };
 
@@ -170,7 +170,9 @@ describe('startClock', () => {
   });
 
   afterEach(() => {
-    cleanups.forEach((stop) => stop());
+    cleanups.forEach((stop) => {
+      stop();
+    });
     cleanups.clear();
     vi.restoreAllMocks();
     vi.useRealTimers();
