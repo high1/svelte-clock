@@ -206,11 +206,17 @@ describe('startClock', () => {
     );
   });
 
-  test('calling stop more than once does not throw', () => {
+  test('calling stop more than once does not prevent a later clock from starting', () => {
     const stop = startClock();
     stop();
-    expect(() => {
-      stop();
-    }).not.toThrow();
+    stop();
+
+    const stopNext = startClock();
+
+    expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
+      2,
+    );
+
+    stopNext();
   });
 });
