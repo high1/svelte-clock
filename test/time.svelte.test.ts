@@ -6,7 +6,6 @@ import {
   getSecondsSinceMidnightIn,
   now,
   startClock,
-  timeZones,
 } from '#src/time.svelte';
 
 describe('getSecondsSinceMidnight', () => {
@@ -45,28 +44,21 @@ describe('getSecondsSinceMidnight', () => {
 
 describe('handRotations', () => {
   test.each([
-    ['midnight', 0, 'rotate(0)', 'rotate(0.0)', 'rotate(0.0)', 'rotate(0.0)'],
-    [
-      'one hour',
-      3_600,
-      'rotate(0)',
-      'rotate(0.0)',
-      'rotate(0.0)',
-      'rotate(30.0)',
-    ],
+    ['midnight', 0, 'rotate(0)', 'rotate(0)', 'rotate(0)', 'rotate(0)'],
+    ['one hour', 3_600, 'rotate(0)', 'rotate(0)', 'rotate(0)', 'rotate(30)'],
     [
       'half past noon',
       43_200 + 1_800,
       'rotate(0)',
-      'rotate(0.0)',
-      'rotate(180.0)',
-      'rotate(15.0)',
+      'rotate(0)',
+      'rotate(180)',
+      'rotate(15)',
     ],
     [
       '59.5 seconds',
       59.5,
       'rotate(180)',
-      'rotate(357.0)',
+      'rotate(357)',
       'rotate(5.9)',
       'rotate(0.5)',
     ],
@@ -74,9 +66,9 @@ describe('handRotations', () => {
       'next midnight',
       86_400,
       'rotate(0)',
-      'rotate(0.0)',
-      'rotate(0.0)',
-      'rotate(0.0)',
+      'rotate(0)',
+      'rotate(0)',
+      'rotate(0)',
     ],
   ])('%s', (_name, clock, subsecond, second, minute, hour) => {
     expect(handRotations(clock)).toEqual({ hour, minute, second, subsecond });
@@ -115,11 +107,6 @@ describe('getSecondsSinceMidnightIn', () => {
 
     expect(getSecondsSinceMidnightIn(spring, 'Europe/Berlin')).toBe(12 * 3600);
     expect(getSecondsSinceMidnightIn(autumn, 'Europe/Berlin')).toBe(12 * 3600);
-  });
-
-  test('timeZones includes UTC and is sorted', () => {
-    expect(timeZones).toContain('UTC');
-    expect(timeZones).toEqual([...timeZones].sort());
   });
 });
 

@@ -32,10 +32,6 @@ export const startClock = () => {
 export const getTimeZone = () =>
   Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-// The zones the browser knows about. UTC is a valid zone but not one of the
-// canonical names the list holds, so it is added by hand.
-export const timeZones = [...Intl.supportedValuesOf('timeZone'), 'UTC'].sort();
-
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
 const formatterFor = (zone: string) => {
@@ -43,15 +39,12 @@ const formatterFor = (zone: string) => {
   if (existing) return existing;
 
   const formatter = new Intl.DateTimeFormat(undefined, {
-    day: '2-digit',
     hour: '2-digit',
     hourCycle: 'h23',
     minute: '2-digit',
-    month: '2-digit',
     numberingSystem: 'latn',
     second: '2-digit',
     timeZone: zone,
-    year: 'numeric',
   });
   formatters.set(zone, formatter);
   return formatter;
