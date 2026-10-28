@@ -29,15 +29,41 @@ describe('getSecondsSinceMidnight', () => {
     expect(date.getTime()).toBe(before);
   });
 
-  // These dates are local wall-clock times, so they only land on a DST
-  // boundary because the browser runs in a DST-observing timezone. Measuring
-  // elapsed real time instead of wall-clock time puts these an hour out.
   describe('across daylight saving transitions', () => {
-    test.each([
-      ['spring forward (23-hour day)', new Date(2020, 2, 8, 12, 0, 0, 0)],
-      ['fall back (25-hour day)', new Date(2020, 10, 1, 12, 0, 0, 0)],
-    ])('%s', (_name, date) => {
-      expect(getSecondsSinceMidnight(date)).toBe(12 * 3600);
+    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    const transitions: Record<string, { spring: number; autumn: number }> = {
+      'America/New_York': {
+        spring: Date.UTC(2020, 2, 8, 7),
+        autumn: Date.UTC(2020, 10, 1, 6),
+      },
+      'Europe/Berlin': {
+        spring: Date.UTC(2020, 2, 29, 1),
+        autumn: Date.UTC(2020, 9, 25, 1),
+      },
+      'Australia/Sydney': {
+        spring: Date.UTC(2020, 9, 3, 16),
+        autumn: Date.UTC(2020, 3, 4, 16),
+      },
+    };
+
+    const transition = transitions[zone];
+
+    test.skipIf(!transition)('spring forward skips an hour', () => {
+      expect(getSecondsSinceMidnight(new Date(transition.spring - 1000))).toBe(
+        7199,
+      );
+      expect(getSecondsSinceMidnight(new Date(transition.spring))).toBe(10800);
+    });
+
+    test.skipIf(!transition)('fall back repeats an hour', () => {
+      const before = zone === 'Europe/Berlin' ? 10799 : 7199;
+      const after = zone === 'Europe/Berlin' ? 7200 : 3600;
+
+      expect(getSecondsSinceMidnight(new Date(transition.autumn - 1000))).toBe(
+        before,
+      );
+      expect(getSecondsSinceMidnight(new Date(transition.autumn))).toBe(after);
     });
   });
 });
@@ -127,18 +153,31 @@ describe('getSecondsSinceMidnightIn', () => {
 });
 
 describe('startClock', () => {
+  const cleanups = new Set<() => void>();
+
+  const start = () => {
+    const stop = startClock();
+    cleanups.add(stop);
+    return () => {
+      cleanups.delete(stop);
+      stop();
+    };
+  };
+
   beforeEach(() => {
     vi.useFakeTimers();
     vi.spyOn(globalThis, 'requestAnimationFrame');
   });
 
   afterEach(() => {
+    cleanups.forEach((stop) => stop());
+    cleanups.clear();
     vi.restoreAllMocks();
     vi.useRealTimers();
   });
 
   test('schedules one rAF loop for the first subscriber', () => {
-    const stop = startClock();
+    const stop = start();
 
     expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
       1,
@@ -152,9 +191,9 @@ describe('startClock', () => {
   });
 
   test('reuses the same loop for additional subscribers', () => {
-    const stopFirst = startClock();
-    const stopSecond = startClock();
-    const stopThird = startClock();
+    const stopFirst = start();
+    const stopSecond = start();
+    const stopThird = start();
 
     expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
       1,
@@ -166,7 +205,7 @@ describe('startClock', () => {
   });
 
   test('stops updating the instant after unmount', () => {
-    const stop = startClock();
+    const stop = start();
 
     vi.advanceTimersToNextFrame();
     const afterRun = now.value;
@@ -179,9 +218,9 @@ describe('startClock', () => {
   });
 
   test('keeps the loop running while any subscriber remains', () => {
-    const stopFirst = startClock();
-    const stopSecond = startClock();
-    const stopThird = startClock();
+    const stopFirst = start();
+    const stopSecond = start();
+    const stopThird = start();
 
     vi.advanceTimersToNextFrame();
     const before = now.value;
@@ -197,21 +236,21 @@ describe('startClock', () => {
   });
 
   test('restarts the loop when a new subscriber mounts after unmount', () => {
-    const stop = startClock();
+    const stop = start();
     stop();
 
-    startClock()();
+    start()();
     expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
       2,
     );
   });
 
   test('calling stop more than once does not prevent a later clock from starting', () => {
-    const stop = startClock();
+    const stop = start();
     stop();
     stop();
 
-    const stopNext = startClock();
+    const stopNext = start();
 
     expect(vi.mocked(globalThis.requestAnimationFrame)).toHaveBeenCalledTimes(
       2,
