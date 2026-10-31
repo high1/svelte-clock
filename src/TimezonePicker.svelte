@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { getTimezoneGroups, zoneLabel } from '#src/timezone-options';
+
   interface Props {
     id: string;
     onchange: (zone: string) => void;
@@ -28,32 +30,7 @@
     return `${listboxId}-option-${index}`;
   }
 
-  function zoneLabel(zone: string): string {
-    return zone.slice(zone.lastIndexOf('/') + 1).replaceAll('_', ' ');
-  }
-
-  function zoneRegion(zone: string): string {
-    const separator = zone.indexOf('/');
-    return separator === -1 ? 'Other' : zone.slice(0, separator);
-  }
-
-  const normalize = (text: string) => text.replaceAll('_', ' ').toLowerCase();
-
-  const groups = $derived.by(() => {
-    const search = normalize(query.trim());
-    const matches = search
-      ? zones.filter((zone) => normalize(zone).includes(search))
-      : zones;
-
-    // Number items after grouping, so an index is always the item's position
-    // on screen, whatever order `zones` arrives in.
-    let index = 0;
-
-    return Array.from(Map.groupBy(matches, zoneRegion), ([region, items]) => ({
-      items: items.map((zone) => ({ index: index++, zone })),
-      region,
-    }));
-  });
+  const groups = $derived.by(() => getTimezoneGroups(zones, query));
 
   const options = $derived(
     groups.flatMap((group) => group.items.map((item) => item.zone)),
