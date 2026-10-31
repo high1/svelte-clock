@@ -22,3 +22,16 @@ describe('<ClockFace />', () => {
     cancelSpy.mockRestore();
   });
 });
+
+describe('<ClockFace /> zone selection', () => {
+  test('updates the displayed zone when a new zone is selected', async () => {
+    const screen = await render(ClockFace);
+
+    const trigger = screen.getByRole('button');
+    await trigger.click();
+
+    await screen.getByText('UTC').click();
+
+    expect(trigger.element().textContent).toContain('UTC');
+  });
+});
