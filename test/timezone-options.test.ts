@@ -103,7 +103,7 @@ describe('getTimezoneGroups region-aware search', () => {
     expect(flat).toEqual(['Australia/Sydney']);
   });
 
-  test('amer tok does not suppress the label search by region', () => {
+  test('amer tok restricts to America and finds no match', () => {
     const flat = getTimezoneGroups(zones, 'amer tok').flatMap((group) =>
       group.items.map((item) => item.zone),
     );
