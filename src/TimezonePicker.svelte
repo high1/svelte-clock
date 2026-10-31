@@ -114,7 +114,7 @@
   function handleTriggerKeydown(
     event: KeyboardEvent & { currentTarget: HTMLButtonElement },
   ) {
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+    if (!open && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
       event.preventDefault();
       openPicker(event.currentTarget);
     }
