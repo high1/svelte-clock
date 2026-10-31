@@ -2,7 +2,7 @@
   import ClockHands from '#src/ClockHands.svelte';
   import { clockFaceId } from '#src/common';
   import Graduations from '#src/Graduations.svelte';
-  import { startClock, timeZones } from '#src/time.svelte';
+  import { getTimeZones, startClock } from '#src/time.svelte';
   import TimezonePicker from '#src/TimezonePicker.svelte';
   import { getTestId } from '#src/utilities';
 
@@ -29,7 +29,7 @@
   <div class="flex justify-center">
     <TimezonePicker
       id="clock-timezone"
-      zones={timeZones}
+      zones={getTimeZones()}
       value={currentZone}
       onchange={(zone: string) => {
         currentZone = zone;
