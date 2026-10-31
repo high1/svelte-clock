@@ -397,3 +397,41 @@ describe('<TimezonePicker /> document pointerdown', () => {
     outside.remove();
   });
 });
+
+describe('<TimezonePicker /> closed-state trigger', () => {
+  const zones = [
+    'Africa/Abidjan',
+    'America/New_York',
+    'Asia/Tokyo',
+    'Europe/Berlin',
+    'UTC',
+  ];
+
+  test('keeps the popup open and query intact when ArrowDown is dispatched on the trigger while open', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz-open', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+
+    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    input.value = 'tok';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await tick();
+
+    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    const activeBefore = input.getAttribute('aria-activedescendant');
+
+    trigger.focus();
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
+    );
+    await tick();
+
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+    expect(input.value).toBe('tok');
+    expect(input.getAttribute('aria-activedescendant')).toBe(activeBefore);
+    expect(onchange).not.toHaveBeenCalled();
+  });
+});
