@@ -75,3 +75,73 @@ describe('getTimezoneGroups', () => {
     expect(input).toEqual(zones);
   });
 });
+
+describe('getTimezoneGroups region-aware search', () => {
+  const zones = [
+    'Africa/Abidjan',
+    'America/New_York',
+    'Asia/Kolkata',
+    'Asia/Tokyo',
+    'Australia/Sydney',
+    'Europe/Berlin',
+    'UTC',
+  ];
+
+  test('a single character does not trigger region interpretation', () => {
+    const flat = getTimezoneGroups(zones, 'a').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toContain('Asia/Tokyo');
+    expect(flat).toContain('America/New_York');
+    expect(flat.length).toBeGreaterThan(2);
+  });
+
+  test('au narrows to the Australia region', () => {
+    const flat = getTimezoneGroups(zones, 'au').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual(['Australia/Sydney']);
+  });
+
+  test('amer tok does not suppress the label search by region', () => {
+    const flat = getTimezoneGroups(zones, 'amer tok').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual([]);
+  });
+
+  test('new york matches America/New_York', () => {
+    const flat = getTimezoneGroups(zones, 'new york').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual(['America/New_York']);
+  });
+
+  test('asia matches every Asian timezone', () => {
+    const flat = getTimezoneGroups(zones, 'asia').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual(['Asia/Kolkata', 'Asia/Tokyo']);
+  });
+
+  test('asia tok narrows Asian timezones by label', () => {
+    const flat = getTimezoneGroups(zones, 'asia tok').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual(['Asia/Tokyo']);
+  });
+
+  test('tok matches any timezone whose id contains tok', () => {
+    const flat = getTimezoneGroups(zones, 'tok').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual(['Asia/Tokyo']);
+  });
+
+  test('tokyo matches Asia/Tokyo', () => {
+    const flat = getTimezoneGroups(zones, 'tokyo').flatMap((group) =>
+      group.items.map((item) => item.zone),
+    );
+    expect(flat).toEqual(['Asia/Tokyo']);
+  });
+});
