@@ -54,11 +54,10 @@
   }
 
   // Actions run once when their element mounts (and don't track state),
-  // so the popup focuses its input and centers the selection on open.
+  // so the popup focuses its input when it is created.
   function focusOnMount(node: HTMLElement) {
     // The picker places itself; the browser shouldn't also scroll the page.
     node.focus({ preventScroll: true });
-    // node.focus();
   }
 
   function handleDocumentPointerDown(event: PointerEvent) {
