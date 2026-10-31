@@ -333,6 +333,22 @@ describe('<TimezonePicker /> additional branches', () => {
     expect(document.querySelector('[role="listbox"]')).toBeNull();
   });
 
+  test('ignores non-arrow keys on the closed trigger', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz10', onchange, value: 'UTC', zones },
+    });
+
+    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    trigger.focus();
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'Tab' }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(document.querySelector('[role="listbox"]')).toBeNull();
+  });
+
   test('ignores pointerdown outside while closed', async () => {
     const onchange = vi.fn<(zone: string) => void>();
     await render(TimezonePicker, {
