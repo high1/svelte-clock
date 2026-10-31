@@ -68,10 +68,6 @@
 
   function handleSearchInput() {
     activeIndex = 0;
-
-    if (listbox) {
-      listbox.scrollTop = 0;
-    }
   }
 
   function handleSearchKeydown(event: KeyboardEvent) {
@@ -105,18 +101,22 @@
     }
   }
 
-  function handleTriggerClick() {
+  function handleTriggerClick(
+    event: MouseEvent & { currentTarget: HTMLButtonElement },
+  ) {
     if (open) {
       closePicker();
     } else {
-      openPicker();
+      openPicker(event.currentTarget);
     }
   }
 
-  function handleTriggerKeydown(event: KeyboardEvent) {
-    if (!open && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+  function handleTriggerKeydown(
+    event: KeyboardEvent & { currentTarget: HTMLButtonElement },
+  ) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      openPicker();
+      openPicker(event.currentTarget);
     }
   }
 
@@ -132,13 +132,11 @@
     scrollToActive(listbox);
   }
 
-  function openPicker() {
-    if (trigger) {
-      const { bottom, top } = trigger.getBoundingClientRect();
+  function openPicker(triggerElement: HTMLButtonElement) {
+    const { bottom, top } = triggerElement.getBoundingClientRect();
 
-      roomAbove = top;
-      roomBelow = window.innerHeight - bottom;
-    }
+    roomAbove = top;
+    roomBelow = window.innerHeight - bottom;
 
     query = '';
     open = true;
@@ -152,6 +150,14 @@
     const needed = node.offsetHeight + 16;
 
     placement = roomBelow < needed && roomAbove > roomBelow ? 'above' : 'below';
+  }
+
+  function resetScrollOnQueryChange(node: HTMLElement, _query: string) {
+    return {
+      update() {
+        node.scrollTop = 0;
+      },
+    };
   }
 
   function scrollActiveOnMount(node: HTMLElement) {
@@ -228,6 +234,7 @@
 
       <div
         bind:this={listbox}
+        use:resetScrollOnQueryChange={query}
         use:scrollActiveOnMount
         id={listboxId}
         role="listbox"
