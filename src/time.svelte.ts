@@ -37,6 +37,10 @@ export const startClock = () => {
 export const getTimeZone = () =>
   Intl.DateTimeFormat().resolvedOptions().timeZone;
 
+export const timeZones = [
+  ...new Set(['UTC', ...Intl.supportedValuesOf('timeZone')]),
+];
+
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
 const formatterFor = (zone: string) => {

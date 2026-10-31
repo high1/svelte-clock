@@ -1,10 +1,10 @@
 <script lang="ts">
   import ClockHand from '#src/ClockLine.svelte';
   import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
-  import { createTime, getTimeZone } from '#src/time.svelte';
+  import { createTime } from '#src/time.svelte';
   import { getTestId } from '#src/utilities';
 
-  let { zone = getTimeZone() }: { zone?: string } = $props();
+  let { zone }: { zone: string } = $props();
 
   const time = createTime(() => zone);
 </script>
