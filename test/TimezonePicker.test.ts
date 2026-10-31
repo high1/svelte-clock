@@ -435,3 +435,35 @@ describe('<TimezonePicker /> closed-state trigger', () => {
     expect(onchange).not.toHaveBeenCalled();
   });
 });
+
+describe('<TimezonePicker /> scroll reset', () => {
+  test('resets list scroll when the search query changes', async () => {
+    const zones = Array.from(
+      { length: 40 },
+      (_, index) => `Europe/City${index}`,
+    );
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz-scroll', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+
+    const listbox = screen.getByRole('listbox').element() as HTMLDivElement;
+    listbox.style.maxHeight = '100px';
+    listbox.style.overflowY = 'auto';
+
+    // Ensure the list is actually scrollable.
+    expect(listbox.scrollHeight).toBeGreaterThan(listbox.clientHeight);
+
+    listbox.scrollTop = 200;
+    expect(listbox.scrollTop).toBeGreaterThan(0);
+
+    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    input.value = 'europe';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await tick();
+
+    expect(listbox.scrollTop).toBe(0);
+  });
+});
