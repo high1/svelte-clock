@@ -63,10 +63,6 @@
     options[activeIndex] === undefined ? undefined : optionId(activeIndex),
   );
 
-  function centerActiveOnMount(node: HTMLElement) {
-    scrollToActive(node, true);
-  }
-
   function choose(zone: string) {
     onchange(zone);
     closePicker(true);
@@ -182,29 +178,16 @@
     placement = roomBelow < needed && roomAbove > roomBelow ? 'above' : 'below';
   }
 
-  function scrollToActive(list: HTMLElement | undefined, center = false) {
+  function scrollActiveOnMount(node: HTMLElement) {
+    scrollToActive(node);
+  }
+
+  function scrollToActive(list: HTMLElement | undefined) {
     const option = list?.querySelector<HTMLElement>(
       `[data-index="${activeIndex}"]`,
     );
 
-    if (!list || !option) {
-      return;
-    }
-
-    if (center) {
-      // Set scrollTop directly: scrollIntoView({ block: 'center' }) would also
-      // scroll the page itself. The browser clamps scrollTop to a valid range.
-      const optionTop =
-        option.getBoundingClientRect().top -
-        list.getBoundingClientRect().top -
-        list.clientTop +
-        list.scrollTop;
-
-      list.scrollTop =
-        optionTop - (list.clientHeight - option.offsetHeight) / 2;
-    } else {
-      option.scrollIntoView({ block: 'nearest' });
-    }
+    option?.scrollIntoView({ block: 'nearest' });
   }
 </script>
 
@@ -269,7 +252,7 @@
 
       <div
         bind:this={listbox}
-        use:centerActiveOnMount
+        use:scrollActiveOnMount
         id={listboxId}
         role="listbox"
         aria-label="Timezones"
