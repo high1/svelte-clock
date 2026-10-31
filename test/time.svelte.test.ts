@@ -6,6 +6,7 @@ import {
   getSecondsSinceMidnightIn,
   now,
   startClock,
+  timeZones,
 } from '#src/time.svelte';
 
 describe('getSecondsSinceMidnight', () => {
@@ -263,5 +264,22 @@ describe('startClock', () => {
     );
 
     stopNext();
+  });
+});
+
+describe('timeZones', () => {
+  test('starts with UTC', () => {
+    expect(timeZones[0]).toBe('UTC');
+  });
+
+  test('contains no Etc/GMT entries', () => {
+    expect(timeZones.some((zone) => zone.startsWith('Etc/GMT'))).toBe(false);
+  });
+
+  test('retains the source order of the geographical entries', () => {
+    const source = Intl.supportedValuesOf('timeZone').filter(
+      (zone) => !zone.startsWith('Etc/GMT'),
+    );
+    expect(timeZones.slice(1)).toEqual(source);
   });
 });
