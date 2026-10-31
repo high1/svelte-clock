@@ -2,13 +2,13 @@
   import ClockHands from '#src/ClockHands.svelte';
   import { clockFaceId } from '#src/common';
   import Graduations from '#src/Graduations.svelte';
-  import { getTimeZones, startClock } from '#src/time.svelte';
+  import { getTimeZone, getTimeZones, startClock } from '#src/time.svelte';
   import TimezonePicker from '#src/TimezonePicker.svelte';
   import { getTestId } from '#src/utilities';
 
   $effect(() => startClock());
 
-  let currentZone = $state(Intl.DateTimeFormat().resolvedOptions().timeZone);
+  let currentZone = $state(getTimeZone());
 </script>
 
 <div
