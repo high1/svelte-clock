@@ -27,11 +27,17 @@ describe('<ClockFace /> zone selection', () => {
   test('updates the displayed zone when a new zone is selected', async () => {
     const screen = await render(ClockFace);
 
+    const initialZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const selectedZone =
+      initialZone === 'Pacific/Auckland' ? 'UTC' : 'Pacific/Auckland';
+    const expectedLabel =
+      selectedZone === 'Pacific/Auckland' ? 'Auckland' : 'UTC';
+
     const trigger = screen.getByRole('button');
     await trigger.click();
 
-    await screen.getByText('UTC').click();
+    await screen.getByText(expectedLabel).click();
 
-    expect(trigger.element().textContent).toContain('UTC');
+    expect(trigger.element().textContent).toContain(expectedLabel);
   });
 });
