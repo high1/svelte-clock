@@ -241,7 +241,7 @@ describe('<TimezonePicker /> additional branches', () => {
     trigger.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
     );
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await tick();
 
     expect(document.querySelector('[role="listbox"]')).not.toBeNull();
   });
@@ -257,7 +257,7 @@ describe('<TimezonePicker /> additional branches', () => {
     trigger.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowUp' }),
     );
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await tick();
 
     expect(document.querySelector('[role="listbox"]')).not.toBeNull();
   });
@@ -344,7 +344,7 @@ describe('<TimezonePicker /> additional branches', () => {
     trigger.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'Tab' }),
     );
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await tick();
 
     expect(document.querySelector('[role="listbox"]')).toBeNull();
   });
@@ -390,7 +390,7 @@ describe('<TimezonePicker /> document pointerdown', () => {
     document.body.appendChild(outside);
 
     outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    await tick();
 
     expect(document.querySelector('[role="listbox"]')).toBeNull();
 
