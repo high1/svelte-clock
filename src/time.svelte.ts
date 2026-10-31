@@ -38,7 +38,12 @@ export const getTimeZone = () =>
   Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 export const timeZones = [
-  ...new Set(['UTC', ...Intl.supportedValuesOf('timeZone')]),
+  ...new Set([
+    'UTC',
+    ...Intl.supportedValuesOf('timeZone').filter(
+      (zone) => !zone.startsWith('Etc/GMT'),
+    ),
+  ]),
 ];
 
 const formatters = new Map<string, Intl.DateTimeFormat>();
