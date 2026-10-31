@@ -5,7 +5,7 @@
     id: string;
     onchange: (zone: string) => void;
     value: string;
-    zones: string[];
+    zones: readonly string[];
   }
 
   let { id, onchange, value, zones }: Props = $props();
