@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 
 import {
+  filterTimeZones,
   getTimezoneGroups,
   normalize,
   zoneLabel,
@@ -160,5 +161,30 @@ describe('getTimezoneGroups index assignment', () => {
     expect(
       groups.flatMap((group) => group.items.map((item) => item.index)),
     ).toEqual([0, 1, 2]);
+  });
+});
+
+describe('filterTimeZones', () => {
+  test('keeps UTC and removes Etc/GMT entries', () => {
+    const input = ['Africa/Abidjan', 'Etc/GMT+5', 'Europe/Berlin'];
+    expect(filterTimeZones(input)).toEqual([
+      'UTC',
+      'Africa/Abidjan',
+      'Europe/Berlin',
+    ]);
+  });
+
+  test('deduplicates UTC when already present', () => {
+    const input = ['UTC', 'Europe/Berlin'];
+    expect(filterTimeZones(input)).toEqual(['UTC', 'Europe/Berlin']);
+  });
+
+  test('keeps all entries when none are Etc/GMT', () => {
+    const input = ['Africa/Abidjan', 'Europe/Berlin'];
+    expect(filterTimeZones(input)).toEqual([
+      'UTC',
+      'Africa/Abidjan',
+      'Europe/Berlin',
+    ]);
   });
 });
