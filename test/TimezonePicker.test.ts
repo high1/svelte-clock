@@ -220,3 +220,164 @@ describe('<TimezonePicker />', () => {
     rectSpy.mockRestore();
   });
 });
+
+describe('<TimezonePicker /> additional branches', () => {
+  const zones = [
+    'Africa/Abidjan',
+    'America/New_York',
+    'Asia/Tokyo',
+    'Europe/Berlin',
+    'UTC',
+  ];
+
+  test('opens on ArrowDown when the trigger is focused', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz2', onchange, value: 'UTC', zones },
+    });
+
+    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    trigger.focus();
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+  });
+
+  test('opens on ArrowUp when the trigger is focused', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz3', onchange, value: 'UTC', zones },
+    });
+
+    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    trigger.focus();
+    trigger.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowUp' }),
+    );
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+  });
+
+  test('toggles closed when the trigger is clicked while open', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz4', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+
+    await screen.getByRole('button').click();
+    expect(document.querySelector('[role="listbox"]')).toBeNull();
+  });
+
+  test('move does nothing when there are no options', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz5', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+
+    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    input.value = 'zzzzz';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await tick();
+
+    const before = input.getAttribute('aria-activedescendant');
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
+    );
+    await tick();
+
+    expect(input.getAttribute('aria-activedescendant')).toBe(before);
+  });
+
+  test('Enter does nothing when there are no options', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz6', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+
+    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    input.value = 'zzzzz';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    await tick();
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'Enter' }),
+    );
+    await tick();
+
+    expect(onchange).not.toHaveBeenCalled();
+  });
+
+  test('closes the popup on window resize', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz7', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+
+    window.dispatchEvent(new Event('resize'));
+    await tick();
+
+    expect(document.querySelector('[role="listbox"]')).toBeNull();
+  });
+
+  test('ignores pointerdown outside while closed', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    await render(TimezonePicker, {
+      props: { id: 'tz8', onchange, value: 'UTC', zones },
+    });
+
+    const outside = document.createElement('button');
+    outside.textContent = 'outside';
+    document.body.appendChild(outside);
+
+    outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    await tick();
+
+    expect(document.querySelector('[role="listbox"]')).toBeNull();
+
+    outside.remove();
+  });
+});
+
+describe('<TimezonePicker /> document pointerdown', () => {
+  const zones = [
+    'Africa/Abidjan',
+    'America/New_York',
+    'Asia/Tokyo',
+    'Europe/Berlin',
+    'UTC',
+  ];
+
+  test('closes via document pointerdown when focus stays in the input', async () => {
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz9', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+
+    const outside = document.createElement('div');
+    document.body.appendChild(outside);
+
+    outside.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    expect(document.querySelector('[role="listbox"]')).toBeNull();
+
+    outside.remove();
+  });
+});
