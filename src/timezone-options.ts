@@ -6,14 +6,17 @@ export interface TimezoneGroup {
   region: string;
 }
 
+export function filterTimeZones(zones: readonly string[]): string[] {
+  return [
+    ...new Set(['UTC', ...zones.filter((zone) => !zone.startsWith('Etc/GMT'))]),
+  ];
+}
+
 export function getTimezoneGroups(
   zones: readonly string[],
   query: string,
 ): TimezoneGroup[] {
   const search = normalize(query.trim());
-  if (!search) {
-    return buildGroups(zones);
-  }
 
   const tokens = search.split(' ').filter(Boolean);
 
