@@ -1,4 +1,5 @@
 import { handRotations } from '#src/common';
+import { filterTimeZones } from '#src/timezone-options';
 
 export const getSecondsSinceMidnight = (date: Date = new Date()) =>
   date.getHours() * 3600 +
@@ -37,14 +38,9 @@ export const startClock = () => {
 export const getTimeZone = () =>
   Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-export const timeZones = [
-  ...new Set([
-    'UTC',
-    ...Intl.supportedValuesOf('timeZone').filter(
-      (zone) => !zone.startsWith('Etc/GMT'),
-    ),
-  ]),
-];
+export function getTimeZones(): string[] {
+  return filterTimeZones(Intl.supportedValuesOf('timeZone'));
+}
 
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
