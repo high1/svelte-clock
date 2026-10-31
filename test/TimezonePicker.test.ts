@@ -219,6 +219,16 @@ describe('<TimezonePicker />', () => {
 
     rectSpy.mockRestore();
   });
+
+  test('opens with no options when zones is empty', async () => {
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz', onchange, value: 'UTC', zones: [] },
+    });
+
+    await screen.getByRole('button').click();
+
+    expect(hasText('No matching timezones')).toBe(true);
+  });
 });
 
 describe('<TimezonePicker /> additional branches', () => {
