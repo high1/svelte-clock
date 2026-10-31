@@ -145,3 +145,20 @@ describe('getTimezoneGroups region-aware search', () => {
     expect(flat).toEqual(['Asia/Tokyo']);
   });
 });
+
+describe('getTimezoneGroups index assignment', () => {
+  test('keeps indices aligned with rendered order for unsorted input', () => {
+    const groups = getTimezoneGroups(
+      ['Europe/Berlin', 'Africa/Abidjan', 'Europe/London'],
+      '',
+    );
+
+    expect(groups.map((group) => group.region)).toEqual(['Europe', 'Africa']);
+    expect(
+      groups.flatMap((group) => group.items.map((item) => item.zone)),
+    ).toEqual(['Europe/Berlin', 'Europe/London', 'Africa/Abidjan']);
+    expect(
+      groups.flatMap((group) => group.items.map((item) => item.index)),
+    ).toEqual([0, 1, 2]);
+  });
+});
