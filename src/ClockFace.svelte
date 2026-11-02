@@ -9,12 +9,22 @@
   $effect(() => startClock());
 
   let currentZone = $state(getTimeZone());
+  const zones = getTimeZones();
 </script>
 
 <div
-  class="grid h-screen place-content-center dark:bg-zinc-800"
+  class="grid h-screen grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 dark:bg-zinc-800"
   data-testid={getTestId(clockFaceId)}
 >
+  <TimezonePicker
+    id="clock-timezone"
+    {zones}
+    value={currentZone}
+    onchange={(zone: string) => {
+      currentZone = zone;
+    }}
+    class="w-full max-w-80"
+  />
   <svg viewBox="0 0 200 200" class="h-[95vmin]" role="img">
     <title>Clock</title>
     <image class="size-1/6 translate-5/12" href="logo.svg" />
@@ -26,14 +36,4 @@
       <ClockHands zone={currentZone} />
     </g>
   </svg>
-  <div class="flex justify-center">
-    <TimezonePicker
-      id="clock-timezone"
-      zones={getTimeZones()}
-      value={currentZone}
-      onchange={(zone: string) => {
-        currentZone = zone;
-      }}
-    />
-  </div>
 </div>

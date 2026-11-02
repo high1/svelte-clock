@@ -58,6 +58,8 @@ The search input handles keyboard interaction:
 
 - ArrowDown moves the active index forward.
 - ArrowUp moves it backward.
+- Home moves the active index to the first option.
+- End moves the active index to the last option.
 - Enter selects the active option.
 - Escape closes the popup and restores focus to the trigger.
 - Tab closes the popup without restoring focus.
@@ -68,24 +70,30 @@ The closed trigger also handles ArrowDown and ArrowUp, opening the popup when ei
 
 ## Active-option scrolling
 
-The active option is kept visible using `scrollIntoView({ block: 'nearest' })`.
+Scrolling is performed by adjusting the listbox's `scrollTop` directly. This
+keeps scrolling contained within the listbox and prevents the document from
+scrolling when an option is brought into view.
 
-The same scrolling helper is used in two places:
+When the listbox mounts, the initially active option is centered in the
+visible list. During keyboard navigation, the list scrolls only when the
+active option moves outside the visible area, and only by the amount needed
+to bring it back into view.
 
-1. A mount action scrolls the initially active option into view after the listbox has rendered.
-2. Keyboard navigation scrolls the newly active option into view.
-
-Using `nearest` avoids unnecessarily moving the list when the option is already visible.
+Changing the search query resets the listbox scroll position to the beginning.
 
 ## Popup placement
 
-Before opening the popup, the component measures the available space above and below the trigger.
+After the popup mounts, the component measures the available space above and
+below the trigger, along with the popup's height and margins. The popup opens
+above the trigger when it does not fit below and there is more available space
+above. Otherwise, it opens below.
 
-After the popup mounts, its height is measured. The popup opens above the trigger when it does not fit below and there is more available space above. Otherwise, it opens below.
+When the popup opens above the trigger, the flex direction is reversed. This
+keeps the search input adjacent to the trigger while the options extend
+upward, without changing their DOM order.
 
-When the popup opens above the trigger, the flex direction is reversed. This keeps the search input adjacent to the trigger while the options extend upward, without changing their DOM order.
-
-Placement is calculated when the popup opens. A window resize closes the popup rather than recalculating its position.
+Placement is calculated when the popup opens. A window resize closes the
+popup rather than recalculating its position.
 
 ## Dismissal and selection
 

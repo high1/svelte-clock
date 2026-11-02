@@ -129,6 +129,32 @@ describe('<TimezonePicker />', () => {
     );
   });
 
+  test('Home and End move the active index to the first and last options', async () => {
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz-home-end', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+
+    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'Home' }),
+    );
+    await tick();
+    expect(input.getAttribute('aria-activedescendant')).toBe(
+      'tz-home-end-listbox-option-0',
+    );
+
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', { bubbles: true, key: 'End' }),
+    );
+    await tick();
+    expect(input.getAttribute('aria-activedescendant')).toBe(
+      'tz-home-end-listbox-option-4',
+    );
+  });
+
   test('Enter selects the highlighted option and restores focus', async () => {
     const screen = await render(TimezonePicker, {
       props: { id: 'tz', onchange, value: 'UTC', zones },
@@ -147,6 +173,27 @@ describe('<TimezonePicker />', () => {
     expect(onchange).toHaveBeenCalledWith('UTC');
     expect(hasListbox()).toBe(false);
     expect(document.activeElement).toBe(trigger);
+  });
+
+  test('Enter during IME composition does not commit', async () => {
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz-ime', onchange, value: 'UTC', zones },
+    });
+
+    await screen.getByRole('button').click();
+
+    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    input.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        bubbles: true,
+        isComposing: true,
+        key: 'Enter',
+      }),
+    );
+    await tick();
+
+    expect(onchange).not.toHaveBeenCalled();
+    expect(hasListbox()).toBe(true);
   });
 
   test('clicking an option selects it', async () => {
@@ -337,10 +384,28 @@ describe('<TimezonePicker /> additional branches', () => {
     await screen.getByRole('button').click();
     expect(document.querySelector('[role="listbox"]')).not.toBeNull();
 
+    // A resize that leaves the viewport width unchanged, such as the mobile
+    // keyboard opening, keeps the popup open.
     window.dispatchEvent(new Event('resize'));
     await tick();
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
 
+    // A resize that changes the viewport width closes the popup.
+    const width = window.innerWidth;
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: width + 100,
+      writable: true,
+    });
+    window.dispatchEvent(new Event('resize'));
+    await tick();
     expect(document.querySelector('[role="listbox"]')).toBeNull();
+
+    Object.defineProperty(window, 'innerWidth', {
+      configurable: true,
+      value: width,
+      writable: true,
+    });
   });
 
   test('ignores non-arrow keys on the closed trigger', async () => {
@@ -475,5 +540,67 @@ describe('<TimezonePicker /> scroll reset', () => {
     await tick();
 
     expect(listbox.scrollTop).toBe(0);
+  });
+
+  test('does not scroll the page when opening or navigating the list', async () => {
+    const zones = Array.from(
+      { length: 40 },
+      (_, index) => `Europe/City${index}`,
+    );
+    const onchange = vi.fn<(zone: string) => void>();
+    const screen = await render(TimezonePicker, {
+      props: { id: 'tz-page-scroll', onchange, value: zones[0] ?? '', zones },
+    });
+
+    const spacer = document.createElement('div');
+    spacer.style.height = '2000px';
+    document.body.appendChild(spacer);
+
+    // The test page doesn't load the app's CSS, so give the options a fixed
+    // block layout that makes the list tall enough to scroll.
+    const style = document.createElement('style');
+    style.textContent =
+      '[role="option"] { display: block; height: 30px; width: 100%; }';
+    document.head.appendChild(style);
+
+    const html = document.documentElement;
+    const originalOverflowAnchor = html.style.overflowAnchor;
+
+    try {
+      html.style.overflowAnchor = 'none';
+
+      window.scrollTo(0, 300);
+      const initialScrollY = window.scrollY;
+      expect(initialScrollY).toBe(300);
+
+      // Use click() directly so the test doesn't scroll the trigger into view.
+      const button = screen.getByRole('button').element() as HTMLButtonElement;
+      button.click();
+      await tick();
+
+      const listbox = screen.getByRole('listbox').element() as HTMLDivElement;
+      const input = screen.getByRole('combobox').element() as HTMLInputElement;
+
+      listbox.style.maxHeight = '100px';
+      listbox.style.overflowY = 'auto';
+
+      expect(listbox.scrollHeight).toBeGreaterThan(listbox.clientHeight);
+      expect(window.scrollY).toBe(initialScrollY);
+
+      for (let i = 0; i < 20; i++) {
+        input.dispatchEvent(
+          new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
+        );
+        await tick();
+      }
+
+      expect(listbox.scrollTop).toBeGreaterThan(0);
+      expect(window.scrollY).toBe(initialScrollY);
+    } finally {
+      html.style.overflowAnchor = originalOverflowAnchor;
+      style.remove();
+      spacer.remove();
+      window.scrollTo(0, 0);
+    }
   });
 });

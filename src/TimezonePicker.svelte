@@ -2,18 +2,21 @@
   import { getTimezoneGroups, zoneLabel } from '#src/timezone-options';
 
   interface Props {
+    class?: string;
     id: string;
     onchange: (zone: string) => void;
     value: string;
+    /** Unique IANA timezone identifiers. */
     zones: readonly string[];
   }
 
-  let { id, onchange, value, zones }: Props = $props();
+  let { class: className = '', id, onchange, value, zones }: Props = $props();
 
   let open = $state(false);
   let query = $state('');
   let activeIndex = $state(0);
   let placement = $state<'above' | 'below'>('below');
+  let openWidth = 0;
 
   let root: HTMLDivElement;
   let trigger: HTMLButtonElement;
@@ -68,10 +71,23 @@
       case 'ArrowDown':
       case 'ArrowUp':
         event.preventDefault();
-        move(event.key === 'ArrowDown' ? 1 : -1);
+        moveTo(activeIndex + (event.key === 'ArrowDown' ? 1 : -1));
+        break;
+
+      case 'End':
+        event.preventDefault();
+        moveTo(options.length - 1);
         break;
 
       case 'Enter': {
+        // IMEs use Enter to confirm composition; don't commit a selection then.
+        // Safari can fire compositionend before the Enter keydown, by which
+        // point isComposing is already false; verify on a real IME before
+        // relying on it.
+        if (event.isComposing) {
+          break;
+        }
+
         event.preventDefault();
 
         const zone = options[activeIndex];
@@ -86,6 +102,11 @@
       case 'Escape':
         event.preventDefault();
         closePicker(true);
+        break;
+
+      case 'Home':
+        event.preventDefault();
+        moveTo(0);
         break;
 
       case 'Tab':
@@ -109,12 +130,9 @@
     }
   }
 
-  function move(delta: number) {
+  function moveTo(index: number) {
     // Upper bound first, so an empty list leaves the index at 0.
-    activeIndex = Math.max(
-      Math.min(activeIndex + delta, options.length - 1),
-      0,
-    );
+    activeIndex = Math.max(Math.min(index, options.length - 1), 0);
 
     scrollToActive();
   }
@@ -122,6 +140,7 @@
   function openPicker() {
     query = '';
     activeIndex = Math.max(options.indexOf(value), 0);
+    openWidth = window.innerWidth;
     open = true;
   }
 
@@ -146,18 +165,10 @@
 
   function registerListbox(node: HTMLDivElement) {
     listBox = node;
-
-    const option = getActiveOption();
-
-    if (option) {
-      node.scrollTop +=
-        option.getBoundingClientRect().top -
-        node.getBoundingClientRect().top -
-        (node.clientHeight - option.offsetHeight) / 2;
-    }
+    scrollToActive(true);
   }
 
-  function scrollToActive() {
+  function scrollToActive(center = false) {
     const option = getActiveOption();
 
     if (!option) {
@@ -169,8 +180,10 @@
       option.getBoundingClientRect().top - listBox.getBoundingClientRect().top;
     const bottom = top + option.offsetHeight - listBox.clientHeight;
 
-    // Scroll only the list, and only as far as needed.
-    listBox.scrollTop += Math.min(top, 0) + Math.max(bottom, 0);
+    // Only the list scrolls. Center on open, otherwise move as little as needed.
+    listBox.scrollTop += center
+      ? top - (listBox.clientHeight - option.offsetHeight) / 2
+      : Math.min(top, 0) + Math.max(bottom, 0);
   }
 </script>
 
@@ -178,13 +191,15 @@
 
 <svelte:window
   onresize={() => {
-    closePicker();
+    if (window.innerWidth !== openWidth) {
+      closePicker();
+    }
   }}
 />
 
 <div
   bind:this={root}
-  class="relative w-80 max-w-full"
+  class={`relative${className ? ' ' + className : ''}`}
   onfocusout={(event) => {
     const next = event.relatedTarget;
 
@@ -213,7 +228,7 @@
          while the list grows and shrinks (DOM order is unchanged). -->
     <div
       use:placePopup
-      class={`absolute left-0 z-50 flex w-full rounded border border-zinc-300 bg-white text-zinc-900 shadow-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 ${
+      class={`absolute z-50 flex w-full rounded border border-zinc-300 bg-white text-zinc-900 shadow-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 ${
         placement === 'above'
           ? 'bottom-full mb-1 flex-col-reverse'
           : 'top-full mt-1 flex-col'
@@ -242,17 +257,17 @@
         id={listboxId}
         role="listbox"
         aria-label="Timezones"
-        class="max-h-80 overflow-y-auto p-1"
+        class="max-h-80 overflow-y-auto overscroll-contain p-1"
       >
-        {#each groups as group (group.region)}
-          <div role="group" aria-label={group.region}>
+        {#each groups as { items, region } (region)}
+          <div role="group" aria-label={region}>
             <div
               class="px-3 py-1 text-xs font-semibold text-zinc-500 dark:text-zinc-400"
             >
-              {group.region}
+              {region}
             </div>
 
-            {#each group.items as { index, zone } (zone)}
+            {#each items as { index, zone } (zone)}
               <button
                 id={optionId(index)}
                 data-index={index}
@@ -263,12 +278,13 @@
                 onpointerdown={(event) => {
                   event.preventDefault();
                 }}
-                onpointermove={() => (activeIndex = index)}
                 onclick={() => {
                   choose(zone);
                 }}
                 class={`flex w-full cursor-pointer items-center justify-between rounded px-3 py-2 text-left text-sm ${
-                  index === activeIndex ? 'bg-blue-100 dark:bg-zinc-700' : ''
+                  index === activeIndex
+                    ? 'bg-zinc-200 ring-2 ring-zinc-900/40 ring-inset dark:bg-zinc-700 dark:ring-zinc-100/40'
+                    : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'
                 }`}
               >
                 <span>{zoneLabel(zone)}</span>

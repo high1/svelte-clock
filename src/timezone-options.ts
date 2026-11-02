@@ -63,8 +63,22 @@ export function zoneRegion(zone: string): string {
 }
 
 function buildGroups(zones: readonly string[]): TimezoneGroup[] {
+  const byRegion = new Map<string, string[]>();
+
+  for (const zone of zones) {
+    const region = zoneRegion(zone);
+    const regionZones = byRegion.get(region);
+
+    if (regionZones) {
+      regionZones.push(zone);
+    } else {
+      byRegion.set(region, [zone]);
+    }
+  }
+
   let index = 0;
-  return Array.from(Map.groupBy(zones, zoneRegion), ([region, items]) => ({
+
+  return Array.from(byRegion, ([region, items]) => ({
     items: items.map((zone) => ({ index: index++, zone })),
     region,
   }));
