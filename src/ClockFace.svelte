@@ -2,16 +2,29 @@
   import ClockHands from '#src/ClockHands.svelte';
   import { clockFaceId } from '#src/common';
   import Graduations from '#src/Graduations.svelte';
-  import { startClock } from '#src/time.svelte';
+  import { getTimeZone, getTimeZones, startClock } from '#src/time.svelte';
+  import TimezonePicker from '#src/TimezonePicker.svelte';
   import { getTestId } from '#src/utilities';
 
   $effect(() => startClock());
+
+  let currentZone = $state(getTimeZone());
+  const zones = getTimeZones();
 </script>
 
 <div
-  class="grid h-screen place-content-center dark:bg-zinc-800"
+  class="grid h-screen grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 dark:bg-zinc-800"
   data-testid={getTestId(clockFaceId)}
 >
+  <TimezonePicker
+    id="clock-timezone"
+    {zones}
+    value={currentZone}
+    onchange={(zone: string) => {
+      currentZone = zone;
+    }}
+    class="w-full max-w-80"
+  />
   <svg viewBox="0 0 200 200" class="h-[95vmin]" role="img">
     <title>Clock</title>
     <image class="size-1/6 translate-5/12" href="logo.svg" />
@@ -20,7 +33,7 @@
       <Graduations />
     </g>
     <g class="translate-1/2">
-      <ClockHands />
+      <ClockHands zone={currentZone} />
     </g>
   </svg>
 </div>

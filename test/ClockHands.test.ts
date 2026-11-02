@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-svelte';
 
 import ClockHands from '#src/ClockHands.svelte';
 import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
-import { now } from '#src/time.svelte';
+import { getTimeZone, now } from '#src/time.svelte';
 
 // `now` is a module-level singleton, so every test starts from a known clock
 // rather than inheriting whatever the previous test left behind.
@@ -58,7 +58,7 @@ describe('<ClockHands />', () => {
     [12, 'rotate(0)'],
   ])('renders hour %i as %s', async (hours, transform) => {
     setTime(hours);
-    const screen = await render(ClockHands);
+    const screen = await render(ClockHands, { props: { zone: getTimeZone() } });
     expect(
       screen.getByTestId(clockHourId).element().getAttribute('transform'),
     ).toBe(transform);
@@ -68,7 +68,7 @@ describe('<ClockHands />', () => {
     'renders minute %i as %s',
     async (minutes, transform) => {
       setTime(0, minutes);
-      const screen = await render(ClockHands);
+      const screen = await render(ClockHands, { props: { zone: 'UTC' } });
       expect(
         screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
       ).toBe(transform);
@@ -79,7 +79,7 @@ describe('<ClockHands />', () => {
     'renders second %i as %s',
     async (seconds, transform) => {
       setTime(0, 0, seconds);
-      const screen = await render(ClockHands);
+      const screen = await render(ClockHands, { props: { zone: 'UTC' } });
       expect(
         screen.getByTestId(clockSecondId).element().getAttribute('transform'),
       ).toBe(transform);

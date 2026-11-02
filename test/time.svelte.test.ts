@@ -4,6 +4,8 @@ import { handRotations } from '#src/common';
 import {
   getSecondsSinceMidnight,
   getSecondsSinceMidnightIn,
+  getTimeZone,
+  getTimeZones,
   now,
   startClock,
 } from '#src/time.svelte';
@@ -263,5 +265,31 @@ describe('startClock', () => {
     );
 
     stopNext();
+  });
+});
+
+describe('timeZones', () => {
+  test('starts with UTC', () => {
+    expect(getTimeZones()[0]).toBe('UTC');
+  });
+
+  test('contains no Etc/GMT entries', () => {
+    expect(getTimeZones().some((zone) => zone.startsWith('Etc/GMT'))).toBe(
+      false,
+    );
+  });
+
+  test('retains the source order of the geographical entries', () => {
+    const source = Intl.supportedValuesOf('timeZone').filter(
+      (zone) => !zone.startsWith('Etc/GMT'),
+    );
+    expect(getTimeZones().slice(1)).toEqual(source);
+  });
+});
+
+describe('getTimeZone', () => {
+  test('returns the runtime timezone as a string', () => {
+    expect(typeof getTimeZone()).toBe('string');
+    expect(getTimeZone().length).toBeGreaterThan(0);
   });
 });
