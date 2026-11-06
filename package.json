@@ -32,7 +32,7 @@
     "tailwindcss": "4.3.4",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
-    "vite": "8.3.5",
+    "vite": "8.3.6",
     "vite-plugin-checker": "0.14.5",
     "vitest": "5.1.0",
     "vitest-browser-svelte": "3.1.0"
@@ -41,7 +41,7 @@
     "packageManager": {
       "name": "pnpm",
       "onFail": "download",
-      "version": "12.16.1"
+      "version": "12.18.0"
     },
     "runtime": {
       "name": "node",
