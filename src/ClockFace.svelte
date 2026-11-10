@@ -2,6 +2,7 @@
   import ClockHands from '#src/ClockHands.svelte';
   import { clockFaceId } from '#src/common';
   import Graduations from '#src/Graduations.svelte';
+  import ThemeToggle from '#src/ThemeToggle.svelte';
   import { getTimeZone, getTimeZones, startClock } from '#src/time.svelte';
   import TimezonePicker from '#src/TimezonePicker.svelte';
   import { getTestId } from '#src/utilities';
@@ -13,7 +14,7 @@
 </script>
 
 <div
-  class="grid h-screen grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 dark:bg-zinc-800"
+  class="grid h-dvh grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 dark:bg-zinc-800"
   data-testid={getTestId(clockFaceId)}
 >
   <TimezonePicker
@@ -25,6 +26,7 @@
     }}
     class="w-full max-w-80"
   />
+  <ThemeToggle />
   <svg viewBox="0 0 200 200" class="h-[95vmin]" role="img">
     <title>Clock</title>
     <image class="size-1/6 translate-5/12" href="logo.svg" />
