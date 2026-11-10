@@ -3,3 +3,9 @@
 @theme {
   --color-svelte: #ff3e00;
 }
+
+@custom-variant dark {
+  &:where(.dark, .dark *) {
+    @slot;
+  }
+}

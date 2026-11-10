@@ -217,7 +217,7 @@
     aria-controls={open ? listboxId : undefined}
     onclick={handleTriggerClick}
     onkeydown={handleTriggerKeydown}
-    class="flex w-full min-w-0 items-center justify-between gap-3 rounded border border-zinc-300 bg-white px-3 py-2 text-left text-zinc-900 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100"
+    class="flex w-full min-w-0 cursor-pointer items-center justify-between gap-3 rounded border border-zinc-300 px-3 py-2 text-left text-zinc-900 dark:border-zinc-600 dark:text-zinc-100"
   >
     <span class="truncate">{zoneLabel(value)}</span>
     <span aria-hidden="true">{open ? '▴' : '▾'}</span>

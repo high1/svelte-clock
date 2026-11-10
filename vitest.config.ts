@@ -15,6 +15,9 @@ export default defineConfig((env) =>
           provider: playwright(),
           screenshotFailures: false,
         },
+        coverage: {
+          exclude: ['**/*.svg'],
+        },
       },
     }),
   ),
