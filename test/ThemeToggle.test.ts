@@ -14,7 +14,10 @@ function mockMediaQuery(initialMatches = false) {
       _type: string,
       cb: EventListenerOrEventListenerObject,
     ) => {
-      listeners.set(MEDIA_QUERY, cb as (e: MediaQueryListEvent) => void);
+      const listener = typeof cb === 'function' ? cb : undefined;
+      if (listener) {
+        listeners.set(MEDIA_QUERY, listener);
+      }
     },
     addListener: () => undefined,
     dispatchEvent: () => false,

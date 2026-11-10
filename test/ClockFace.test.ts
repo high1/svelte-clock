@@ -33,13 +33,11 @@ describe('<ClockFace /> zone selection', () => {
     const expectedLabel =
       selectedZone === 'Pacific/Auckland' ? 'Auckland' : 'UTC';
 
-    const trigger = document.getElementById(
-      'clock-timezone',
-    ) as HTMLButtonElement;
-    trigger.click();
+    const trigger = document.getElementById('clock-timezone');
+    trigger?.click();
 
     await screen.getByText(expectedLabel).click();
 
-    expect(trigger.textContent).toContain(expectedLabel);
+    expect(trigger?.textContent ?? '').toContain(expectedLabel);
   });
 });

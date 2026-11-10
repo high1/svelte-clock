@@ -40,10 +40,10 @@ describe('<TimezonePicker />', () => {
     });
 
     const triggerLocator = screen.getByRole('button');
-    const trigger = triggerLocator.element() as HTMLButtonElement;
+    const trigger = triggerLocator.element();
     await triggerLocator.click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    const input = screen.getByRole('combobox').element();
     input.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'Escape' }),
     );
@@ -83,7 +83,7 @@ describe('<TimezonePicker />', () => {
     const triggerLocator = screen.getByRole('button');
     await triggerLocator.click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    const input = screen.getByRole('combobox').element();
     input.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'Tab' }),
     );
@@ -100,7 +100,7 @@ describe('<TimezonePicker />', () => {
     const triggerLocator = screen.getByRole('button');
     await triggerLocator.click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    const input = screen.getByRole('combobox').element();
 
     input.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
@@ -136,7 +136,7 @@ describe('<TimezonePicker />', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    const input = screen.getByRole('combobox').element();
 
     input.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'Home' }),
@@ -161,10 +161,10 @@ describe('<TimezonePicker />', () => {
     });
 
     const triggerLocator = screen.getByRole('button');
-    const trigger = triggerLocator.element() as HTMLButtonElement;
+    const trigger = triggerLocator.element();
     await triggerLocator.click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    const input = screen.getByRole('combobox').element();
     input.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'Enter' }),
     );
@@ -182,7 +182,7 @@ describe('<TimezonePicker />', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
+    const input = screen.getByRole('combobox').element();
     input.dispatchEvent(
       new KeyboardEvent('keydown', {
         bubbles: true,
@@ -215,8 +215,12 @@ describe('<TimezonePicker />', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
-    input.value = 'tok';
+    const input = screen.getByRole('combobox').element();
+
+    if (input instanceof HTMLInputElement) {
+      input.value = 'tok';
+    }
+
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
 
@@ -231,8 +235,12 @@ describe('<TimezonePicker />', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
-    input.value = 'zzzzz';
+    const input = screen.getByRole('combobox').element();
+
+    if (input instanceof HTMLInputElement) {
+      input.value = 'zzzzz';
+    }
+
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
 
@@ -245,7 +253,7 @@ describe('<TimezonePicker />', () => {
     });
 
     const triggerLocator = screen.getByRole('button');
-    const trigger = triggerLocator.element() as HTMLButtonElement;
+    const trigger = triggerLocator.element();
     const vh = window.innerHeight;
     const rectSpy = vi.spyOn(trigger, 'getBoundingClientRect').mockReturnValue({
       bottom: vh - 5,
@@ -293,7 +301,7 @@ describe('<TimezonePicker /> additional branches', () => {
       props: { id: 'tz2', onchange, value: 'UTC', zones },
     });
 
-    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    const trigger = screen.getByRole('button').element();
     trigger.focus();
     trigger.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowDown' }),
@@ -309,7 +317,7 @@ describe('<TimezonePicker /> additional branches', () => {
       props: { id: 'tz3', onchange, value: 'UTC', zones },
     });
 
-    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    const trigger = screen.getByRole('button').element();
     trigger.focus();
     trigger.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'ArrowUp' }),
@@ -340,8 +348,12 @@ describe('<TimezonePicker /> additional branches', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
-    input.value = 'zzzzz';
+    const input = screen.getByRole('combobox').element();
+
+    if (input instanceof HTMLInputElement) {
+      input.value = 'zzzzz';
+    }
+
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
 
@@ -362,8 +374,12 @@ describe('<TimezonePicker /> additional branches', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
-    input.value = 'zzzzz';
+    const input = screen.getByRole('combobox').element();
+
+    if (input instanceof HTMLInputElement) {
+      input.value = 'zzzzz';
+    }
+
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
 
@@ -414,7 +430,7 @@ describe('<TimezonePicker /> additional branches', () => {
       props: { id: 'tz10', onchange, value: 'UTC', zones },
     });
 
-    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    const trigger = screen.getByRole('button').element();
     trigger.focus();
     trigger.dispatchEvent(
       new KeyboardEvent('keydown', { bubbles: true, key: 'Tab' }),
@@ -490,12 +506,16 @@ describe('<TimezonePicker /> closed-state trigger', () => {
 
     await screen.getByRole('button').click();
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
-    input.value = 'tok';
+    const input = screen.getByRole('combobox').element();
+
+    if (input instanceof HTMLInputElement) {
+      input.value = 'tok';
+    }
+
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
 
-    const trigger = screen.getByRole('button').element() as HTMLButtonElement;
+    const trigger = screen.getByRole('button').element();
     const activeBefore = input.getAttribute('aria-activedescendant');
 
     trigger.focus();
@@ -505,7 +525,7 @@ describe('<TimezonePicker /> closed-state trigger', () => {
     await tick();
 
     expect(document.querySelector('[role="listbox"]')).not.toBeNull();
-    expect(input.value).toBe('tok');
+    expect(input instanceof HTMLInputElement ? input.value : '').toBe('tok');
     expect(input.getAttribute('aria-activedescendant')).toBe(activeBefore);
     expect(onchange).not.toHaveBeenCalled();
   });
@@ -524,7 +544,7 @@ describe('<TimezonePicker /> scroll reset', () => {
 
     await screen.getByRole('button').click();
 
-    const listbox = screen.getByRole('listbox').element() as HTMLDivElement;
+    const listbox = screen.getByRole('listbox').element();
     listbox.style.maxHeight = '100px';
     listbox.style.overflowY = 'auto';
 
@@ -534,8 +554,12 @@ describe('<TimezonePicker /> scroll reset', () => {
     listbox.scrollTop = 200;
     expect(listbox.scrollTop).toBeGreaterThan(0);
 
-    const input = screen.getByRole('combobox').element() as HTMLInputElement;
-    input.value = 'europe';
+    const input = screen.getByRole('combobox').element();
+
+    if (input instanceof HTMLInputElement) {
+      input.value = 'europe';
+    }
+
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
 
@@ -574,12 +598,14 @@ describe('<TimezonePicker /> scroll reset', () => {
       expect(initialScrollY).toBe(300);
 
       // Use click() directly so the test doesn't scroll the trigger into view.
-      const button = screen.getByRole('button').element() as HTMLButtonElement;
-      button.click();
+      const button = screen.getByRole('button').element();
+      if (button instanceof HTMLButtonElement) {
+        button.click();
+      }
       await tick();
 
-      const listbox = screen.getByRole('listbox').element() as HTMLDivElement;
-      const input = screen.getByRole('combobox').element() as HTMLInputElement;
+      const listbox = screen.getByRole('listbox').element();
+      const input = screen.getByRole('combobox').element();
 
       listbox.style.maxHeight = '100px';
       listbox.style.overflowY = 'auto';
