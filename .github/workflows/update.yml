@@ -45,7 +45,7 @@ jobs:
             pnpm test
             pnpm build
             for tz in America/New_York Europe/Berlin Australia/Sydney; do
-              TZ=$tz pnpm vitest run test/time.svelte.test.ts
+              TZ=$tz pnpm vitest run test/time.test.ts
             done
 
       - name: Notify on failure 🔔
