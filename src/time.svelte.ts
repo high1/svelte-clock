@@ -1,4 +1,10 @@
-import { handRotations } from '#src/common';
+import {
+  hourFraction,
+  minuteFraction,
+  rotate,
+  secondFraction,
+  subsecondFraction,
+} from '#src/common';
 import { filterTimeZones } from '#src/timezone-options';
 
 export const getSecondsSinceMidnight = (date: Date = new Date()) =>
@@ -11,14 +17,27 @@ export const getSecondsSinceMidnight = (date: Date = new Date()) =>
 // drives them all instead of one loop per clock.
 export const now = $state({ value: Date.now() });
 
-const subscribers = new Set<symbol>();
+const subscribers = new Map<symbol, () => void>();
+// Single shared rAF loop; runs while any subscriber remains.
 let frame = 0;
 
-export const startClock = () => {
-  const subscriber = Symbol();
-  subscribers.add(subscriber);
+// Each call adds a subscriber; idempotent per owner (same owner → same cleanup).
+// Pair each startClock() with one cleanup call.
+export const startClock = (owner: symbol) => {
+  const existing = subscribers.get(owner);
+  if (existing) {
+    return existing;
+  }
 
-  if (subscribers.size === 1) {
+  const cleanup = () => {
+    if (!subscribers.has(owner)) return;
+    subscribers.delete(owner);
+    if (subscribers.size === 0) {
+      cancelAnimationFrame(frame);
+    }
+  };
+
+  if (subscribers.size === 0) {
     const loop = () => {
       now.value = Date.now();
       frame = requestAnimationFrame(loop);
@@ -26,13 +45,9 @@ export const startClock = () => {
     frame = requestAnimationFrame(loop);
   }
 
-  return () => {
-    if (!subscribers.delete(subscriber)) return;
+  subscribers.set(owner, cleanup);
 
-    if (subscribers.size === 0) {
-      cancelAnimationFrame(frame);
-    }
-  };
+  return cleanup;
 };
 
 export const getTimeZone = () =>
@@ -75,6 +90,7 @@ export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
     Number(parts.get('hour')) * 3600 +
     Number(parts.get('minute')) * 60 +
     Number(parts.get('second')) +
+    // Normalize ms to [0, 1000) so negative timestamps work.
     (((timestamp % 1000) + 1000) % 1000) / 1000
   );
 };
@@ -82,20 +98,23 @@ export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
 // One clock in `zone`: the shared instant as hand rotations.
 export const createTime = (zone: () => string) => {
   const clock = $derived(getSecondsSinceMidnightIn(now.value, zone()));
-  const rotations = $derived.by(() => handRotations(clock));
+  const hour = $derived(rotate(hourFraction(clock), 1));
+  const minute = $derived(rotate(minuteFraction(clock), 1));
+  const second = $derived(rotate(secondFraction(clock), 1));
+  const subsecond = $derived(rotate(subsecondFraction(clock), 0));
 
   return {
     get hour() {
-      return rotations.hour;
+      return hour;
     },
     get minute() {
-      return rotations.minute;
+      return minute;
     },
     get second() {
-      return rotations.second;
+      return second;
     },
     get subsecond() {
-      return rotations.subsecond;
+      return subsecond;
     },
   };
 };

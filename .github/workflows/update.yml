@@ -47,3 +47,15 @@ jobs:
             for tz in America/New_York Europe/Berlin Australia/Sydney; do
               TZ=$tz pnpm vitest run test/time.svelte.test.ts
             done
+
+      - name: Notify on failure 🔔
+        if: failure()
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            github.rest.issues.create({
+              body: 'The weekly dependency update failed. Check the workflow run for details: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Dependency update failed',
+            });

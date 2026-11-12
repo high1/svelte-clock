@@ -15,15 +15,23 @@
 
   let isDark = $state(false);
   const title = $derived(`Switch to ${isDark ? 'light' : 'dark'} mode`);
-  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  // Lazily created on first use (browser only — never during SSR).
+  let mediaQuery: MediaQueryList | undefined;
+
+  function getMediaQuery() {
+    mediaQuery ??= window.matchMedia('(prefers-color-scheme: dark)');
+    return mediaQuery;
+  }
 
   onMount(() => {
+    const mq = getMediaQuery();
     isDark = document.documentElement.classList.contains('dark');
 
     const savedTheme = () => localStorage.getItem('theme');
 
     const currentSaved = savedTheme();
-    if (currentSaved && (currentSaved === 'dark') === mediaQuery.matches) {
+    if (currentSaved && (currentSaved === 'dark') === mq.matches) {
       localStorage.removeItem('theme');
     }
 
@@ -35,15 +43,16 @@
       }
     };
 
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
+    mq.addEventListener('change', handleSystemThemeChange);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+      mq.removeEventListener('change', handleSystemThemeChange);
     };
   });
 
   function toggleTheme() {
-    const systemWantsDark = mediaQuery.matches;
+    const mq = getMediaQuery();
+    const systemWantsDark = mq.matches;
 
     isDark = !isDark;
 
