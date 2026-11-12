@@ -1,7 +1,13 @@
 import { untrack } from 'svelte';
 
 import { hourFraction, minuteFraction } from '#src/common';
-import { getSecondsSinceMidnightIn, now } from '#src/time.svelte';
+import {
+  getSecondsSinceMidnightIn,
+  getTimezoneOffset,
+  now,
+} from '#src/time.svelte';
+
+export const ANIMATION_DURATION = 500;
 
 /**
  * Animates hour/minute fractions toward their targets when `changeKey` changes.
@@ -13,7 +19,7 @@ import { getSecondsSinceMidnightIn, now } from '#src/time.svelte';
 export function createClockAnimation(
   changeKey: () => string,
   targets: { hour: () => number; minute: () => number },
-  duration = 250,
+  duration = ANIMATION_DURATION,
 ) {
   let hourDelta = $state(0);
   let minuteDelta = $state(0);
@@ -29,10 +35,12 @@ export function createClockAnimation(
     if (oldZone === undefined || oldZone === newZone) return;
 
     const nowValue = untrack(() => now.value);
+    const forward =
+      getTimezoneOffset(nowValue, newZone) >=
+      getTimezoneOffset(nowValue, oldZone);
+
     const oldSec = getSecondsSinceMidnightIn(nowValue, oldZone);
     const newSec = getSecondsSinceMidnightIn(nowValue, newZone);
-    const diff = (((newSec - oldSec) % 86400) + 86400) % 86400;
-    const forward = diff <= 43200;
 
     hourDelta = directionalDelta(
       hourFraction(oldSec),

@@ -2,6 +2,7 @@ import { tick } from 'svelte';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 
+import { ANIMATION_DURATION } from '#src/clock-animation.svelte';
 import ClockHands from '#src/ClockHands.svelte';
 import { clockHourId, clockMinuteId, clockSecondId } from '#src/common';
 import { getTimeZone, now } from '#src/time.svelte';
@@ -90,6 +91,10 @@ describe('<ClockHands />', () => {
 
 describe('<ClockHands /> zone change animation', () => {
   const start = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
+  const mid = ANIMATION_DURATION / 5;
+
+  const angleOf = (el: Element) =>
+    Number(el.getAttribute('transform')?.split('(')[1]?.split(')')[0]);
 
   test('animates the hour hand when the zone changes', async () => {
     now.value = start;
@@ -104,7 +109,7 @@ describe('<ClockHands /> zone change animation', () => {
     await tick();
 
     // Mid-animation: the hand is between the old and the new position.
-    now.value = start + 100;
+    now.value = start + mid;
     await tick();
     expect(
       screen.getByTestId(clockHourId).element().getAttribute('transform'),
@@ -114,7 +119,7 @@ describe('<ClockHands /> zone change animation', () => {
     ).not.toBe('rotate(30)');
 
     // Animation complete.
-    now.value = start + 300;
+    now.value = start + ANIMATION_DURATION;
     await tick();
     expect(
       screen.getByTestId(clockHourId).element().getAttribute('transform'),
@@ -133,7 +138,7 @@ describe('<ClockHands /> zone change animation', () => {
     await screen.rerender({ zone: 'Asia/Kathmandu' });
     await tick();
 
-    now.value = start + 100;
+    now.value = start + mid;
     await tick();
     expect(
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
@@ -142,11 +147,12 @@ describe('<ClockHands /> zone change animation', () => {
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
     ).not.toBe('rotate(270)');
 
-    now.value = start + 300;
+    now.value = start + ANIMATION_DURATION;
     await tick();
-    expect(
-      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
-    ).toBe('rotate(270)');
+    expect(angleOf(screen.getByTestId(clockMinuteId).element())).toBeCloseTo(
+      270,
+      0,
+    );
   });
 
   test('does not animate when switching between zones with the same offset', async () => {
@@ -164,11 +170,33 @@ describe('<ClockHands /> zone change animation', () => {
     await screen.rerender({ zone: 'Europe/Berlin' });
     await tick();
 
-    now.value = start + 300;
+    now.value = start + ANIMATION_DURATION;
     await tick();
     expect(
       screen.getByTestId(clockHourId).element().getAttribute('transform'),
     ).toBe('rotate(30)');
+  });
+
+  test('animates forward across zones more than 12h apart', async () => {
+    // LA (UTC−8 in January) → Sydney (UTC+11): Sydney is ahead,
+    // the hands should advance, not retreat.
+    now.value = Date.UTC(2020, 0, 1, 12, 0, 0, 0); // 04:00 in LA, 23:00 in Sydney
+    const screen = await render(ClockHands, {
+      props: { zone: 'America/Los_Angeles' },
+    });
+
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(120)');
+
+    await screen.rerender({ zone: 'Australia/Sydney' });
+    await tick();
+
+    now.value = Date.UTC(2020, 0, 1, 12, 0, 0, ANIMATION_DURATION);
+    await tick();
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(330)');
   });
 
   test('redirects a minute-hand animation mid-flight', async () => {
@@ -180,7 +208,7 @@ describe('<ClockHands /> zone change animation', () => {
     await tick();
 
     // Mid-flight: minute hand is partway to 270°.
-    now.value = start + 100;
+    now.value = start + mid;
     await tick();
     expect(
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
@@ -190,11 +218,12 @@ describe('<ClockHands /> zone change animation', () => {
     await screen.rerender({ zone: 'Asia/Tokyo' });
     await tick();
 
-    now.value = start + 400;
+    now.value = start + mid + ANIMATION_DURATION;
     await tick();
-    expect(
-      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
-    ).toBe('rotate(0)');
+    expect(angleOf(screen.getByTestId(clockMinuteId).element())).toBeCloseTo(
+      0,
+      0,
+    );
   });
 
   test('redirects the animation when the zone changes mid-animation', async () => {
@@ -206,7 +235,7 @@ describe('<ClockHands /> zone change animation', () => {
     await tick();
 
     // Berlin is on the hour — the minute hand does not move.
-    now.value = start + 100;
+    now.value = start + mid;
     await tick();
     expect(
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
@@ -216,10 +245,11 @@ describe('<ClockHands /> zone change animation', () => {
     await screen.rerender({ zone: 'Asia/Kathmandu' });
     await tick();
 
-    now.value = start + 400;
+    now.value = start + mid + ANIMATION_DURATION;
     await tick();
-    expect(
-      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
-    ).toBe('rotate(270)');
+    expect(angleOf(screen.getByTestId(clockMinuteId).element())).toBeCloseTo(
+      270,
+      0,
+    );
   });
 });

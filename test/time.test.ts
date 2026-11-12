@@ -11,6 +11,7 @@ import {
   getSecondsSinceMidnight,
   getSecondsSinceMidnightIn,
   getTimeZone,
+  getTimezoneOffset,
   getTimeZones,
 } from '#src/time.svelte';
 
@@ -177,6 +178,25 @@ describe('getSecondsSinceMidnightIn', () => {
 
     expect(getSecondsSinceMidnightIn(before, 'Europe/Berlin')).toBe(10799);
     expect(getSecondsSinceMidnightIn(after, 'Europe/Berlin')).toBe(7200);
+  });
+});
+
+describe('getTimezoneOffset', () => {
+  const winter = Date.UTC(2020, 0, 15, 12, 0, 0, 0);
+  const summer = Date.UTC(2020, 6, 15, 12, 0, 0, 0);
+
+  test.each([
+    ['UTC', 'UTC', winter, 0],
+    ['Europe/Berlin (winter)', 'Europe/Berlin', winter, 3600],
+    ['Europe/Berlin (summer)', 'Europe/Berlin', summer, 7200],
+    ['America/New_York (winter)', 'America/New_York', winter, -18_000],
+    ['America/New_York (summer)', 'America/New_York', summer, -14_400],
+    ['Australia/Sydney (summer)', 'Australia/Sydney', winter, 39_600],
+    ['Australia/Sydney (winter)', 'Australia/Sydney', summer, 36_000],
+    ['Asia/Kolkata', 'Asia/Kolkata', winter, 19_800],
+    ['Asia/Kathmandu', 'Asia/Kathmandu', winter, 20_700],
+  ])('%s', (_name, zone, timestamp, expected) => {
+    expect(getTimezoneOffset(timestamp, zone)).toBe(expected);
   });
 });
 

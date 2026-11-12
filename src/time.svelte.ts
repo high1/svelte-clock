@@ -63,12 +63,15 @@ const formatterFor = (zone: string) => {
   if (existing) return existing;
 
   const formatter = new Intl.DateTimeFormat(undefined, {
+    day: '2-digit',
     hour: '2-digit',
     hourCycle: 'h23',
     minute: '2-digit',
+    month: '2-digit',
     numberingSystem: 'latn',
     second: '2-digit',
     timeZone: zone,
+    year: 'numeric',
   });
   formatters.set(zone, formatter);
   return formatter;
@@ -80,6 +83,22 @@ const partsIn = (timestamp: number, zone: string) =>
       .formatToParts(new Date(timestamp))
       .map((part) => [part.type, part.value] as const),
   );
+
+/** UTC offset of `zone` at `timestamp`, in seconds. */
+export const getTimezoneOffset = (timestamp: number, zone: string) => {
+  const parts = partsIn(timestamp, zone);
+
+  const asUTC = Date.UTC(
+    Number(parts.get('year')),
+    Number(parts.get('month')) - 1,
+    Number(parts.get('day')),
+    Number(parts.get('hour')),
+    Number(parts.get('minute')),
+    Number(parts.get('second')),
+  );
+
+  return Math.floor((asUTC - timestamp) / 1000);
+};
 
 // Wall-clock seconds since local midnight in `zone`.
 export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
