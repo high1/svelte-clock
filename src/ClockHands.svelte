@@ -14,8 +14,8 @@
 
   const time = createTime(() => zone);
   const animation = createClockAnimation(() => zone, {
-    hour: () => time.hourFraction,
-    minute: () => time.minuteFraction,
+    hour: () => time.hour,
+    minute: () => time.minute,
   });
 </script>
 
@@ -32,13 +32,13 @@
   data-testid={getTestId(clockMinuteId)}
 />
 <ClockHand
-  transform={time.second}
+  transform={rotate(time.second, 1)}
   class="stroke-svelte stroke-2"
   length={76}
   data-testid={getTestId(clockSecondId)}
 />
 <ClockHand
-  transform={time.subsecond}
+  transform={rotate(time.subsecond, 0)}
   class="stroke-zinc-200 stroke-3 dark:stroke-zinc-600"
   length={82}
   data-testid={getTestId('clock-subsecond')}

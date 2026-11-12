@@ -1,7 +1,6 @@
 import {
   hourFraction,
   minuteFraction,
-  rotate,
   secondFraction,
   subsecondFraction,
 } from '#src/common';
@@ -98,23 +97,23 @@ export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
 // One clock in `zone`: the shared instant as hand rotations.
 export const createTime = (zone: () => string) => {
   const clock = $derived(getSecondsSinceMidnightIn(now.value, zone()));
-  const hourFractionValue = $derived(hourFraction(clock));
-  const minuteFractionValue = $derived(minuteFraction(clock));
-  const secondFractionValue = $derived(secondFraction(clock));
-  const subsecondFractionValue = $derived(subsecondFraction(clock));
+  const hour = $derived(hourFraction(clock));
+  const minute = $derived(minuteFraction(clock));
+  const second = $derived(secondFraction(clock));
+  const subsecond = $derived(subsecondFraction(clock));
 
   return {
-    get hourFraction() {
-      return hourFractionValue;
+    get hour() {
+      return hour;
     },
-    get minuteFraction() {
-      return minuteFractionValue;
+    get minute() {
+      return minute;
     },
     get second() {
-      return rotate(secondFractionValue, 1);
+      return second;
     },
     get subsecond() {
-      return rotate(subsecondFractionValue, 0);
+      return subsecond;
     },
   };
 };
