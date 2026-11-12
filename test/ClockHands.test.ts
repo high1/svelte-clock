@@ -86,3 +86,62 @@ describe('<ClockHands />', () => {
     },
   );
 });
+
+describe('<ClockHands /> zone change animation', () => {
+  test('animates the hour hand when the zone changes', async () => {
+    now.value = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
+    const screen = await render(ClockHands, { props: { zone: 'UTC' } });
+
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(0)');
+
+    // Europe/Berlin is UTC+1, so the hour hand moves from 0° to 30°.
+    await screen.rerender({ zone: 'Europe/Berlin' });
+
+    // Wait for the 500ms animation to finish (plus a frame of buffer).
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(30)');
+  });
+
+  test('animates the minute hand when the zone changes', async () => {
+    now.value = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
+    const screen = await render(ClockHands, { props: { zone: 'UTC' } });
+
+    expect(
+      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
+    ).toBe('rotate(0)');
+
+    // Asia/Kathmandu is UTC+5:45, so the minute hand moves from 0° to 270°.
+    await screen.rerender({ zone: 'Asia/Kathmandu' });
+
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    expect(
+      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
+    ).toBe('rotate(270)');
+  });
+
+  test('redirects the animation when the zone changes mid-animation', async () => {
+    now.value = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
+    const screen = await render(ClockHands, { props: { zone: 'UTC' } });
+
+    // Start animating toward Europe/Berlin (+1 hour).
+    await screen.rerender({ zone: 'Europe/Berlin' });
+
+    // Let the animation run partway.
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Redirect to Asia/Tokyo (+9 hours = 270°).
+    await screen.rerender({ zone: 'Asia/Tokyo' });
+
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(270)');
+  });
+});
