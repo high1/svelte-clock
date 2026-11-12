@@ -125,6 +125,45 @@ describe('<ClockHands /> zone change animation', () => {
     ).toBe('rotate(270)');
   });
 
+  test('does not animate when switching between zones with the same offset', async () => {
+    // France and Germany share the same DST rules (CET/CEST).
+    // At 00:00 UTC both show 01:00 (CET, UTC+1 in January).
+    now.value = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
+    const screen = await render(ClockHands, {
+      props: { zone: 'Europe/Paris' },
+    });
+
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(30)');
+
+    await screen.rerender({ zone: 'Europe/Berlin' });
+
+    expect(
+      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+    ).toBe('rotate(30)');
+  });
+
+  test('redirects a minute-hand animation mid-flight', async () => {
+    now.value = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
+    const screen = await render(ClockHands, { props: { zone: 'UTC' } });
+
+    // Start animating toward Asia/Kathmandu (UTC+5:45) — minute hand moves.
+    await screen.rerender({ zone: 'Asia/Kathmandu' });
+
+    // Let the animation run partway (minute hand is still animating).
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Redirect to Asia/Tokyo (UTC+9, on the hour) — minute hand reverses.
+    await screen.rerender({ zone: 'Asia/Tokyo' });
+
+    await new Promise((resolve) => setTimeout(resolve, 700));
+
+    expect(
+      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
+    ).toBe('rotate(0)');
+  });
+
   test('redirects the animation when the zone changes mid-animation', async () => {
     now.value = Date.UTC(2020, 0, 1, 0, 0, 0, 0);
     const screen = await render(ClockHands, { props: { zone: 'UTC' } });
@@ -135,13 +174,13 @@ describe('<ClockHands /> zone change animation', () => {
     // Let the animation run partway.
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // Redirect to Asia/Tokyo (+9 hours = 270°).
-    await screen.rerender({ zone: 'Asia/Tokyo' });
+    // Redirect to Asia/Kathmandu (UTC+5:45) — both hands move.
+    await screen.rerender({ zone: 'Asia/Kathmandu' });
 
     await new Promise((resolve) => setTimeout(resolve, 700));
 
     expect(
-      screen.getByTestId(clockHourId).element().getAttribute('transform'),
+      screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
     ).toBe('rotate(270)');
   });
 });

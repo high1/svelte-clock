@@ -1,8 +1,13 @@
 import { untrack } from 'svelte';
 
+import { hourFraction, minuteFraction } from '#src/common';
+import { getSecondsSinceMidnightIn, now } from '#src/time.svelte';
+
 /**
  * Animates hour/minute fractions toward their targets when `changeKey` changes.
- * Returns displayed fractions that track the target plus a decaying offset.
+ * Both hands rotate in the direction of the zone change: forward when the new
+ * zone is ahead, backward otherwise. Returns displayed fractions that track
+ * the live target plus a decaying offset.
  */
 export function createClockAnimation(
   changeKey: () => string,
@@ -12,20 +17,32 @@ export function createClockAnimation(
   let hourOffset = $state(0);
   let minuteOffset = $state(0);
   let frame = 0;
+  let previousZone: string | undefined;
 
   $effect(() => {
-    changeKey(); // tracked — re-runs when the key changes
+    const newZone = changeKey(); // tracked — re-runs when the key changes
 
-    const targetHour = untrack(targets.hour);
-    const targetMinute = untrack(targets.minute);
-    const currentOffsetHour = untrack(() => hourOffset);
-    const currentOffsetMinute = untrack(() => minuteOffset);
+    const oldZone = previousZone;
+    previousZone = newZone;
 
-    const currentHour = (targetHour + currentOffsetHour + 1) % 1;
-    const currentMinute = (targetMinute + currentOffsetMinute + 1) % 1;
+    if (oldZone === undefined || oldZone === newZone) return;
 
-    const hourDelta = shortestDelta(currentHour, targetHour);
-    const minuteDelta = shortestDelta(currentMinute, targetMinute);
+    const nowValue = untrack(() => now.value);
+    const oldSec = getSecondsSinceMidnightIn(nowValue, oldZone);
+    const newSec = getSecondsSinceMidnightIn(nowValue, newZone);
+    const diff = (((newSec - oldSec) % 86400) + 86400) % 86400;
+    const forward = diff <= 43200;
+
+    const hourDelta = directionalDelta(
+      hourFraction(oldSec),
+      hourFraction(newSec),
+      forward,
+    );
+    const minuteDelta = directionalDelta(
+      minuteFraction(oldSec),
+      minuteFraction(newSec),
+      forward,
+    );
 
     if (hourDelta === 0 && minuteDelta === 0) return;
 
@@ -34,8 +51,8 @@ export function createClockAnimation(
 
     const start = performance.now();
 
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / duration, 1);
+    const tick = (time: number) => {
+      const t = Math.min((time - start) / duration, 1);
       const eased = 1 - (1 - t) ** 3; // easeOutCubic
       hourOffset = -hourDelta * (1 - eased);
       minuteOffset = -minuteDelta * (1 - eased);
@@ -60,10 +77,19 @@ export function createClockAnimation(
   };
 }
 
-/** Shortest signed delta between two fractions in [0, 1). */
-export function shortestDelta(from: number, to: number): number {
-  let delta = to - from;
-  if (delta > 0.5) delta -= 1;
-  if (delta < -0.5) delta += 1;
-  return delta;
+/**
+ * Signed angular delta in a chosen direction (full turn = 1).
+ * Forward may exceed half a turn (e.g. +8h → +0.66 turn of the hour hand);
+ * backward is the equivalent negative.
+ */
+export function directionalDelta(
+  from: number,
+  to: number,
+  forward: boolean,
+): number {
+  const raw = to - from;
+
+  if (raw === 0) return 0;
+
+  return forward ? (raw < 0 ? raw + 1 : raw) : raw >= 0 ? raw - 1 : raw;
 }
