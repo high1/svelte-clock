@@ -100,7 +100,7 @@ describe('<ClockHands /> zone change animation', () => {
     await screen.rerender({ zone: 'Europe/Berlin' });
 
     // Wait for the 500ms animation to finish (plus a frame of buffer).
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    await new Promise((resolve) => setTimeout(resolve, 350));
 
     expect(
       screen.getByTestId(clockHourId).element().getAttribute('transform'),
@@ -118,7 +118,7 @@ describe('<ClockHands /> zone change animation', () => {
     // Asia/Kathmandu is UTC+5:45, so the minute hand moves from 0° to 270°.
     await screen.rerender({ zone: 'Asia/Kathmandu' });
 
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    await new Promise((resolve) => setTimeout(resolve, 350));
 
     expect(
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
@@ -157,7 +157,7 @@ describe('<ClockHands /> zone change animation', () => {
     // Redirect to Asia/Tokyo (UTC+9, on the hour) — minute hand reverses.
     await screen.rerender({ zone: 'Asia/Tokyo' });
 
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    await new Promise((resolve) => setTimeout(resolve, 350));
 
     expect(
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),
@@ -177,7 +177,7 @@ describe('<ClockHands /> zone change animation', () => {
     // Redirect to Asia/Kathmandu (UTC+5:45) — both hands move.
     await screen.rerender({ zone: 'Asia/Kathmandu' });
 
-    await new Promise((resolve) => setTimeout(resolve, 700));
+    await new Promise((resolve) => setTimeout(resolve, 350));
 
     expect(
       screen.getByTestId(clockMinuteId).element().getAttribute('transform'),

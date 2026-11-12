@@ -12,7 +12,7 @@ import { getSecondsSinceMidnightIn, now } from '#src/time.svelte';
 export function createClockAnimation(
   changeKey: () => string,
   targets: { hour: () => number; minute: () => number },
-  duration = 500,
+  duration = 250,
 ) {
   let hourOffset = $state(0);
   let minuteOffset = $state(0);
