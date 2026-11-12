@@ -7,7 +7,9 @@
   import TimezonePicker from '#src/TimezonePicker.svelte';
   import { getTestId } from '#src/utilities';
 
-  $effect(() => startClock());
+  const owner = Symbol();
+
+  $effect(() => startClock(owner));
 
   let currentZone = $state(getTimeZone());
   const zones = getTimeZones();

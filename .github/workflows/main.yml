@@ -15,6 +15,10 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  cancel-in-progress: true
+  group: build-${{ github.ref }}
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
