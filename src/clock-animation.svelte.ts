@@ -6,17 +6,18 @@ import { getSecondsSinceMidnightIn, now } from '#src/time.svelte';
 /**
  * Animates hour/minute fractions toward their targets when `changeKey` changes.
  * Both hands rotate in the direction of the zone change: forward when the new
- * zone is ahead, backward otherwise. Returns displayed fractions that track
- * the live target plus a decaying offset.
+ * zone is ahead, backward otherwise. The animation is derived from the shared
+ * rAF clock (`now.value`); there is no separate animation loop. Returns the
+ * displayed fractions.
  */
 export function createClockAnimation(
   changeKey: () => string,
   targets: { hour: () => number; minute: () => number },
   duration = 250,
 ) {
-  let hourOffset = $state(0);
-  let minuteOffset = $state(0);
-  let frame = 0;
+  let hourDelta = $state(0);
+  let minuteDelta = $state(0);
+  let animationStart = $state<number | undefined>(undefined);
   let previousZone: string | undefined;
 
   $effect(() => {
@@ -33,46 +34,32 @@ export function createClockAnimation(
     const diff = (((newSec - oldSec) % 86400) + 86400) % 86400;
     const forward = diff <= 43200;
 
-    const hourDelta = directionalDelta(
+    hourDelta = directionalDelta(
       hourFraction(oldSec),
       hourFraction(newSec),
       forward,
     );
-    const minuteDelta = directionalDelta(
+    minuteDelta = directionalDelta(
       minuteFraction(oldSec),
       minuteFraction(newSec),
       forward,
     );
-
-    if (hourDelta === 0 && minuteDelta === 0) return;
-
-    hourOffset = -hourDelta;
-    minuteOffset = -minuteDelta;
-
-    const start = performance.now();
-
-    const tick = (time: number) => {
-      const t = Math.min((time - start) / duration, 1);
-      const eased = 1 - (1 - t) ** 3; // easeOutCubic
-      hourOffset = -hourDelta * (1 - eased);
-      minuteOffset = -minuteDelta * (1 - eased);
-      if (t < 1) {
-        frame = requestAnimationFrame(tick);
-      }
-    };
-
-    frame = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(frame);
-    };
+    animationStart = nowValue;
   });
+
+  const progress = $derived(
+    animationStart === undefined
+      ? 1
+      : Math.min((now.value - animationStart) / duration, 1),
+  );
+  const eased = $derived(1 - (1 - progress) ** 3); // easeOutCubic
 
   return {
     get hour() {
-      return (targets.hour() + hourOffset + 1) % 1;
+      return (targets.hour() - hourDelta * (1 - eased) + 1) % 1;
     },
     get minute() {
-      return (targets.minute() + minuteOffset + 1) % 1;
+      return (targets.minute() - minuteDelta * (1 - eased) + 1) % 1;
     },
   };
 }
