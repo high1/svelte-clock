@@ -64,7 +64,7 @@ export function createClockAnimation(
 }
 
 /** Decimal precision for animation deltas — float noise below this is zero. */
-const DECIMAL_PRECISION = 9;
+const DECIMAL_PRECISION = 4;
 
 /**
  * Signed angular delta in a chosen direction (full turn = 1).
