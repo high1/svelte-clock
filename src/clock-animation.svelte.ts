@@ -63,6 +63,9 @@ export function createClockAnimation(
   };
 }
 
+/** Decimal precision for animation deltas — float noise below this is zero. */
+const DECIMAL_PRECISION = 9;
+
 /**
  * Signed angular delta in a chosen direction (full turn = 1).
  * Forward may exceed half a turn (e.g. +8h → +0.66 turn of the hour hand);
@@ -73,9 +76,9 @@ export function directionalDelta(
   to: number,
   forward: boolean,
 ): number {
-  const raw = to - from;
+  const raw = Number((to - from).toFixed(DECIMAL_PRECISION));
 
-  if (Math.abs(raw) < 1e-9) return 0;
+  if (raw === 0) return 0;
 
   return forward ? (raw < 0 ? raw + 1 : raw) : raw >= 0 ? raw - 1 : raw;
 }
