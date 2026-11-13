@@ -49,11 +49,9 @@ export function createClockAnimation(
   });
 
   const progress = $derived(
-    animationStart === undefined
-      ? 1
-      : Math.min((now.value - animationStart) / duration, 1),
+    Math.min((now.value - (animationStart ?? 0)) / duration, 1),
   );
-  const eased = $derived(1 - (1 - progress) ** 3); // easeOutCubic
+  const eased = $derived(progress >= 1 ? 1 : 1 - (1 - progress) ** 3); // easeOutCubic
 
   return {
     get hour() {

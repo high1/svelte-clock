@@ -77,31 +77,47 @@ const formatterFor = (zone: string) => {
   return formatter;
 };
 
-const partsIn = (timestamp: number, zone: string) =>
-  new Map(
-    formatterFor(zone)
-      .formatToParts(new Date(timestamp))
-      .map((part) => [part.type, part.value] as const),
-  );
-
 /** Wall-clock parts of `zone` at `timestamp`: local seconds and UTC offset. */
 export const zonedParts = (timestamp: number, zone: string) => {
-  const parts = partsIn(timestamp, zone);
+  const parts = formatterFor(zone).formatToParts(timestamp);
+
+  let hour = 0;
+  let minute = 0;
+  let second = 0;
+  let year = 0;
+  let month = 1;
+  let day = 1;
+
+  for (const part of parts) {
+    switch (part.type) {
+      case 'day':
+        day = Number(part.value);
+        break;
+      case 'hour':
+        hour = Number(part.value);
+        break;
+      case 'minute':
+        minute = Number(part.value);
+        break;
+      case 'month':
+        month = Number(part.value);
+        break;
+      case 'second':
+        second = Number(part.value);
+        break;
+      case 'year':
+        year = Number(part.value);
+        break;
+    }
+  }
 
   const wallSeconds =
-    Number(parts.get('hour')) * 3600 +
-    Number(parts.get('minute')) * 60 +
-    Number(parts.get('second')) +
+    hour * 3600 +
+    minute * 60 +
+    second +
     (((timestamp % 1000) + 1000) % 1000) / 1000;
 
-  const asUTC = Date.UTC(
-    Number(parts.get('year')),
-    Number(parts.get('month')) - 1,
-    Number(parts.get('day')),
-    Number(parts.get('hour')),
-    Number(parts.get('minute')),
-    Number(parts.get('second')),
-  );
+  const asUTC = Date.UTC(year, month - 1, day, hour, minute, second);
 
   return {
     offset: Math.floor((asUTC - timestamp) / 1000),
