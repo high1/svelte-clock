@@ -78,7 +78,13 @@ export function directionalDelta(
 ): number {
   const raw = Number((to - from).toFixed(DECIMAL_PRECISION));
 
-  if (raw === 0) return 0;
-
-  return forward ? (raw < 0 ? raw + 1 : raw) : raw >= 0 ? raw - 1 : raw;
+  return raw
+    ? forward
+      ? raw < 0
+        ? raw + 1
+        : raw
+      : raw >= 0
+        ? raw - 1
+        : raw
+    : 0;
 }
