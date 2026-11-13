@@ -117,7 +117,15 @@ export const zonedParts = (timestamp: number, zone: string) => {
     second +
     (((timestamp % 1000) + 1000) % 1000) / 1000;
 
-  const asUTC = Date.UTC(year, month - 1, day, hour, minute, second);
+  const asUTC = Date.UTC(
+    year,
+    month - 1,
+    day,
+    hour,
+    minute,
+    second,
+    ((timestamp % 1000) + 1000) % 1000,
+  );
 
   return {
     offset: Math.floor((asUTC - timestamp) / 1000),

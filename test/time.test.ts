@@ -198,6 +198,13 @@ describe('getTimezoneOffset', () => {
   ])('%s', (_name, zone, timestamp, expected) => {
     expect(getTimezoneOffset(timestamp, zone)).toBe(expected);
   });
+
+  test('accounts for millisecond precision', () => {
+    const timestamp = Date.UTC(2020, 0, 15, 12, 0, 0, 500);
+
+    expect(getTimezoneOffset(timestamp, 'Europe/Berlin')).toBe(3600);
+    expect(getTimezoneOffset(timestamp, 'America/New_York')).toBe(-18000);
+  });
 });
 
 describe('timeZones', () => {
