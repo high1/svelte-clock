@@ -13,10 +13,7 @@
   let { zone }: { zone: string } = $props();
 
   const time = createTime(() => zone);
-  const animation = createClockAnimation(() => zone, {
-    hour: () => time.hour,
-    minute: () => time.minute,
-  });
+  const animation = createClockAnimation(() => zone, time);
 </script>
 
 <ClockHand

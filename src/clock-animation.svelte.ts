@@ -1,7 +1,7 @@
 import { untrack } from 'svelte';
 
 import { hourFraction, minuteFraction } from '#src/common';
-import { now, zonedParts } from '#src/time.svelte';
+import { type createTime, now, zonedParts } from '#src/time.svelte';
 
 export const ANIMATION_DURATION = 500;
 
@@ -14,24 +14,24 @@ export const ANIMATION_DURATION = 500;
  */
 export function createClockAnimation(
   zone: () => string,
-  target: { hour: () => number; minute: () => number },
+  time: ReturnType<typeof createTime>,
   duration = ANIMATION_DURATION,
 ) {
   let hourDelta = $state(0);
   let minuteDelta = $state(0);
-  let animationStart = $state<number | undefined>(undefined);
+  let animationStart = $state<number>();
   let previousZone: string | undefined;
 
   $effect(() => {
     const newZone = zone(); // tracked — re-runs when the zone changes
 
-    const oldZone = previousZone;
-    previousZone = newZone;
-
-    if (oldZone === undefined || oldZone === newZone) return;
+    if (previousZone === undefined || previousZone === newZone) {
+      previousZone = newZone;
+      return;
+    }
 
     const nowValue = untrack(() => now.value);
-    const oldParts = zonedParts(nowValue, oldZone);
+    const oldParts = zonedParts(nowValue, previousZone);
     const newParts = zonedParts(nowValue, newZone);
     const forward = newParts.offset >= oldParts.offset;
 
@@ -46,6 +46,7 @@ export function createClockAnimation(
       forward,
     );
     animationStart = nowValue;
+    previousZone = newZone;
   });
 
   const progress = $derived(
@@ -55,10 +56,14 @@ export function createClockAnimation(
 
   return {
     get hour() {
-      return (target.hour() - hourDelta * (1 - eased) + 1) % 1;
+      return eased === 1
+        ? time.hour
+        : (time.hour - hourDelta * (1 - eased) + 1) % 1;
     },
     get minute() {
-      return (target.minute() - minuteDelta * (1 - eased) + 1) % 1;
+      return eased === 1
+        ? time.minute
+        : (time.minute - minuteDelta * (1 - eased) + 1) % 1;
     },
   };
 }
