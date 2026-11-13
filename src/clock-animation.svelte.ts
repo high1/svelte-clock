@@ -10,14 +10,14 @@ import {
 export const ANIMATION_DURATION = 500;
 
 /**
- * Animates hour/minute fractions toward their targets when `changeKey` changes.
+ * Animates hour/minute fractions toward their targets when the zone changes.
  * Both hands rotate in the direction of the zone change: forward when the new
  * zone is ahead, backward otherwise. The animation is derived from the shared
  * rAF clock (`now.value`); there is no separate animation loop. Returns the
  * displayed fractions.
  */
 export function createClockAnimation(
-  changeKey: () => string,
+  zone: () => string,
   targets: { hour: () => number; minute: () => number },
   duration = ANIMATION_DURATION,
 ) {
@@ -27,7 +27,7 @@ export function createClockAnimation(
   let previousZone: string | undefined;
 
   $effect(() => {
-    const newZone = changeKey(); // tracked — re-runs when the key changes
+    const newZone = zone(); // tracked — re-runs when the zone changes
 
     const oldZone = previousZone;
     previousZone = newZone;
