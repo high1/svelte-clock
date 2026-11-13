@@ -56,10 +56,14 @@ export function createClockAnimation(
 
   return {
     get hour() {
-      return (time.hour - hourDelta * (1 - eased) + 1) % 1;
+      return eased === 1
+        ? time.hour
+        : (time.hour - hourDelta * (1 - eased) + 1) % 1;
     },
     get minute() {
-      return (time.minute - minuteDelta * (1 - eased) + 1) % 1;
+      return eased === 1
+        ? time.minute
+        : (time.minute - minuteDelta * (1 - eased) + 1) % 1;
     },
   };
 }
