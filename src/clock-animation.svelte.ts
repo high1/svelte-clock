@@ -75,7 +75,7 @@ export function directionalDelta(
 ): number {
   const raw = to - from;
 
-  if (raw === 0) return 0;
+  if (Math.abs(raw) < 1e-9) return 0;
 
   return forward ? (raw < 0 ? raw + 1 : raw) : raw >= 0 ? raw - 1 : raw;
 }

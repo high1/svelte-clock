@@ -199,6 +199,23 @@ describe('<ClockHands /> zone change animation', () => {
     ).toBe('rotate(330)');
   });
 
+  test('does not animate the minute hand between whole-hour offset zones', async () => {
+    now.value = Date.UTC(2020, 0, 1, 12, 0, 0, 0); // Belgrade = 13:00, Khandyga = 21:00
+    const screen = await render(ClockHands, {
+      props: { zone: 'Asia/Khandyga' },
+    });
+
+    await screen.rerender({ zone: 'Europe/Belgrade' });
+    await tick();
+
+    now.value = Date.UTC(2020, 0, 1, 12, 0, 0, 600);
+    await tick();
+    expect(angleOf(screen.getByTestId(clockMinuteId).element())).toBeCloseTo(
+      0,
+      0,
+    );
+  });
+
   test('redirects a minute-hand animation mid-flight', async () => {
     now.value = start;
     const screen = await render(ClockHands, { props: { zone: 'UTC' } });
