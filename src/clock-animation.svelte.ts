@@ -1,11 +1,7 @@
 import { untrack } from 'svelte';
 
 import { hourFraction, minuteFraction } from '#src/common';
-import {
-  getSecondsSinceMidnightIn,
-  getTimezoneOffset,
-  now,
-} from '#src/time.svelte';
+import { now, zonedParts } from '#src/time.svelte';
 
 export const ANIMATION_DURATION = 500;
 
@@ -35,21 +31,18 @@ export function createClockAnimation(
     if (oldZone === undefined || oldZone === newZone) return;
 
     const nowValue = untrack(() => now.value);
-    const forward =
-      getTimezoneOffset(nowValue, newZone) >=
-      getTimezoneOffset(nowValue, oldZone);
-
-    const oldSec = getSecondsSinceMidnightIn(nowValue, oldZone);
-    const newSec = getSecondsSinceMidnightIn(nowValue, newZone);
+    const oldParts = zonedParts(nowValue, oldZone);
+    const newParts = zonedParts(nowValue, newZone);
+    const forward = newParts.offset >= oldParts.offset;
 
     hourDelta = directionalDelta(
-      hourFraction(oldSec),
-      hourFraction(newSec),
+      hourFraction(oldParts.wallSeconds),
+      hourFraction(newParts.wallSeconds),
       forward,
     );
     minuteDelta = directionalDelta(
-      minuteFraction(oldSec),
-      minuteFraction(newSec),
+      minuteFraction(oldParts.wallSeconds),
+      minuteFraction(newParts.wallSeconds),
       forward,
     );
     animationStart = nowValue;
