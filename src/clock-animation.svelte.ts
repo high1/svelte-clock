@@ -18,7 +18,7 @@ export const ANIMATION_DURATION = 500;
  */
 export function createClockAnimation(
   zone: () => string,
-  targets: { hour: () => number; minute: () => number },
+  target: { hour: () => number; minute: () => number },
   duration = ANIMATION_DURATION,
 ) {
   let hourDelta = $state(0);
@@ -64,10 +64,10 @@ export function createClockAnimation(
 
   return {
     get hour() {
-      return (targets.hour() - hourDelta * (1 - eased) + 1) % 1;
+      return (target.hour() - hourDelta * (1 - eased) + 1) % 1;
     },
     get minute() {
-      return (targets.minute() - minuteDelta * (1 - eased) + 1) % 1;
+      return (target.minute() - minuteDelta * (1 - eased) + 1) % 1;
     },
   };
 }
