@@ -1,7 +1,7 @@
 import { untrack } from 'svelte';
 
 import { hourFraction, minuteFraction } from '#src/common';
-import { now, zonedParts } from '#src/time.svelte';
+import { type createTime, now, zonedParts } from '#src/time.svelte';
 
 export const ANIMATION_DURATION = 500;
 
@@ -14,7 +14,7 @@ export const ANIMATION_DURATION = 500;
  */
 export function createClockAnimation(
   zone: () => string,
-  target: { hour: () => number; minute: () => number },
+  time: ReturnType<typeof createTime>,
   duration = ANIMATION_DURATION,
 ) {
   let hourDelta = $state(0);
@@ -56,10 +56,10 @@ export function createClockAnimation(
 
   return {
     get hour() {
-      return (target.hour() - hourDelta * (1 - eased) + 1) % 1;
+      return (time.hour - hourDelta * (1 - eased) + 1) % 1;
     },
     get minute() {
-      return (target.minute() - minuteDelta * (1 - eased) + 1) % 1;
+      return (time.minute - minuteDelta * (1 - eased) + 1) % 1;
     },
   };
 }
