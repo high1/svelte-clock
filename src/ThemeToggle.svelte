@@ -1,8 +1,10 @@
 <script lang="ts">
+  import type { Component } from 'svelte';
+
   import { onMount } from 'svelte';
 
-  import moon from '#src/moon.svg?raw';
-  import sun from '#src/sun.svg?raw';
+  import Moon from '#src/Moon.svelte';
+  import Sun from '#src/Sun.svelte';
 
   let isDark = $state(false);
   const title = $derived(`Switch to ${isDark ? 'light' : 'dark'} mode`);
@@ -58,7 +60,7 @@
   }
 </script>
 
-{#snippet icon(svg: string, active: boolean, exitClass: string)}
+{#snippet icon(Icon: Component, active: boolean, exitClass: string)}
   <div
     class={`absolute inset-0 h-5 w-5 [&&]:transition-all ${
       active
@@ -66,9 +68,7 @@
         : `scale-50 opacity-0 ${exitClass}`
     }`}
   >
-    <!-- SVGs are bundled at build time, not user input -->
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-    {@html svg}
+    <Icon />
   </div>
 {/snippet}
 
@@ -80,7 +80,7 @@
   aria-label={title}
 >
   <div class="relative h-5 w-5 transition-transform group-hover:rotate-10">
-    {@render icon(sun, !isDark, 'rotate-90')}
-    {@render icon(moon, isDark, '-rotate-90')}
+    {@render icon(Sun, !isDark, 'rotate-90')}
+    {@render icon(Moon, isDark, '-rotate-90')}
   </div>
 </button>
