@@ -1,7 +1,6 @@
 import {
   hourFraction,
   minuteFraction,
-  rotate,
   secondFraction,
   subsecondFraction,
 } from '#src/common';
@@ -64,44 +63,91 @@ const formatterFor = (zone: string) => {
   if (existing) return existing;
 
   const formatter = new Intl.DateTimeFormat(undefined, {
+    day: '2-digit',
     hour: '2-digit',
     hourCycle: 'h23',
     minute: '2-digit',
+    month: '2-digit',
     numberingSystem: 'latn',
     second: '2-digit',
     timeZone: zone,
+    year: 'numeric',
   });
   formatters.set(zone, formatter);
   return formatter;
 };
 
-const partsIn = (timestamp: number, zone: string) =>
-  new Map(
-    formatterFor(zone)
-      .formatToParts(new Date(timestamp))
-      .map((part) => [part.type, part.value] as const),
+/** Wall-clock parts of `zone` at `timestamp`: local seconds and UTC offset. */
+export const zonedParts = (timestamp: number, zone: string) => {
+  const parts = formatterFor(zone).formatToParts(timestamp);
+
+  let hour = 0;
+  let minute = 0;
+  let second = 0;
+  let year = 0;
+  let month = 1;
+  let day = 1;
+
+  for (const part of parts) {
+    switch (part.type) {
+      case 'day':
+        day = Number(part.value);
+        break;
+      case 'hour':
+        hour = Number(part.value);
+        break;
+      case 'minute':
+        minute = Number(part.value);
+        break;
+      case 'month':
+        month = Number(part.value);
+        break;
+      case 'second':
+        second = Number(part.value);
+        break;
+      case 'year':
+        year = Number(part.value);
+        break;
+    }
+  }
+
+  const wallSeconds =
+    hour * 3600 +
+    minute * 60 +
+    second +
+    (((timestamp % 1000) + 1000) % 1000) / 1000;
+
+  const asUTC = Date.UTC(
+    year,
+    month - 1,
+    day,
+    hour,
+    minute,
+    second,
+    ((timestamp % 1000) + 1000) % 1000,
   );
+
+  return {
+    offset: Math.floor((asUTC - timestamp) / 1000),
+    wallSeconds,
+  };
+};
+
+/** UTC offset of `zone` at `timestamp`, in seconds. */
+export const getTimezoneOffset = (timestamp: number, zone: string) =>
+  zonedParts(timestamp, zone).offset;
 
 // Wall-clock seconds since local midnight in `zone`.
-export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) => {
-  const parts = partsIn(timestamp, zone);
-
-  return (
-    Number(parts.get('hour')) * 3600 +
-    Number(parts.get('minute')) * 60 +
-    Number(parts.get('second')) +
-    // Normalize ms to [0, 1000) so negative timestamps work.
-    (((timestamp % 1000) + 1000) % 1000) / 1000
-  );
-};
+export const getSecondsSinceMidnightIn = (timestamp: number, zone: string) =>
+  zonedParts(timestamp, zone).wallSeconds;
 
 // One clock in `zone`: the shared instant as hand rotations.
 export const createTime = (zone: () => string) => {
   const clock = $derived(getSecondsSinceMidnightIn(now.value, zone()));
-  const hour = $derived(rotate(hourFraction(clock), 1));
-  const minute = $derived(rotate(minuteFraction(clock), 1));
-  const second = $derived(rotate(secondFraction(clock), 1));
-  const subsecond = $derived(rotate(subsecondFraction(clock), 0));
+  const hour = $derived(hourFraction(clock));
+  const minute = $derived(minuteFraction(clock));
+  const second = $derived(secondFraction(clock));
+  const subsecond = $derived(subsecondFraction(clock));
 
   return {
     get hour() {
