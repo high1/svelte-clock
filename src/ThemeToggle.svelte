@@ -4,15 +4,6 @@
   import moon from '#src/moon.svg?raw';
   import sun from '#src/sun.svg?raw';
 
-  function icon(node: HTMLElement, svg: string) {
-    node.innerHTML = svg;
-    return {
-      destroy: () => {
-        node.innerHTML = '';
-      },
-    };
-  }
-
   let isDark = $state(false);
   const title = $derived(`Switch to ${isDark ? 'light' : 'dark'} mode`);
 
@@ -67,6 +58,20 @@
   }
 </script>
 
+{#snippet icon(svg: string, active: boolean, exitClass: string)}
+  <div
+    class={`absolute inset-0 h-5 w-5 [&&]:transition-all ${
+      active
+        ? 'scale-100 rotate-0 opacity-100'
+        : `scale-50 opacity-0 ${exitClass}`
+    }`}
+  >
+    <!-- SVGs are bundled at build time, not user input -->
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+    {@html svg}
+  </div>
+{/snippet}
+
 <button
   onclick={toggleTheme}
   class="group absolute top-2 right-2 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-zinc-200 text-zinc-600
@@ -75,25 +80,7 @@
   aria-label={title}
 >
   <div class="relative h-5 w-5 transition-transform group-hover:rotate-10">
-    <div
-      class="absolute inset-0 h-5 w-5 [&&]:transition-all"
-      use:icon={sun}
-      class:opacity-100={!isDark}
-      class:opacity-0={isDark}
-      class:scale-100={!isDark}
-      class:scale-50={isDark}
-      class:rotate-0={!isDark}
-      class:rotate-90={isDark}
-    ></div>
-    <div
-      class="absolute inset-0 h-5 w-5 [&&]:transition-all"
-      use:icon={moon}
-      class:opacity-100={isDark}
-      class:opacity-0={!isDark}
-      class:scale-100={isDark}
-      class:scale-50={!isDark}
-      class:rotate-0={isDark}
-      class:-rotate-90={!isDark}
-    ></div>
+    {@render icon(sun, !isDark, 'rotate-90')}
+    {@render icon(moon, isDark, '-rotate-90')}
   </div>
 </button>
