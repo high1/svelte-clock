@@ -56,17 +56,13 @@ export function createClockAnimation(
       ? 1
       : Math.min((now.value - animationStart) / duration, 1),
   );
-  const eased = $derived(progress >= 1 ? 1 : 1 - (1 - progress) ** 3); // easeOutCubic
+  const eased = $derived(progress < 1 ? 1 - (1 - progress) ** 3 : progress); // easeOutCubic
 
   // Pin animationStart to undefined once the animation completes so we
   // stop reading now.value and stop re-deriving per frame.
   $effect(() => {
     if (animationStart === undefined) return;
-    if (progress >= 1) animationStart = undefined;
-  });
-
-  $effect(() => {
-    console.log(progress);
+    if (progress === 1) animationStart = undefined;
   });
 
   return {
