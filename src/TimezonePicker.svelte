@@ -199,7 +199,7 @@
 
 <div
   bind:this={root}
-  class={`relative${className ? ' ' + className : ''}`}
+  class={['relative', className]}
   onfocusout={(event) => {
     const next = event.relatedTarget;
 
