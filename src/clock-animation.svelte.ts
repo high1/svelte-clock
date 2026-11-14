@@ -13,7 +13,6 @@ export const ANIMATION_DURATION = 500;
  * displayed fractions.
  */
 export function createClockAnimation(
-  zone: () => string,
   time: ReturnType<typeof createTime>,
   duration = ANIMATION_DURATION,
 ) {
@@ -23,7 +22,7 @@ export function createClockAnimation(
   let previousZone: string | undefined;
 
   $effect(() => {
-    const newZone = zone(); // tracked — re-runs when the zone changes
+    const newZone = time.zone(); // tracked — re-runs when the zone changes
 
     if (previousZone === undefined || previousZone === newZone) {
       previousZone = newZone;
@@ -49,10 +48,20 @@ export function createClockAnimation(
     previousZone = newZone;
   });
 
+  // When no animation is running, don't read now.value at all.
   const progress = $derived(
-    Math.min((now.value - (animationStart ?? 0)) / duration, 1),
+    animationStart === undefined
+      ? 1
+      : Math.min((now.value - animationStart) / duration, 1),
   );
-  const eased = $derived(progress >= 1 ? 1 : 1 - (1 - progress) ** 3); // easeOutCubic
+  const eased = $derived(progress < 1 ? 1 - (1 - progress) ** 3 : progress); // easeOutCubic
+
+  // Pin animationStart to undefined once the animation completes so we
+  // stop reading now.value and stop re-deriving per frame.
+  $effect(() => {
+    if (animationStart === undefined) return;
+    if (progress === 1) animationStart = undefined;
+  });
 
   return {
     get hour() {
@@ -64,6 +73,12 @@ export function createClockAnimation(
       return eased === 1
         ? time.minute
         : (time.minute - minuteDelta * (1 - eased) + 1) % 1;
+    },
+    get second() {
+      return time.second;
+    },
+    get subsecond() {
+      return time.subsecond;
     },
   };
 }

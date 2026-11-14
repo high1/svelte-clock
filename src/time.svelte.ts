@@ -162,5 +162,6 @@ export const createTime = (zone: () => string) => {
     get subsecond() {
       return subsecond;
     },
+    zone,
   };
 };
