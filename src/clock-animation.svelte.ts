@@ -5,6 +5,10 @@ import { type createTime, now, zonedParts } from '#src/time.svelte';
 
 export const ANIMATION_DURATION = 500;
 
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 /**
  * Animates hour/minute fractions toward their targets when the zone changes.
  * Both hands rotate in the direction of the zone change: forward when the new
@@ -24,7 +28,11 @@ export function createClockAnimation(
   $effect(() => {
     const newZone = time.zone(); // tracked — re-runs when the zone changes
 
-    if (previousZone === undefined || previousZone === newZone) {
+    if (
+      prefersReducedMotion() ||
+      previousZone === undefined ||
+      previousZone === newZone
+    ) {
       previousZone = newZone;
       return;
     }
