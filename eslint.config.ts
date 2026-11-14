@@ -4,6 +4,7 @@ import eslint from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
 import html from '@html-eslint/eslint-plugin';
+import tailwindcss from 'eslint-plugin-better-tailwindcss';
 import { importX } from 'eslint-plugin-import-x';
 import perfectionist from 'eslint-plugin-perfectionist';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
@@ -23,6 +24,7 @@ const commonConfig = defineConfig({
     importX.flatConfigs.recommended,
     importX.flatConfigs.typescript,
     perfectionist.configs['recommended-natural'],
+    tailwindcss.configs.correctness,
     prettierRecommended,
   ],
   rules: {
@@ -49,6 +51,13 @@ export default defineConfig(
     languageOptions: {
       parserOptions: {
         projectService: true,
+      },
+    },
+  },
+  {
+    settings: {
+      'better-tailwindcss': {
+        entryPoint: 'src/index.css',
       },
     },
   },
