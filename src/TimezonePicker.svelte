@@ -110,7 +110,7 @@
         break;
 
       case 'Tab':
-        closePicker();
+        closePicker(true);
         break;
     }
   }

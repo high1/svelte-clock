@@ -62,11 +62,12 @@
 
 {#snippet icon(Icon: Component, active: boolean, exitClass: string)}
   <div
-    class={`absolute inset-0 block-5 inline-5 [&&]:transition-all ${
+    class={[
+      'absolute inset-0 block-5 inline-5 [&&]:motion-safe:transition-all',
       active
         ? 'scale-100 rotate-0 opacity-100'
-        : `scale-50 opacity-0 ${exitClass}`
-    }`}
+        : `scale-50 opacity-0 ${exitClass}`,
+    ]}
   >
     <Icon />
   </div>
@@ -80,7 +81,7 @@
   aria-label={title}
 >
   <div
-    class="relative transition-transform block-5 inline-5 group-hover:rotate-10"
+    class="relative block-5 inline-5 group-hover:rotate-10 motion-safe:transition-transform"
   >
     {@render icon(Sun, !isDark, 'rotate-90')}
     {@render icon(Moon, isDark, '-rotate-90')}
