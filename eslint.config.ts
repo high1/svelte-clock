@@ -4,7 +4,6 @@ import eslint from '@eslint/js';
 import json from '@eslint/json';
 import markdown from '@eslint/markdown';
 import html from '@html-eslint/eslint-plugin';
-import stylistic from '@stylistic/eslint-plugin';
 import { importX } from 'eslint-plugin-import-x';
 import perfectionist from 'eslint-plugin-perfectionist';
 import prettierRecommended from 'eslint-plugin-prettier/recommended';
@@ -23,10 +22,6 @@ const commonConfig = defineConfig({
     tseslint.configs.stylisticTypeChecked,
     importX.flatConfigs.recommended,
     importX.flatConfigs.typescript,
-    stylistic.configs.customize({
-      jsx: false,
-      semi: true,
-    }),
     perfectionist.configs['recommended-natural'],
     prettierRecommended,
   ],
