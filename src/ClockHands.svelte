@@ -11,19 +11,17 @@
   import { getTestId } from '#src/utilities';
 
   let { zone }: { zone: string } = $props();
-
-  const time = createTime(() => zone);
-  const animation = createClockAnimation(() => zone, time);
+  const time = createClockAnimation(createTime(() => zone));
 </script>
 
 <ClockHand
-  transform={rotate(animation.hour, 1)}
+  transform={rotate(time.hour, 1)}
   class="stroke-zinc-600 stroke-4 dark:stroke-zinc-200"
   length={46}
   data-testid={getTestId(clockHourId)}
 />
 <ClockHand
-  transform={rotate(animation.minute, 1)}
+  transform={rotate(time.minute, 1)}
   class="stroke-zinc-400 stroke-3"
   length={64}
   data-testid={getTestId(clockMinuteId)}

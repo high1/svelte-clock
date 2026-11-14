@@ -13,7 +13,6 @@ export const ANIMATION_DURATION = 500;
  * displayed fractions.
  */
 export function createClockAnimation(
-  zone: () => string,
   time: ReturnType<typeof createTime>,
   duration = ANIMATION_DURATION,
 ) {
@@ -23,8 +22,7 @@ export function createClockAnimation(
   let previousZone: string | undefined;
 
   $effect(() => {
-    const newZone = zone(); // tracked — re-runs when the zone changes
-    console.log(previousZone, newZone);
+    const newZone = time.zone(); // tracked — re-runs when the zone changes
 
     if (previousZone === undefined || previousZone === newZone) {
       previousZone = newZone;
@@ -75,6 +73,12 @@ export function createClockAnimation(
       return eased === 1
         ? time.minute
         : (time.minute - minuteDelta * (1 - eased) + 1) % 1;
+    },
+    get second() {
+      return time.second;
+    },
+    get subsecond() {
+      return time.subsecond;
     },
   };
 }
