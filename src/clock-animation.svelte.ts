@@ -24,6 +24,7 @@ export function createClockAnimation(
 
   $effect(() => {
     const newZone = zone(); // tracked — re-runs when the zone changes
+    console.log(previousZone, newZone);
 
     if (previousZone === undefined || previousZone === newZone) {
       previousZone = newZone;
@@ -49,10 +50,24 @@ export function createClockAnimation(
     previousZone = newZone;
   });
 
+  // When no animation is running, don't read now.value at all.
   const progress = $derived(
-    Math.min((now.value - (animationStart ?? 0)) / duration, 1),
+    animationStart === undefined
+      ? 1
+      : Math.min((now.value - animationStart) / duration, 1),
   );
   const eased = $derived(progress >= 1 ? 1 : 1 - (1 - progress) ** 3); // easeOutCubic
+
+  // Pin animationStart to undefined once the animation completes so we
+  // stop reading now.value and stop re-deriving per frame.
+  $effect(() => {
+    if (animationStart === undefined) return;
+    if (progress >= 1) animationStart = undefined;
+  });
+
+  $effect(() => {
+    console.log(progress);
+  });
 
   return {
     get hour() {
