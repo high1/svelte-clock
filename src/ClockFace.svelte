@@ -16,7 +16,7 @@
 </script>
 
 <div
-  class="grid grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 block-dvh dark:bg-zinc-800"
+  class="flex flex-col items-center gap-2 px-2 block-dvh dark:bg-zinc-800"
   data-testid={getTestId(clockFaceId)}
 >
   <TimezonePicker
@@ -29,7 +29,7 @@
     class="inline-full max-inline-80"
   />
   <ThemeToggle />
-  <svg viewBox="0 0 200 200" class="block-[95vmin]" role="img">
+  <svg viewBox="0 0 200 200" class="size-full grow" role="img">
     <title>Clock</title>
     <image class="translate-5/12 block-1/6 inline-1/6" href="logo.svg" />
     <g class="translate-1/2">
