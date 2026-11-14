@@ -8,7 +8,7 @@
   stroke-width="2"
   stroke-linecap="round"
   stroke-linejoin="round"
-  class="size-full"
+  class="block-full inline-full"
 >
   <circle cx="12" cy="12" r="4" />
   <path

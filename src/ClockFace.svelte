@@ -16,7 +16,7 @@
 </script>
 
 <div
-  class="grid h-dvh grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 dark:bg-zinc-800"
+  class="grid grid-flow-row grid-cols-1 content-center justify-items-center gap-2 px-2 block-dvh dark:bg-zinc-800"
   data-testid={getTestId(clockFaceId)}
 >
   <TimezonePicker
@@ -26,12 +26,12 @@
     onchange={(zone: string) => {
       currentZone = zone;
     }}
-    class="w-full max-w-80"
+    class="inline-full max-inline-80"
   />
   <ThemeToggle />
-  <svg viewBox="0 0 200 200" class="h-[95vmin]" role="img">
+  <svg viewBox="0 0 200 200" class="block-[95vmin]" role="img">
     <title>Clock</title>
-    <image class="size-1/6 translate-5/12" href="logo.svg" />
+    <image class="translate-5/12 block-1/6 inline-1/6" href="logo.svg" />
     <g class="translate-1/2">
       <circle class="fill-none stroke-zinc-600 dark:stroke-zinc-200" r="98" />
       <Graduations />
