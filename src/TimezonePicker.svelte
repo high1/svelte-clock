@@ -217,7 +217,7 @@
     aria-controls={open ? listboxId : undefined}
     onclick={handleTriggerClick}
     onkeydown={handleTriggerKeydown}
-    class="flex w-full min-w-0 cursor-pointer items-center justify-between gap-3 rounded border border-zinc-300 px-3 py-2 text-left text-zinc-900 dark:border-zinc-600 dark:text-zinc-100"
+    class="flex cursor-pointer items-center justify-between gap-3 rounded-sm border border-zinc-300 px-3 py-2 text-start text-zinc-900 inline-full min-inline-0 dark:border-zinc-600 dark:text-zinc-100"
   >
     <span class="truncate">{zoneLabel(value)}</span>
     <span aria-hidden="true">{open ? '▴' : '▾'}</span>
@@ -228,10 +228,10 @@
          while the list grows and shrinks (DOM order is unchanged). -->
     <div
       use:placePopup
-      class={`absolute z-50 flex w-full rounded border border-zinc-300 bg-white text-zinc-900 shadow-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 ${
+      class={`absolute z-50 flex rounded-sm border border-zinc-300 bg-white text-zinc-900 shadow-lg inline-full dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 ${
         placement === 'above'
-          ? 'bottom-full mb-1 flex-col-reverse'
-          : 'top-full mt-1 flex-col'
+          ? 'inset-be-full mbe-1 flex-col-reverse'
+          : 'inset-bs-full mbs-1 flex-col'
       }`}
     >
       <input
@@ -247,8 +247,8 @@
         oninput={handleSearchInput}
         onkeydown={handleSearchKeydown}
         placeholder="Search timezones…"
-        class={`w-full border-zinc-200 px-3 py-2 outline-none placeholder:text-zinc-400 dark:border-zinc-600 ${
-          placement === 'above' ? 'border-t' : 'border-b'
+        class={`border-zinc-200 px-3 py-2 outline-none inline-full placeholder:text-zinc-400 dark:border-zinc-600 ${
+          placement === 'above' ? 'border-bs' : 'border-be'
         }`}
       />
 
@@ -257,7 +257,7 @@
         id={listboxId}
         role="listbox"
         aria-label="Timezones"
-        class="max-h-80 overflow-y-auto overscroll-contain p-1"
+        class="overflow-y-auto overscroll-contain p-1 max-block-80"
       >
         {#each groups as { items, region } (region)}
           <div role="group" aria-label={region}>
@@ -281,7 +281,7 @@
                 onclick={() => {
                   choose(zone);
                 }}
-                class={`flex w-full cursor-pointer items-center justify-between rounded px-3 py-2 text-left text-sm ${
+                class={`flex cursor-pointer items-center justify-between rounded-sm px-3 py-2 text-start text-sm inline-full ${
                   index === activeIndex
                     ? 'bg-zinc-200 ring-2 ring-zinc-900/40 ring-inset dark:bg-zinc-700 dark:ring-zinc-100/40'
                     : 'hover:bg-zinc-100 dark:hover:bg-zinc-700'

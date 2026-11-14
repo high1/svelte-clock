@@ -41,6 +41,14 @@ const commonConfig = defineConfig({
         allowNumber: true,
       },
     ],
+    // Better-tailwindcss rules that do not overlap with prettier's class sorting
+    'better-tailwindcss/enforce-canonical-classes': 'error',
+    'better-tailwindcss/enforce-consistent-important-position': 'error',
+    'better-tailwindcss/enforce-consistent-variable-syntax': 'error',
+    'better-tailwindcss/enforce-logical-properties': 'error',
+    'better-tailwindcss/enforce-shorthand-classes': 'error',
+    'better-tailwindcss/no-deprecated-classes': 'error',
+    'better-tailwindcss/no-duplicate-classes': 'error',
   },
 });
 

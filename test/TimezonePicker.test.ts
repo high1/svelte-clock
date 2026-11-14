@@ -270,7 +270,7 @@ describe('<TimezonePicker />', () => {
     await triggerLocator.click();
 
     const popup = document.querySelector('[role="listbox"]')?.parentElement;
-    expect(popup?.className).toContain('bottom-full');
+    expect(popup?.className).toContain('inset-be-full');
 
     rectSpy.mockRestore();
   });

@@ -62,7 +62,7 @@
 
 {#snippet icon(Icon: Component, active: boolean, exitClass: string)}
   <div
-    class={`absolute inset-0 h-5 w-5 [&&]:transition-all ${
+    class={`absolute inset-0 block-5 inline-5 [&&]:transition-all ${
       active
         ? 'scale-100 rotate-0 opacity-100'
         : `scale-50 opacity-0 ${exitClass}`
@@ -74,12 +74,14 @@
 
 <button
   onclick={toggleTheme}
-  class="group absolute top-2 right-2 z-10 flex size-10 cursor-pointer items-center justify-center rounded-full border border-zinc-200 text-zinc-600
+  class="group absolute inset-e-2 inset-bs-2 z-10 flex cursor-pointer items-center justify-center rounded-full border border-zinc-200 text-zinc-600 block-10 inline-10
   hover:text-zinc-900 focus:outline-none dark:border-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-100"
   {title}
   aria-label={title}
 >
-  <div class="relative h-5 w-5 transition-transform group-hover:rotate-10">
+  <div
+    class="relative transition-transform block-5 inline-5 group-hover:rotate-10"
+  >
     {@render icon(Sun, !isDark, 'rotate-90')}
     {@render icon(Moon, isDark, '-rotate-90')}
   </div>
