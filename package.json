@@ -12,7 +12,7 @@
     "@vitest/browser": "5.1.0",
     "@vitest/browser-playwright": "5.1.0",
     "@vitest/coverage-v8": "5.1.0",
-    "eslint": "10.14.0",
+    "eslint": "10.15.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-import-resolver-typescript": "4.4.5",
     "eslint-plugin-better-tailwindcss": "4.11.0",
@@ -22,7 +22,7 @@
     "eslint-plugin-svelte": "3.24.1",
     "eslint-plugin-yml": "3.10.0",
     "globals": "17.14.0",
-    "playwright": "1.65.0",
+    "playwright": "1.65.1",
     "prettier": "3.10.1",
     "prettier-plugin-svelte": "4.1.1",
     "prettier-plugin-tailwindcss": "0.8.1",
@@ -41,7 +41,7 @@
     "packageManager": {
       "name": "pnpm",
       "onFail": "download",
-      "version": "12.18.0"
+      "version": "12.21.0"
     },
     "runtime": {
       "name": "node",
