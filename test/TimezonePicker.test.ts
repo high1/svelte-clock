@@ -217,9 +217,7 @@ describe('<TimezonePicker />', () => {
 
     const input = screen.getByRole('combobox').element();
 
-    if (input instanceof HTMLInputElement) {
-      input.value = 'tok';
-    }
+    if (input instanceof HTMLInputElement) input.value = 'tok';
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
@@ -237,9 +235,7 @@ describe('<TimezonePicker />', () => {
 
     const input = screen.getByRole('combobox').element();
 
-    if (input instanceof HTMLInputElement) {
-      input.value = 'zzzzz';
-    }
+    if (input instanceof HTMLInputElement) input.value = 'zzzzz';
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
@@ -350,9 +346,7 @@ describe('<TimezonePicker /> additional branches', () => {
 
     const input = screen.getByRole('combobox').element();
 
-    if (input instanceof HTMLInputElement) {
-      input.value = 'zzzzz';
-    }
+    if (input instanceof HTMLInputElement) input.value = 'zzzzz';
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
@@ -376,9 +370,7 @@ describe('<TimezonePicker /> additional branches', () => {
 
     const input = screen.getByRole('combobox').element();
 
-    if (input instanceof HTMLInputElement) {
-      input.value = 'zzzzz';
-    }
+    if (input instanceof HTMLInputElement) input.value = 'zzzzz';
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
@@ -508,9 +500,7 @@ describe('<TimezonePicker /> closed-state trigger', () => {
 
     const input = screen.getByRole('combobox').element();
 
-    if (input instanceof HTMLInputElement) {
-      input.value = 'tok';
-    }
+    if (input instanceof HTMLInputElement) input.value = 'tok';
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
@@ -556,9 +546,7 @@ describe('<TimezonePicker /> scroll reset', () => {
 
     const input = screen.getByRole('combobox').element();
 
-    if (input instanceof HTMLInputElement) {
-      input.value = 'europe';
-    }
+    if (input instanceof HTMLInputElement) input.value = 'europe';
 
     input.dispatchEvent(new Event('input', { bubbles: true }));
     await tick();
@@ -599,9 +587,8 @@ describe('<TimezonePicker /> scroll reset', () => {
 
       // Use click() directly so the test doesn't scroll the trigger into view.
       const button = screen.getByRole('button').element();
-      if (button instanceof HTMLButtonElement) {
-        button.click();
-      }
+      if (button instanceof HTMLButtonElement) button.click();
+
       await tick();
 
       const listbox = screen.getByRole('listbox').element();

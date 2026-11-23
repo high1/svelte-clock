@@ -49,6 +49,7 @@ const commonConfig = defineConfig({
     'better-tailwindcss/enforce-shorthand-classes': 'error',
     'better-tailwindcss/no-deprecated-classes': 'error',
     'better-tailwindcss/no-duplicate-classes': 'error',
+    curly: ['error', 'multi-or-nest'],
   },
 });
 
@@ -99,8 +100,7 @@ export default defineConfig(
     rules: { 'json/sort-keys': ['error', 'asc', { natural: true }] },
   },
   {
-    // pnpm writes the dependencies in plain alphabetical order, and the
-    // manifest is its to write.
+    // pnpm writes package.json keys in plain alphabetical order.
     files: ['package.json'],
     rules: { 'json/sort-keys': ['error', 'asc'] },
   },

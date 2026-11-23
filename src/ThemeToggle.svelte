@@ -9,7 +9,6 @@
   let isDark = $state(false);
   const title = $derived(`Switch to ${isDark ? 'light' : 'dark'} mode`);
 
-  // Lazily created on first use (browser only — never during SSR).
   let mediaQuery: MediaQueryList | undefined;
 
   function getMediaQuery() {
@@ -24,9 +23,8 @@
     const savedTheme = () => localStorage.getItem('theme');
 
     const currentSaved = savedTheme();
-    if (currentSaved && (currentSaved === 'dark') === mq.matches) {
+    if (currentSaved && (currentSaved === 'dark') === mq.matches)
       localStorage.removeItem('theme');
-    }
 
     const handleSystemThemeChange = (e: MediaQueryListEvent) => {
       if (!savedTheme()) {
@@ -44,19 +42,15 @@
   });
 
   function toggleTheme() {
-    const mq = getMediaQuery();
-    const systemWantsDark = mq.matches;
+    const systemWantsDark = getMediaQuery().matches;
 
     isDark = !isDark;
 
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.classList.toggle('light', !isDark);
 
-    if (isDark === systemWantsDark) {
-      localStorage.removeItem('theme');
-    } else {
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
+    if (isDark === systemWantsDark) localStorage.removeItem('theme');
+    else localStorage.setItem('theme', isDark ? 'dark' : 'light');
   }
 </script>
 

@@ -20,11 +20,7 @@ export function getTimezoneGroups(
 
   const tokens = search.split(' ').filter(Boolean);
 
-  // The first token is treated as a region filter only when it is at least two
-  // characters long and a prefix of at least one known region. Requiring two
-  // characters keeps single-letter queries from triggering region
-  // interpretation. Otherwise every token is matched against the full zone id,
-  // which is what lets "new york" match America/New_York.
+  // First token filters by region only when ≥2 chars match a known region.
   const regionPrefix = tokens[0] ?? '';
   const isRegionPrefix =
     regionPrefix.length >= 2 &&
@@ -34,14 +30,11 @@ export function getTimezoneGroups(
 
   const matches = zones.filter((zone) => {
     const regionName = normalize(zoneRegion(zone));
-    if (regionFilter && !regionName.startsWith(regionFilter)) {
-      return false;
-    }
-    if (terms.length === 0) {
-      return true;
-    }
-    // Terms are matched against the full normalized id (region + label), so a
-    // multi-word query can match anywhere in "region/label".
+    if (regionFilter && !regionName.startsWith(regionFilter)) return false;
+
+    if (terms.length === 0) return true;
+
+    // Terms match the full id, so "new york" finds America/New_York.
     const haystack = normalize(zone);
     return terms.every((term) => haystack.includes(term));
   });
@@ -69,11 +62,8 @@ function buildGroups(zones: readonly string[]): TimezoneGroup[] {
     const region = zoneRegion(zone);
     const regionZones = byRegion.get(region);
 
-    if (regionZones) {
-      regionZones.push(zone);
-    } else {
-      byRegion.set(region, [zone]);
-    }
+    if (regionZones) regionZones.push(zone);
+    else byRegion.set(region, [zone]);
   }
 
   let index = 0;
