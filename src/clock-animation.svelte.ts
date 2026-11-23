@@ -9,24 +9,17 @@ const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
   window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/**
- * Animates hour/minute fractions toward their targets when the zone changes.
- * Both hands rotate in the direction of the zone change: forward when the new
- * zone is ahead, backward otherwise. The animation is derived from the shared
- * rAF clock (`now.value`); there is no separate animation loop. Returns the
- * displayed fractions.
- */
 export function createClockAnimation(
   time: ReturnType<typeof createTime>,
   duration = ANIMATION_DURATION,
 ) {
-  let hourDelta = $state(0);
-  let minuteDelta = $state(0);
   let animationStart = $state<number>();
+  let hourDelta = 0;
+  let minuteDelta = 0;
   let previousZone: string | undefined;
 
   $effect(() => {
-    const newZone = time.zone(); // tracked — re-runs when the zone changes
+    const newZone = time.zone; // tracked — re-runs when the zone changes
 
     if (
       prefersReducedMotion() ||
@@ -38,17 +31,17 @@ export function createClockAnimation(
     }
 
     const nowValue = untrack(() => now.value);
-    const oldParts = zonedParts(nowValue, previousZone);
+    const previousParts = zonedParts(nowValue, previousZone);
     const newParts = zonedParts(nowValue, newZone);
-    const forward = newParts.offset >= oldParts.offset;
+    const forward = newParts.offset >= previousParts.offset;
 
     hourDelta = directionalDelta(
-      hourFraction(oldParts.wallSeconds),
+      hourFraction(previousParts.wallSeconds),
       hourFraction(newParts.wallSeconds),
       forward,
     );
     minuteDelta = directionalDelta(
-      minuteFraction(oldParts.wallSeconds),
+      minuteFraction(previousParts.wallSeconds),
       minuteFraction(newParts.wallSeconds),
       forward,
     );
@@ -56,7 +49,6 @@ export function createClockAnimation(
     previousZone = newZone;
   });
 
-  // When no animation is running, don't read now.value at all.
   const progress = $derived(
     animationStart === undefined
       ? 1
@@ -64,23 +56,22 @@ export function createClockAnimation(
   );
   const eased = $derived(progress < 1 ? 1 - (1 - progress) ** 3 : progress); // easeOutCubic
 
-  // Pin animationStart to undefined once the animation completes so we
-  // stop reading now.value and stop re-deriving per frame.
   $effect(() => {
     if (animationStart === undefined) return;
     if (progress === 1) animationStart = undefined;
   });
 
+  const easedFraction = (part: number, delta: number) =>
+    (part - delta * (1 - eased) + 1) % 1;
+
   return {
     get hour() {
-      return eased === 1
-        ? time.hour
-        : (time.hour - hourDelta * (1 - eased) + 1) % 1;
+      return eased === 1 ? time.hour : easedFraction(time.hour, hourDelta);
     },
     get minute() {
       return eased === 1
         ? time.minute
-        : (time.minute - minuteDelta * (1 - eased) + 1) % 1;
+        : easedFraction(time.minute, minuteDelta);
     },
     get second() {
       return time.second;
@@ -91,14 +82,9 @@ export function createClockAnimation(
   };
 }
 
-/** Decimal precision for animation deltas — float noise below this is zero. */
 const DECIMAL_PRECISION = 4;
 
-/**
- * Signed angular delta in a chosen direction (full turn = 1).
- * Forward may exceed half a turn (e.g. +8h → +0.66 turn of the hour hand);
- * backward is the equivalent negative.
- */
+/** Signed turn toward the new time in the chosen direction. */
 export function directionalDelta(
   from: number,
   to: number,

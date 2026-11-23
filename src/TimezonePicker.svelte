@@ -42,9 +42,7 @@
   function closePicker(restoreFocus = false) {
     open = false;
 
-    if (restoreFocus) {
-      trigger.focus();
-    }
+    if (restoreFocus) trigger.focus();
   }
 
   function focusOnMount(node: HTMLElement) {
@@ -56,9 +54,8 @@
   }
 
   function handleDocumentPointerDown(event: PointerEvent) {
-    if (open && event.target instanceof Node && !root.contains(event.target)) {
+    if (open && event.target instanceof Node && !root.contains(event.target))
       closePicker();
-    }
   }
 
   function handleSearchInput() {
@@ -80,21 +77,14 @@
         break;
 
       case 'Enter': {
-        // IMEs use Enter to confirm composition; don't commit a selection then.
-        // Safari can fire compositionend before the Enter keydown, by which
-        // point isComposing is already false; verify on a real IME before
-        // relying on it.
-        if (event.isComposing) {
-          break;
-        }
+        // Ignore Enter while composing — IMEs use it to confirm, not select.
+        if (event.isComposing) break;
 
         event.preventDefault();
 
         const zone = options[activeIndex];
 
-        if (zone !== undefined) {
-          choose(zone);
-        }
+        if (zone !== undefined) choose(zone);
 
         break;
       }
@@ -116,11 +106,8 @@
   }
 
   function handleTriggerClick() {
-    if (open) {
-      closePicker();
-    } else {
-      openPicker();
-    }
+    if (open) closePicker();
+    else openPicker();
   }
 
   function handleTriggerKeydown(event: KeyboardEvent) {
@@ -155,8 +142,7 @@
     const roomAbove = top;
     const roomBelow = window.innerHeight - bottom;
 
-    // Popup height plus its gap to the trigger. The margin sits on the top or
-    // the bottom depending on the previous placement, so add both.
+    // Add both margins since the gap side depends on the previous placement.
     const needed =
       node.offsetHeight + parseFloat(marginTop) + parseFloat(marginBottom);
 
@@ -171,9 +157,7 @@
   function scrollToActive(center = false) {
     const option = getActiveOption();
 
-    if (!option) {
-      return;
-    }
+    if (!option) return;
 
     // Option edges relative to the visible area of the list.
     const top =
@@ -191,9 +175,7 @@
 
 <svelte:window
   onresize={() => {
-    if (window.innerWidth !== openWidth) {
-      closePicker();
-    }
+    if (window.innerWidth !== openWidth) closePicker();
   }}
 />
 
@@ -203,9 +185,7 @@
   onfocusout={(event) => {
     const next = event.relatedTarget;
 
-    if (next instanceof Node && !root.contains(next)) {
-      closePicker();
-    }
+    if (next instanceof Node && !root.contains(next)) closePicker();
   }}
 >
   <button
@@ -224,8 +204,7 @@
   </button>
 
   {#if open}
-    <!-- When above, the order is reversed so the input stays next to the trigger
-         while the list grows and shrinks (DOM order is unchanged). -->
+    <!-- Above: reversed order keeps the input beside the trigger (DOM order unchanged). -->
     <div
       use:placePopup
       class={`absolute z-50 flex rounded-sm border border-zinc-300 bg-white text-zinc-900 shadow-lg inline-full dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-100 ${
